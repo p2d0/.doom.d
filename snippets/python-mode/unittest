@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: unittest
 # key: unittest
+# group: file templates
 # --
 
 import unittest

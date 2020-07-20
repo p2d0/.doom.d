@@ -11,3 +11,9 @@
 		(+file-template-apply)))
 
 (add-hook 'treemacs-create-file-functions #'open-buffer-and-insert-template t)
+
+(set-file-template!
+  "\\(test\\|spec\\)\\.py"   :trigger "__test.py"    :mode 'python-mode)
+
+(add-hook 'python-mode-hook
+   '(lambda () (set (make-local-variable 'yas-indent-line) 'fixed)))
