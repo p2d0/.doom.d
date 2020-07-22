@@ -31,7 +31,9 @@
 (setq doom-localleader-key ",")
 
 (map! :leader
-      :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer)
+      :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
+      "`" nil)
+
 (map! :v "s" #'evil-surround-region)
 
 (add-to-list 'default-frame-alist '(fullscreen . fullscreen))
@@ -53,13 +55,18 @@
 (setq indent-tabs-mode t)
 
 (map! "M-p" #'counsel-yank-pop)
+(map! :leader "0" #'treemacs-select-window)
+
 
 
 (load! "evil-snipe-config.el")
 (load! "file-templates-config.el")
 (load! "flycheck-config.el")
 (load!  "magit-config.el")
+(load! "winum-config.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
+
+(winum-set-keymap-prefix "SPC")
 
 (setq omnisharp-expected-server-version "1.35.2")
 
