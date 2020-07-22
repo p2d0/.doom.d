@@ -10,6 +10,7 @@
 		(find-file path)
 		(+file-template-apply)))
 
+
 (add-hook 'treemacs-create-file-functions #'open-buffer-and-insert-template t)
 
 (set-file-template!

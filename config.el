@@ -51,6 +51,8 @@
 (after! treemacs
   (treemacs-follow-mode t))
 
+
+
 ;; set indentation to tabs instead of spaces
 (setq indent-tabs-mode t)
 
@@ -64,6 +66,8 @@
 (load! "flycheck-config.el")
 (load!  "magit-config.el")
 (load! "winum-config.el")
+(load! "evil-iedit-config.el")
+
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 
 (winum-set-keymap-prefix "SPC")
