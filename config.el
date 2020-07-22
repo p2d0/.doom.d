@@ -57,7 +57,11 @@
 
 (load! "evil-snipe-config.el")
 (load! "file-templates-config.el")
+(load! "flycheck-config.el")
+(load!  "magit-config.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
+
+(setq omnisharp-expected-server-version "1.35.2")
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
