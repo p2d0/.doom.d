@@ -81,18 +81,14 @@
 (load!  "magit-config.el")
 (load! "winum-config.el")
 (load! "evil-iedit-config.el")
-(load! "hydra-config.el")
+(load! "hercules-config.el")
 
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
-
 ;; (winum-set-keymap-prefix "SPC")
 
 (setq omnisharp-expected-server-version "1.35.2")
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
-
-(map! :nv "p" #'hydra-paste/evil-paste-after
-      :nv "P" #'hydra-paste/evil-paste-before)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
