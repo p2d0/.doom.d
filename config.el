@@ -38,7 +38,7 @@
 
 (map! :v "s" #'evil-surround-region)
 
-(add-to-list 'default-frame-alist '(fullscreen . fullscreen))
+;; (add-to-list 'default-frame-alist '(fullscreen . fullscreen))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -81,13 +81,18 @@
 (load!  "magit-config.el")
 (load! "winum-config.el")
 (load! "evil-iedit-config.el")
+(load! "hydra-config.el")
 
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 
 ;; (winum-set-keymap-prefix "SPC")
 
 (setq omnisharp-expected-server-version "1.35.2")
-(add-to-list 'auto-mode-alist '("\\.cshtml" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
+
+(map! :nv "p" #'hydra-paste/evil-paste-after
+      :nv "P" #'hydra-paste/evil-paste-before)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
