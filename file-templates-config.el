@@ -18,6 +18,8 @@
 
 (set-file-template!
 	"\\.cs$" :trigger "__.cs" :mode 'csharp-mode	)
+(set-file-template!
+  "[sS]pec\\.js$" :trigger "__spec.js" :mode 'js2-mode)
 
 (add-hook 'python-mode-hook
    '(lambda () (set (make-local-variable 'yas-indent-line) 'fixed)))
