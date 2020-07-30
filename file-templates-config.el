@@ -10,16 +10,12 @@
 		(find-file path)
 		(+file-template-apply)))
 
-
 (add-hook 'treemacs-create-file-functions #'open-buffer-and-insert-template t)
 
-(set-file-template!
- "\\(test\\|spec\\)\\.py$"   :trigger "__test.py"    :mode 'python-mode)
-
-(set-file-template!
-	"\\.cs$" :trigger "__.cs" :mode 'csharp-mode	)
-(set-file-template!
-  "[sS]pec\\.js$" :trigger "__spec.js" :mode 'js2-mode)
+(set-file-templates!
+ '("\\(test\\|spec\\)\\.py$"   :trigger "__test.py"    :mode python-mode)
+ '("[sS]pec\\.js$" :trigger "__spec.js" :mode js2-mode)
+ '("\\.cs$" :trigger "__.cs" :mode csharp-mode))
 
 (add-hook 'python-mode-hook
    '(lambda () (set (make-local-variable 'yas-indent-line) 'fixed)))
