@@ -9,7 +9,9 @@ Treemacs knows how to open files on linux, windows and macos."
   (-if-let (path (treemacs--prop-at-point :path))
       (let ((process-connection-type nil))
 				(message path)
-				(start-process "" nil "guake" "--show" (concat "--execute-command=cd '" (file-name-directory path) "'")  )
+				(start-process "" nil "guake" "--show" "-n"
+											 (concat "--rename-tab=" (file-name-directory path))
+											 (concat "--execute-command=cd '" (file-name-directory path) "'")  )
 				;; (start-process "" nil "guake --show --execute-command=cd" path )
 				)
     (_ (treemacs-pulse-on-failure "Don't know how to open files on %s."
