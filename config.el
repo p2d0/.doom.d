@@ -82,6 +82,7 @@
 (load! "winum-config.el")
 (load! "evil-iedit-config.el")
 (load! "hercules-config.el")
+(load! "treemacs-config.el")
 
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 ;; (winum-set-keymap-prefix "SPC")
