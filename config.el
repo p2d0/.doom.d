@@ -31,10 +31,14 @@
 (setq doom-theme 'doom-one)
 
 (setq doom-localleader-key ",")
+(map!
+ :leader
+ "ap" #'list-processes)
 
-(map! :leader
-      :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
-      "`" nil)
+(map!
+ :leader
+ :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
+ "`" nil)
 
 (map! :v "s" #'evil-surround-region)
 
@@ -61,15 +65,16 @@
 (map! "M-p" #'counsel-yank-pop)
 (map! :leader "0" #'treemacs-select-window)
 
-(map! :localleader
-			:map omnisharp-mode-map
-      :prefix "r"
-       "r" #'omnisharp-run-code-action-refactoring)
+(after! omnisharp
+  (map! :localleader
+        :map omnisharp-mode-map
+        :prefix "r"
+        "r" #'omnisharp-run-code-action-refactoring)
 
-(map! :localleader
-			:map omnisharp-mode-map
-      :prefix "r"
-      "R" #'omnisharp-rename)
+  (map! :localleader
+        :map omnisharp-mode-map
+        :prefix "r"
+        "R" #'omnisharp-rename))
 
 (map! :leader
 			"/" #'+default/search-project)
