@@ -31,16 +31,6 @@
 (setq doom-theme 'doom-one)
 
 (setq doom-localleader-key ",")
-(map!
- :leader
- "ap" #'list-processes)
-
-(map!
- :leader
- :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
- "`" nil)
-
-(map! :v "s" #'evil-surround-region)
 
 ;; (add-to-list 'default-frame-alist '(fullscreen . fullscreen))
 
@@ -51,50 +41,24 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+;; (setq display-line-numbers-type t)
+
 (setq which-key-idle-delay 0.15)
 
 (after! treemacs
   (treemacs-follow-mode t))
 
-
-
 ;; set indentation to tabs instead of spaces
 (setq indent-tabs-mode t)
 
-(map! "M-p" #'counsel-yank-pop)
-(map! :leader "0" #'treemacs-select-window)
 
-(after! omnisharp
-  (map! :localleader
-        :map omnisharp-mode-map
-        :prefix "r"
-        "r" #'omnisharp-run-code-action-refactoring)
-
-  (map! :localleader
-        :map omnisharp-mode-map
-        :prefix "r"
-        "R" #'omnisharp-rename))
-
-(map! :leader
-			"/" #'+default/search-project)
-
-
-(load! "evil-snipe-config.el")
-(load! "file-templates-config.el")
-(load! "flycheck-config.el")
-(load!  "magit-config.el")
-(load! "winum-config.el")
-(load! "evil-iedit-config.el")
-(load! "hercules-config.el")
-(load! "treemacs-config.el")
-
+(load! "map.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
-;; (winum-set-keymap-prefix "SPC")
+(mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
 
-(setq omnisharp-expected-server-version "1.35.2")
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
+
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
