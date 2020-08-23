@@ -4,6 +4,8 @@
 
 (map! :leader "/" #'+default/search-project)
 
+;; (setq ivy-)
+
 (map!
  :leader
  "ap" #'list-processes)
