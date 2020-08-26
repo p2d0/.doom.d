@@ -1,15 +1,8 @@
 ;;; ~/.doom.d/map.el -*- lexical-binding: t; -*-
 
-
-
-
-(map! "M-p" #'counsel-yank-pop)
-
 (map! :leader "0" #'treemacs-select-window)
 
-
-(map! :leader
-			"/" #'+default/search-project)
+(map! :leader "/" #'+default/search-project)
 
 ;; (setq ivy-)
 
@@ -23,7 +16,6 @@
  "`" nil)
 
 (map! :v "s" #'evil-surround-region)
-
 
 (defun toggle-fixed (&rest args)
   (interactive)
