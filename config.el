@@ -26,10 +26,11 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
+;; (setq lsp-csharp-server-install-dir "/opt/omnisharp-roslyn-stdio")
+;; (setq lsp-csharp-server-path "/opt/omnisharp-roslyn-stdio/OmniSharp.exe")
 
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 (setq doom-theme 'doom-one)
-
 (setq doom-localleader-key ",")
 
 ;; (add-to-list 'default-frame-alist '(fullscreen . fullscreen))
@@ -43,7 +44,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 ;; (setq display-line-numbers-type t)
 
-(setq which-key-idle-delay 0.15)
+(setq which-key-idle-delay 0.20)
 
 (after! treemacs
   (treemacs-follow-mode t))
@@ -51,13 +52,26 @@
 ;; set indentation to tabs instead of spaces
 (setq indent-tabs-mode t)
 
-
 (load! "map.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
 
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
+
+(after! lsp-mode
+  (setq lsp-mode-hook
+        (remq '+lsp-init-company-h lsp-mode-hook)))
+
+(setq-default company-backends '((company-yasnippet :separate company-capf)))
+
+
+(setq company-tooltip-idle-delay 0.1)
+(setq company-idle-delay 0.1)
+
+(after! sh-script
+  (set-company-backend! 'sh-mode
+    '(company-shell :with company-yasnippet)))
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
