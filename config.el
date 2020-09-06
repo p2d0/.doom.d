@@ -20,9 +20,6 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
-;; (setq lsp-csharp-server-install-dir "/opt/omnisharp-roslyn-stdio")
-;; (setq lsp-csharp-server-path "/opt/omnisharp-roslyn-stdio/OmniSharp.exe")
-
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 (setq doom-theme 'doom-one)
 (setq doom-localleader-key ",")
@@ -47,6 +44,7 @@
 (load! "map.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
+(mapc 'load (file-expand-wildcards "~/.doom.d/packages/*/*.el"))
 
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
@@ -54,6 +52,10 @@
 (after! lsp-mode
   (setq lsp-mode-hook
         (remq '+lsp-init-company-h lsp-mode-hook)))
+
+(after! omnisharp
+  (set-company-backend! 'omnisharp-mode
+    '(company-omnisharp :with company-yasnippet)))
 
 (setq-default company-backends '((company-yasnippet :separate company-capf)))
 
