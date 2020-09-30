@@ -11,6 +11,12 @@
  "ap" #'list-processes)
 
 (map!
+ :map emacs-lisp-mode-map
+ :localleader
+ :desc "Test"
+ "t" #'ert)
+
+(map!
  :leader
  :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
  "`" nil)

@@ -20,11 +20,22 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
+;; (doom-themes-set-faces 'doom-one
+;;   '(font-lock-comment-face :foreground "red" ))
+
+(use-package doom-themes
+  :custom-face
+  (font-lock-comment-face ((t (:foreground "red"))))
+  :config
+  (setq doom-themes-enable-bold nil)
+  (load-theme 'doom-one t))
+
 (setq doom-font (font-spec :family "Fira Code" :size 15))
-(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-one)
 (setq doom-localleader-key ",")
 
-(set-face-foreground 'font-lock-comment-face "red")
+
+;; (set-face-foreground 'font-lock-comment-face "red")
 
 (setq org-directory "~/org/")
 
@@ -95,4 +106,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+
  '(web-mode-block-face ((t nil))))
