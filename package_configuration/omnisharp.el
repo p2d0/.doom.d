@@ -1,6 +1,6 @@
 ;;; ~/.doom.d/packages_configuration/omnisharp.el -*- lexical-binding: t; -*-
 
-;; (setq omnisharp-expected-server-version "1.35.2")
+(setq omnisharp-expected-server-version "1.37.1")
 
 (after! omnisharp
   (map! :localleader
@@ -13,8 +13,7 @@
    :prefix "g"
    :desc "Go to Definition"
    "d" #'omnisharp-go-to-definition
-   "D" #'omnisharp-go-to-definition-other-window
-   )
+   "D" #'omnisharp-go-to-definition-other-window)
   (map! :localleader
         :map omnisharp-mode-map
         :prefix "r"

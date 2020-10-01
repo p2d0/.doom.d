@@ -20,9 +20,6 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
-;; (doom-themes-set-faces 'doom-one
-;;   '(font-lock-comment-face :foreground "red" ))
-
 (use-package doom-themes
   :custom-face
   (font-lock-comment-face ((t (:foreground "red"))))
@@ -31,11 +28,8 @@
   (load-theme 'doom-one t))
 
 (setq doom-font (font-spec :family "Fira Code" :size 15))
-;; (setq doom-theme 'doom-one)
+
 (setq doom-localleader-key ",")
-
-
-;; (set-face-foreground 'font-lock-comment-face "red")
 
 (setq org-directory "~/org/")
 
@@ -45,38 +39,22 @@
 (setq display-line-numbers-type t)
 
 (setq which-key-idle-delay 0.20)
+(setq company-tooltip-idle-delay 0.1)
+(setq company-idle-delay 0.1)
 
 (after! treemacs
   (treemacs-follow-mode t))
 
-;; set indentation to tabs instead of spaces
 (setq indent-tabs-mode t)
 
 (load! "map.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/packages/*/*.el"))
+(load! "snippets-in-company-mode.el")
 
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
-
-(after! lsp-mode
-  (setq lsp-mode-hook
-        (remq '+lsp-init-company-h lsp-mode-hook)))
-
-(after! omnisharp
-  (set-company-backend! 'omnisharp-mode
-    '(company-omnisharp :with company-yasnippet)))
-
-(setq-default company-backends '((company-yasnippet :separate company-capf)))
-
-
-(setq company-tooltip-idle-delay 0.1)
-(setq company-idle-delay 0.1)
-
-(after! sh-script
-  (set-company-backend! 'sh-mode
-    '(company-shell :with company-yasnippet)))
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:

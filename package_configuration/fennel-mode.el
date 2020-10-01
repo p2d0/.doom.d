@@ -19,5 +19,4 @@
  "c" #'fennel-view-compilation
 
  :desc "Reload"
- "R" #'fennel-reload
- )
+ "R" #'fennel-reload)

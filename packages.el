@@ -7,7 +7,8 @@
 
 (package! evil-iedit-state)
 (package! hercules)
-(package! csharp-mode :recipe (:branch "master"))
+;; (package! csharp-mode :recipe (:branch "master"))
+
 ;; (package! slime)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)

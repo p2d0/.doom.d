@@ -1,10 +1,6 @@
 ;;; ~/.doom.d/map.el -*- lexical-binding: t; -*-
 
-(map! :leader "0" #'treemacs-select-window)
-
 (map! :leader "/" #'+default/search-project)
-
-;; (setq ivy-)
 
 (map!
  :leader
@@ -23,7 +19,7 @@
 
 (map! :v "s" #'evil-surround-region)
 
-(defun toggle-fixed (&rest args)
+(defun toggle-fixed ()
   (interactive)
   (if window-size-fixed
       (setq window-size-fixed nil)
