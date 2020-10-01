@@ -6,6 +6,13 @@
  :leader
  "ap" #'list-processes)
 
+(dotimes (i 9)
+  (let ((n (+ i 1)))
+    (let ((key (format "b%i" n))
+          (func (intern (format "buffer-to-window-%s" n))))
+      (map!
+       (:leader key func)))))
+
 (map!
  :map emacs-lisp-mode-map
  :localleader

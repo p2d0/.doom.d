@@ -52,6 +52,7 @@
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/packages/*/*.el"))
 (load! "snippets-in-company-mode.el")
+(load! "move-buffer-to-window.el")
 
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
