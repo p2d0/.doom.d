@@ -24,6 +24,10 @@
  :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
  "`" nil)
 
+(map!
+ :map evil-normal-state-map
+ "gs" #'avy-goto-char)
+
 (map! :v "s" #'evil-surround-region)
 
 (defun toggle-fixed ()

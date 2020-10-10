@@ -11,6 +11,7 @@
 		(+file-template-apply)))
 
 (add-hook 'treemacs-create-file-functions #'open-buffer-and-insert-template t)
+(add-hook 'neo-create-file-hook #'open-buffer-and-insert-template t)
 
 (set-file-templates!
  '("\\(test\\|spec\\)\\.py$"   :trigger "__test.py"    :mode python-mode)

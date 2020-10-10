@@ -57,6 +57,13 @@
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
 
+(evil-motion-trainer-mode)
+(after! evil-motion-trainer
+  (global-evil-motion-trainer-mode 1)
+  (setq evil-motion-trainer-threshold 3))
+
+(require 'dap-netcore)
+
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

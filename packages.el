@@ -8,6 +8,8 @@
 (package! evil-iedit-state)
 (package! hercules)
 (package! evil-snipe :disable t)
+(package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer"))
+(package! dap-mode)
 ;; (package! csharp-mode :recipe (:branch "master"))
 
 ;; (package! slime)
