@@ -30,11 +30,11 @@
 
 (map! :v "s" #'evil-surround-region)
 
-(defun toggle-fixed ()
+(defun toggle-fixed (&optional args)
   (interactive)
   (if window-size-fixed
       (setq window-size-fixed nil)
-    (setq window-size-fixed 'width)))
+      (setq window-size-fixed 'width)))
 
 (map! :leader
      :desc "Toggle fixed"
