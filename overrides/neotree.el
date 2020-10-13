@@ -39,4 +39,29 @@
 	  (mkdir filename t)
 	  (neo-buffer--save-cursor-pos filename)
 	  (neo-buffer--refresh
-  nil))))))
+	    nil)))))
+
+  (defun neo-buffer--refresh (save-pos-p &optional non-neotree-buffer)
+    "Refresh the NeoTree buffer.
+If SAVE-POS-P is non-nil, it will be auto save current line number."
+    (let ((start-node neo-buffer--start-node))
+      (unless start-node
+	(setq start-node default-directory))
+      (neo-buffer--with-editing-buffer
+	;; save context
+	(when save-pos-p
+	  (neo-buffer--save-cursor-pos))
+	(when non-neotree-buffer
+	  (setq neo-buffer--start-node start-node))
+	;; starting refresh
+	(erase-buffer)
+	(neo-buffer--node-list-clear)
+	(neo-buffer--insert-banner)
+	(setq neo-buffer--start-line neo-header-height)
+	(neo-buffer--insert-tree start-node 1))
+      ;; restore context
+      ;; (neo-buffer--goto-cursor-pos)
+      ))
+
+
+  )
