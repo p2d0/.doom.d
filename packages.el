@@ -12,8 +12,8 @@
 (package! dap-mode)
 (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
 ;; (package! csharp-mode :recipe (:branch "master"))
-
-;; (package! slime)
+(package! company-tabnine)
+(package! slime)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

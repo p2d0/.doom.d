@@ -16,7 +16,11 @@
 (set-file-templates!
  '("\\(test\\|spec\\)\\.py$"   :trigger "__test.py"    :mode python-mode)
  '("[sS]pec\\.js$" :trigger "__spec.js" :mode js2-mode)
- '("\\.cs$" :trigger "__.cs" :mode csharp-mode))
+  '("\\.cs$" :trigger "__.cs" :mode csharp-mode)
+  '("Command\\.cs$" :trigger "__Command.cs" :mode csharp-mode)
+  '("CommandHandler\\.cs$" :trigger "__CommandHandler.cs" :mode csharp-mode)
+  '("CommandResult\\.cs$" :trigger "__CommandResult.cs" :mode csharp-mode)
+  )
 
 (add-hook 'python-mode-hook
    '(lambda () (set (make-local-variable 'yas-indent-line) 'fixed)))

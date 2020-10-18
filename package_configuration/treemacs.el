@@ -25,3 +25,6 @@
   "og" #'treemacs-visit-node-in-guake)
 
 (setq +treemacs-git-mode -1)
+
+(after! treemacs
+  (treemacs-follow-mode t))

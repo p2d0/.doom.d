@@ -1,5 +1,5 @@
 ;;; move-buffer-to-window.el -*- lexical-binding: t; -*-
-;;
+
 ;; Note that this duplicates code from select-window-by-number, ideally should
 ;; upstream this function into windows.el
 (defun spacemacs/get-window-by-number (i)

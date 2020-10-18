@@ -1,5 +1,8 @@
 ;;; snippets-config.el -*- lexical-binding: t; -*-
 
+(require 'company-tabnine)
+(add-to-list 'company-backends #'company-tabnine)
+(setq company-show-numbers t)
 
 (after! sh-script
   (set-company-backend! 'sh-mode
@@ -11,6 +14,6 @@
 
 (after! omnisharp
   (set-company-backend! 'omnisharp-mode
-    '(company-omnisharp :with company-yasnippet)))
+    '(company-omnisharp :separate company-tabnine)))
 
-(setq-default company-backends '((company-yasnippet :separate company-capf)))
+(setq-default company-backends '((company-tabnine :separate company-capf)))

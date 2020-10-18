@@ -42,27 +42,17 @@
 (setq company-tooltip-idle-delay 0.1)
 (setq company-idle-delay 0.1)
 
-(after! treemacs
-  (treemacs-follow-mode t))
-
 (setq indent-tabs-mode t)
 
 (load! "map.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
+(mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/packages/*/*.el"))
-(load! "snippets-in-company-mode.el")
-(load! "move-buffer-to-window.el")
+(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
 
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
-
-(evil-motion-trainer-mode)
-(after! evil-motion-trainer
-  (global-evil-motion-trainer-mode 1)
-  (setq evil-motion-trainer-threshold 3))
-
-(require 'dap-netcore)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
