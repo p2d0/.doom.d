@@ -7,6 +7,18 @@
  "ap" #'list-processes)
 
 (map!
+  :leader
+  "pR" #'projectile-replace)
+
+(map!
+  :map origami-mode-map
+  :n "<backtab>" #'origami-toggle-all-nodes)
+
+(map!
+  :map origami-mode-map
+  :n "<tab>" #'origami-toggle-node)
+
+(map!
  :map emacs-lisp-mode-map
  :localleader
  :desc "Test"
@@ -19,6 +31,10 @@
 
 (map!
  :map evil-normal-state-map
+ "gs" #'avy-goto-char)
+
+(map!
+ :map evil-visual-state-map
  "gs" #'avy-goto-char)
 
 (map! :v "s" #'evil-surround-region)

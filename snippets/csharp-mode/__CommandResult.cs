@@ -1,13 +1,12 @@
 # -*- mode: snippet -*-
-# `(setq-local snip-namespace (s-replace "/" "." (string-remove-suffix "/" (file-relative-name default-directory (projectile-project-root)) ) ))`
-# `(setq-local filename (file-name-sans-extension (buffer-name)))`
 # --
+using FinFactory.Core.Abstraction.Application.MediatR.Commands;
 
-namespace `snip-namespace`
+namespace `(+yas-csharp/namespace)`
 {
-    public class `filename` : CommandResult
+    public class `(+yas/filename)` : CommandResult
     {
-        public `filename`(int statusCode, string error) : base(statusCode, error)
+        public `(+yas/filename)`(int statusCode, string error) : base(statusCode, error)
         {
         }
     }

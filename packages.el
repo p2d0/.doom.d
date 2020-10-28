@@ -14,6 +14,7 @@
 ;; (package! csharp-mode :recipe (:branch "master"))
 (package! company-tabnine)
 (package! slime)
+(package! origami)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

@@ -54,6 +54,8 @@
 (add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
 
+(global-origami-mode 1)
+
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

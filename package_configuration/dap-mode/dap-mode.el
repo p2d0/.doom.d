@@ -23,6 +23,7 @@
 
 
 (require 'dap-firefox)
+(require 'dap-python)
 
 (defun find-process-by-args (args)
   (seq-find (lambda (val)
