@@ -1,0 +1,54 @@
+# -*- mode: snippet -*-
+# name: React request reducer
+# key: reactrequestreducer
+# --
+import { Reducer, REQUEST_STATUSES } from 'globaltypes';
+
+export interface GetInternalAgentsListStoreState extends Reducer {
+data: ResponseData;
+}
+
+export enum $1 {
+REQ = '$1_REQ',
+GOT = '$1_GOT',
+ERR = '$1_ERR'
+}
+
+export const initialState: GetInternalAgentsListStoreState = {
+status: REQUEST_STATUSES.NONE,
+data: [],
+error: {}
+};
+
+const getInternalAgentsList = (
+state: GetInternalAgentsListStoreState = initialState,
+action: {
+type: string;
+data: ResponseData;
+error: {};
+}
+): GetInternalAgentsListStoreState => {
+switch (action.type) {
+case $1.REQ:
+return {
+...state,
+status: REQUEST_STATUSES.REQUEST
+};
+case $1.GOT:
+return {
+...state,
+status: REQUEST_STATUSES.GOT,
+data: action.data
+};
+case $1.ERR:
+return {
+...state,
+status: REQUEST_STATUSES.ERROR,
+error: action.error
+};
+default:
+return state;
+}
+};
+
+export default getInternalAgentsList;

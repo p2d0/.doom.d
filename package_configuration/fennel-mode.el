@@ -13,7 +13,10 @@
   "D" #'fennel-find-definition-pop)
 
  :desc "Open fennel repl"
- "r" #'fennel-repl
+ "r" #'fennel-start-nrepl
+
+  :desc "Eval buffer"
+  "eb" #'fennel-eval-buffer
 
  :desc "View compilation"
  "c" #'fennel-view-compilation

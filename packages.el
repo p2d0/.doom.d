@@ -10,11 +10,11 @@
 (package! evil-snipe :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer"))
 (package! dap-mode)
-(package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
+;; (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
 ;; (package! csharp-mode :recipe (:branch "master"))
 (package! company-tabnine)
-(package! slime)
-(package! origami)
+;; (package! slime)
+(package! ssh-deploy :recipe (:branch "master"))
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

@@ -11,14 +11,6 @@
   "pR" #'projectile-replace)
 
 (map!
-  :map origami-mode-map
-  :n "<backtab>" #'origami-toggle-all-nodes)
-
-(map!
-  :map origami-mode-map
-  :n "<tab>" #'origami-toggle-node)
-
-(map!
  :map emacs-lisp-mode-map
  :localleader
  :desc "Test"
