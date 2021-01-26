@@ -8,6 +8,7 @@
 (package! evil-iedit-state)
 (package! hercules)
 (package! evil-snipe :disable t)
+(package! fd-dired :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer"))
 (package! dap-mode)
 ;; (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))

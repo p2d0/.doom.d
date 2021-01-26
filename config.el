@@ -50,14 +50,6 @@
 ;; (mapc 'load (file-expand-wildcards "~/.doom.d/packages/*/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
 
-(add-to-list 'auto-mode-alist '("\\.cshtml$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.csproj$" . xml-mode))
-
-(yas-minor-mode-on)
-
-(add-hook 'yas-after-exit-snippet-hook
-  (lambda () (evil-indent (point-min) (point-max))))
-
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
