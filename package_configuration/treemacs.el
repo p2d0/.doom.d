@@ -27,4 +27,9 @@
 (setq +treemacs-git-mode -1)
 
 (after! treemacs
-  (treemacs-follow-mode t))
+  (treemacs-follow-mode t)
+  (map!
+    :map treemacs-mode-map
+    :localleader
+    "o" #'treemacs-display-current-project-exclusively))
+(setq treemacs-read-string-input 'from-minibuffer)
