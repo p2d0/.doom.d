@@ -15,3 +15,5 @@
       "l" #'flycheck-toggle-list
       "n" #'flycheck-next-error
       "p" #'flycheck-previous-error)
+
+(setq flycheck-check-syntax-automatically '(save mode-enable))

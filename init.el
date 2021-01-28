@@ -34,16 +34,16 @@
        ;; hydra
        ;;indent-guides     ; highlighted indent columns
        ;;minimap           ; show a map of the code on the side
-       modeline          ; snazzy, Atom-inspired modeline, plus API
+       (modeline +light)          ; snazzy, Atom-inspired modeline, plus API
        ;;nav-flash         ; blink cursor line after big motions
        ;; neotree           ; a project drawer, like NERDTree for vim
-       ophints           ; highlight the region an operation acts on
+       ;; ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;; ( pretty-code +iosevka)       ; ligatures or substitute text with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
-       unicode           ; extended unicode support for various languages
-       vc-gutter         ; vcs diff in the fringe
+       ;; unicode           ; extended unicode support for various languages
+       ;; vc-gutter         ; vcs diff in the fringe
        ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        (window-select +numbers)     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
@@ -59,9 +59,9 @@
        ;; multiple-cursors  ; editing in many places at once
        ;; objed             ; text object editing for the innocent
        ;;parinfer          ; turn lisp into python, sort of
-       rotate-text       ; cycle region at point between text candidates
+       ;; rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
-       word-wrap         ; soft wrapping with language-aware indent
+       ;; word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
        dired              ; making dired pretty [functional]
