@@ -14,7 +14,7 @@
  :map emacs-lisp-mode-map
  :localleader
  :desc "Test"
- "t" #'ert)
+ "t" #'test-simple-run)
 
 (map!
  :leader

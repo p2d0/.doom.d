@@ -13,7 +13,7 @@
 (package! dap-mode)
 ;; (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
 ;; (package! csharp-mode :recipe (:branch "master"))
-(package! company-tabnine)
+;; (package! company-tabnine)
 ;; (package! slime)
 (package! ssh-deploy :recipe (:branch "master"))
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
