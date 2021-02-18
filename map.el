@@ -1,5 +1,6 @@
 ;;; ~/.doom.d/map.el -*- lexical-binding: t; -*-
 
+
 (map! :leader "/" #'+default/search-project)
 
 (map!

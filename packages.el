@@ -11,6 +11,8 @@
 (package! fd-dired :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer"))
 (package! dap-mode)
+(package! deadgrep)
+
 ;; (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
 ;; (package! csharp-mode :recipe (:branch "master"))
 ;; (package! company-tabnine)

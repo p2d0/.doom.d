@@ -4,30 +4,30 @@
 # --
 import { Reducer, REQUEST_STATUSES } from 'globaltypes';
 
-export interface GetInternalAgentsListStoreState extends Reducer {
+export interface `(s-upper-camel-case (+yas/filename))`StoreState extends Reducer {
 data: ResponseData;
 }
 
-export enum $1 {
+export enum ${1:$$(+yas/to_upper_underscore_case (+yas/filename))} {
 REQ = '$1_REQ',
 GOT = '$1_GOT',
 ERR = '$1_ERR'
 }
 
-export const initialState: GetInternalAgentsListStoreState = {
+export const initialState: `(s-upper-camel-case (+yas/filename))`StoreState = {
 status: REQUEST_STATUSES.NONE,
 data: [],
 error: {}
 };
 
-const getInternalAgentsList = (
-state: GetInternalAgentsListStoreState = initialState,
+const `(+yas/filename)` = (
+state: `(s-upper-camel-case (+yas/filename) )`StoreState = initialState,
 action: {
 type: string;
 data: ResponseData;
 error: {};
 }
-): GetInternalAgentsListStoreState => {
+): `(s-upper-camel-case (+yas/filename) )`StoreState => {
 switch (action.type) {
 case $1.REQ:
 return {
@@ -51,4 +51,4 @@ return state;
 }
 };
 
-export default getInternalAgentsList;
+export default `(+yas/filename)`;

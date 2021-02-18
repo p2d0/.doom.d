@@ -22,7 +22,7 @@
        company           ; the ultimate code completion backend
        ;; helm              ; the *other* search engine for love and life
        ;; ido               ; the other *other* search engine...
-       ivy               ; a search engine for love and life
+       (ivy )               ; a search engine for love and life
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -83,7 +83,7 @@
 
        :tools
        ;;ansible
-        debugger          ; FIXME stepping through code, to help you add bugs
+        (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        docker
        editorconfig      ; let someone else argue about tabs vs spaces
@@ -106,7 +106,7 @@
 
        :lang
        ;;agda              ; types of types of types of types...
-       cc                ; C/C++/Obj-C madness
+       (cc +lsp)                ; C/C++/Obj-C madness
        clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -128,7 +128,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        json              ; At least it ain't XML
-       (java +meghanada) ; the poster child for carpal tunnel syndrome
+       java   ; the poster child for carpal tunnel syndrome
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)

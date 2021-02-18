@@ -1,4 +1,4 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 (setq user-full-name "Andrew Cerkin"
   user-mail-address "cerkin-3@yandex.ru")
@@ -33,13 +33,23 @@
 
 (setq org-directory "~/org/")
 
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-;; (setq display-line-numbers-type t)
+(setq display-line-numbers-type nil)
+;; Disable show paren mode
+(show-paren-mode nil)
 
+;; S-SPC not working
+(map!
+  :map projectile-mode-map
+  "C-SPC" #'ivy-restrict-to-matches)
 
-(setq which-key-idle-delay 0.50)
-(setq company-tooltip-idle-delay 0.25)
+;; VSYNC rendering
+(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+
+(setq which-key-idle-delay 0.3)
+(setq company-tooltip-idle-delay 0.3)
 (setq company-idle-delay 0.5)
 
 (setq indent-tabs-mode t)

@@ -2,7 +2,7 @@
 # name: React request action
 # key: requestaction
 # --
-import { ${1:$$(+yas/capitalize yas-text)} } from '${2:"path"}/reducers/${3:"reducer"}';
+import { ${1:$$(+yas/capitalize yas-text)} } from '../reducers/`(+yas/filename)`';
 
 export interface ResponseData {
 

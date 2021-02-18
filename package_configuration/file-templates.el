@@ -20,6 +20,7 @@
   '("Command\\.cs$" :trigger "__Command.cs" :mode csharp-mode)
   '("CommandHandler\\.cs$" :trigger "__CommandHandler.cs" :mode csharp-mode)
   '("CommandResult\\.cs$" :trigger "__CommandResult.cs" :mode csharp-mode)
+  '("Test\\.cs$" :trigger "__Test.cs" :mode csharp-mode)
   )
 
 (add-hook 'python-mode-hook

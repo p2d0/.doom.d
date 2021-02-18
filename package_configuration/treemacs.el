@@ -24,10 +24,11 @@
   :map treemacs-mode-map
   "og" #'treemacs-visit-node-in-guake)
 
-(setq +treemacs-git-mode -1)
+
 
 (after! treemacs
   (treemacs-follow-mode t)
+  (setq treemacs-git-mode -1)
   (map!
     :map treemacs-mode-map
     :localleader
