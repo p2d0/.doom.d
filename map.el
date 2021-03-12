@@ -29,5 +29,10 @@
 (map!
  :map evil-visual-state-map
  "gs" #'avy-goto-char)
+(map!
+  :leader
+  :desc "Git time machine"
+  "gt" #'git-timemachine
+  )
 
 (map! :v "s" #'evil-surround-region)

@@ -27,8 +27,7 @@
 
 
 (after! treemacs
-  (treemacs-follow-mode t)
-  (setq treemacs-git-mode -1)
+  (treemacs-git-mode -1)
   (map!
     :map treemacs-mode-map
     :localleader
