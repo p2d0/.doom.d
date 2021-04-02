@@ -21,11 +21,11 @@
 ;; `load-theme' function. This is the default:
 
 (use-package doom-themes
-   :custom-face
-   (font-lock-comment-face ((t (:foreground "red"))))
-   :config
-   (setq doom-themes-enable-bold nil)
-   (load-theme 'doom-one t))
+  :custom-face
+  (font-lock-comment-face ((t (:foreground "red"))))
+  :config
+  (setq doom-themes-enable-bold nil)
+  (load-theme 'doom-one t))
 
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 
@@ -57,13 +57,13 @@
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
-;; (mapc 'load (file-expand-wildcards "~/.doom.d/packages/*/*.el"))
+(mapc 'load (seq-filter (lambda (str) (not (s-contains? "disabled_" str) )) (file-expand-wildcards "~/.doom.d/packages/*/*.el")))
 (mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
 
 ;; patch to emacs@28.0.50
 ;; https://www.reddit.com/r/emacs/comments/kqd9wi/changes_in_emacshead2828050_break_many_packages/
 (defmacro define-obsolete-function-alias ( obsolete-name current-name
-                                           &optional when docstring)
+					   &optional when docstring)
   "Set OBSOLETE-NAME's function definition to CURRENT-NAME and mark it obsolete.
 \(define-obsolete-function-alias \\='old-fun \\='new-fun \"22.1\" \"old-fun's doc.\")
 is equivalent to the following two lines of code:
@@ -73,9 +73,9 @@ WHEN should be a string indicating when the function was first
 made obsolete, for example a date or a release number.
 See the docstrings of `defalias' and `make-obsolete' for more details."
   (declare (doc-string 4)
-           (advertised-calling-convention
-           ;; New code should always provide the `when' argument
-           (obsolete-name current-name when &optional docstring) "23.1"))
+    (advertised-calling-convention
+      ;; New code should always provide the `when' argument
+      (obsolete-name current-name when &optional docstring) "23.1"))
   `(progn
      (defalias ,obsolete-name ,current-name ,docstring)
      (make-obsolete ,obsolete-name ,current-name ,when)))
