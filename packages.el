@@ -9,7 +9,7 @@
 (package! hercules)
 (package! evil-snipe :disable t)
 (package! fd-dired :disable t)
-(package! evil-motion-trainer-package :recipe (:host github :repo "martinbaillie/evil-motion-trainer"))
+(package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer" :branch "master"))
 (package! dap-mode)
 (package! deadgrep)
 

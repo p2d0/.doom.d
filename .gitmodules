@@ -4,3 +4,6 @@
 [submodule "packages/hygen"]
 	path = packages/hygen
 	url = ./packages/hygen/
+[submodule "hygen_templates"]
+	path = hygen_templates
+	url = https://github.com/Patriot720/my-hygen-templates.git

@@ -27,6 +27,9 @@
   (setq doom-themes-enable-bold nil)
   (load-theme 'doom-one t))
 
+(after! hygen
+  (setq hygen/template-dir (s-concat (expand-file-name doom-private-dir) "hygen_templates/_templates")))
+
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 
 (setq doom-localleader-key ",")

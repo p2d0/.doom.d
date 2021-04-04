@@ -23,6 +23,19 @@
  "`" nil)
 
 (map!
+ :desc "Run Hygen..."
+  (:leader
+    (:prefix "ph"
+      "h" #'hygen/run-project
+      "o" #'hygen/run-other-project)))
+(map!
+ :desc "Run Hygen Global..."
+  (:leader
+    (:prefix "gh"
+      "h" #'hygen/run-global
+      "o" #'hygen/run-global-in-folder)))
+
+(map!
  :map evil-normal-state-map
  "gs" #'avy-goto-char)
 
