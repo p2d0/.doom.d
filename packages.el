@@ -12,7 +12,7 @@
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer" :branch "master"))
 (package! dap-mode)
 (package! deadgrep)
-
+(package! string-inflection)
 ;; (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
 ;; (package! csharp-mode :recipe (:branch "master"))
 ;; (package! company-tabnine)

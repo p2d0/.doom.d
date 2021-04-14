@@ -3,5 +3,6 @@
 (map!
   :leader
   "dd" #'dap-hydra
+  "dr" #'dap-breakpoint-delete-all
   "ds" #'dap-debug
   )

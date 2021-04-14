@@ -3,6 +3,15 @@
 
 (map! :leader "/" #'+default/search-project)
 
+;; Expand variants
+(global-set-key (kbd "M-/") 'hippie-expand)
+;; (global-set-key (kbd "M-/") 'evil-complete-next)
+
+;; Put in insert mode
+;; (global-set-key (kbd "C-p") 'evil-paste-after)
+
+;; (map! :i "C-p" #'evil-paste-after)
+
 (map!
  :leader
  "ap" #'list-processes)
@@ -16,6 +25,11 @@
  :localleader
  :desc "Test"
  "t" #'test-simple-run)
+
+(map!
+  "C-c C-c" #'string-inflection-lower-camelcase
+  "C-c C-l" #'string-inflection-lisp
+  "C-c C-a" #'string-inflection-all-cycle)
 
 (map!
  :leader
@@ -49,3 +63,4 @@
   )
 
 (map! :v "s" #'evil-surround-region)
+

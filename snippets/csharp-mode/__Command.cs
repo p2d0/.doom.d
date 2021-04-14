@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # --
 
-using FinFactory.Core.Abstraction.Application.MediatR.Commands;
+using FinFactory.Abstractions.Application.MediatR.Commands;
 
 namespace `(+yas-csharp/namespace)`
 {

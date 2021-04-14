@@ -23,9 +23,15 @@
 (use-package doom-themes
   :custom-face
   (font-lock-comment-face ((t (:foreground "red"))))
+  ;; (lsp-face-highlight-read ((t (:foreground "red" :background nil))))
   :config
   (setq doom-themes-enable-bold nil)
-  (load-theme 'doom-one t))
+  (load-theme 'doom-dracula t))
+
+;; doom-dracula
+;; doom-one
+;; doom-spacegrey
+;; sanityinc-tomorrow-eighties
 
 (after! hygen
   (setq hygen/template-dir (s-concat (expand-file-name doom-private-dir) "hygen_templates/_templates")))
@@ -43,10 +49,6 @@
 ;; Disable show paren mode
 (show-paren-mode nil)
 
-;; S-SPC not working
-(map!
-  :map projectile-mode-map
-  "C-SPC" #'ivy-restrict-to-matches)
 
 ;; VSYNC rendering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
