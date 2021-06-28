@@ -4,7 +4,7 @@
 (map! :leader "/" #'+default/search-project)
 
 ;; Expand variants
-(global-set-key (kbd "M-/") 'hippie-expand)
+;; (global-set-key (kbd "M-/") 'hippie-expand)
 ;; (global-set-key (kbd "M-/") 'evil-complete-next)
 
 ;; Put in insert mode
@@ -42,6 +42,12 @@
     (:prefix "ph"
       "h" #'hygen/run-project
       "o" #'hygen/run-other-project)))
+
+(map!
+  :map treemacs-mode-map
+  (:localleader
+    "a" #'treemacs-run-hygen-on-directory))
+
 (map!
  :desc "Run Hygen Global..."
   (:leader

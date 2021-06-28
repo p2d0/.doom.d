@@ -38,6 +38,20 @@
 
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 
+(defconst jest-error-match "at.+?(\\(.+?\\):\\([0-9]+\\):\\([0-9]+\\)")
+
+(eval-after-load 'compile
+  (lambda ()
+    (dolist
+      (regexp
+	`((jest-error
+	    ,jest-error-match
+	    1 2 3
+	    )))
+      (add-to-list 'compilation-error-regexp-alist-alist regexp)
+      (add-to-list 'compilation-error-regexp-alist (car regexp)))))
+
+
 (setq doom-localleader-key ",")
 
 (setq org-directory "~/org/")
@@ -53,17 +67,24 @@
 ;; VSYNC rendering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
+
+
 (setq which-key-idle-delay 0.3)
 (setq company-tooltip-idle-delay 0.3)
 (setq company-idle-delay 0.5)
 
 (setq indent-tabs-mode t)
 (load! "map.el")
+(load! "ssh.el")
+(load! "util.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
 (mapc 'load (seq-filter (lambda (str) (not (s-contains? "disabled_" str) )) (file-expand-wildcards "~/.doom.d/packages/*/*.el")))
 (mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
+(setq org-startup-folded nil)
+(setq org-hide-block-startup t)
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 
 ;; patch to emacs@28.0.50
 ;; https://www.reddit.com/r/emacs/comments/kqd9wi/changes_in_emacshead2828050_break_many_packages/

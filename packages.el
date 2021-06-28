@@ -13,6 +13,7 @@
 (package! dap-mode)
 (package! deadgrep)
 (package! string-inflection)
+(package! org-attach-screenshot)
 ;; (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
 ;; (package! csharp-mode :recipe (:branch "master"))
 ;; (package! company-tabnine)

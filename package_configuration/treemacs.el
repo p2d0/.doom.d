@@ -31,5 +31,7 @@
   (map!
     :map treemacs-mode-map
     :localleader
-    "o" #'treemacs-display-current-project-exclusively))
+    "o" #'treemacs-display-current-project-exclusively)
+
+  )
 (setq treemacs-read-string-input 'from-minibuffer)
