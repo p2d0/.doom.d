@@ -67,6 +67,7 @@
 ;; VSYNC rendering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
+(setq require-final-newline nil)
 
 
 (setq which-key-idle-delay 0.3)
