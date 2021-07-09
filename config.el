@@ -85,7 +85,9 @@
 (mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
 (setq org-startup-folded nil)
 (setq org-hide-block-startup t)
-(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+
+(if (file-directory-p "~/org")
+  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
 
 ;; patch to emacs@28.0.50
 ;; https://www.reddit.com/r/emacs/comments/kqd9wi/changes_in_emacshead2828050_break_many_packages/
