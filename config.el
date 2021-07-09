@@ -76,7 +76,7 @@
 
 (setq indent-tabs-mode t)
 (load! "map.el")
-(load! "ssh.el")
+(load! "ssh.el" nil t)
 (load! "util.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
