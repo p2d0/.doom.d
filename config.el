@@ -86,6 +86,8 @@
 (setq org-startup-folded nil)
 (setq org-hide-block-startup t)
 
+(setq org-roam-graph-viewer "brave")
+
 (if (file-directory-p "~/org")
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
 
