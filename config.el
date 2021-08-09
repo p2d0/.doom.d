@@ -91,6 +91,9 @@
 (if (file-directory-p "~/org")
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
 
+
+(setq org-image-actual-width nil)
+
 ;; patch to emacs@28.0.50
 ;; https://www.reddit.com/r/emacs/comments/kqd9wi/changes_in_emacshead2828050_break_many_packages/
 (defmacro define-obsolete-function-alias ( obsolete-name current-name
