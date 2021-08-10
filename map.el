@@ -12,9 +12,9 @@
 
 ;; (map! :i "C-p" #'evil-paste-after)
 
-(map!
- :leader
- "ap" #'list-processes)
+;; (map!
+;;  :leader
+;;  "ap" #'list-processes)
 
 (map!
   :leader

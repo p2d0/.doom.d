@@ -91,7 +91,6 @@
 (if (file-directory-p "~/org")
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
 
-
 (setq org-image-actual-width nil)
 
 ;; patch to emacs@28.0.50
