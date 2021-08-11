@@ -54,7 +54,7 @@
 
 (setq doom-localleader-key ",")
 
-(setq org-directory "~/org/")
+(setq org-directory "~/Dropbox/org/")
 
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -88,7 +88,7 @@
 
 (setq org-roam-graph-viewer "brave")
 
-(if (file-directory-p "~/org")
+(if (file-directory-p "~/Dropbox/org")
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
 
 (setq org-image-actual-width nil)

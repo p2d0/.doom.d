@@ -16,6 +16,8 @@
 ;;  :leader
 ;;  "ap" #'list-processes)
 
+(setq iedit-toggle-key-default nil)
+
 (map!
   :leader
   "pR" #'projectile-replace)

@@ -1,5 +1,10 @@
 ;;; ~/.doom.d/treemacs-config.el -*- lexical-binding: t; -*-
 
+(defun guake-open (path)
+  (start-process "" nil "guake" "--show" "-n"
+    (concat "--rename-tab=" path)
+    (concat "--execute-command=cd '" path "'")  ) )
+
 
 (defun treemacs-visit-node-in-guake ()
   "Open file in guake"
@@ -12,9 +17,7 @@
 		   (file-name-directory
 		     path) )))
       (message path)
-      (start-process "" nil "guake" "--show" "-n"
-	(concat "--rename-tab=" path)
-	(concat "--execute-command=cd '" path "'")  )
+      (guake-open path)
       )
     (_ (treemacs-pulse-on-failure "Don't know how to open files on %s."
 	 (propertize (symbol-name system-type) 'face 'font-lock-string-face)))
