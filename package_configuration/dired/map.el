@@ -4,14 +4,15 @@
   (string-trim (car (last (split-string str ":") ) ) ))
 
 (defun fd-ivy-dired-project ()
-  (fd-dired (doom-project-root) (ivy--input)))
+  (fd-dired (doom-project-root) (seq-map (lambda (x) (kill-new x))
+				  (completion-all-sorted-completions) )))
 
 (defun ivy-dired ()
   (interactive)
   (fd-ivy-dired-project)
   (ivy-exit-with-action (lambda (_)
 			  (pop-to-buffer
-			  "*Fd*"))))
+			    "*Fd*"))))
 
 (map!
   :leader

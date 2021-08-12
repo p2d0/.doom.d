@@ -11,17 +11,13 @@
 (package! fd-dired :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer" :branch "master"))
 (package! dap-mode)
-(package! deadgrep)
 (package! string-inflection)
 (package! org-attach-screenshot)
+
 (unpin! org-roam)
-;; (package! websocket)
-;;(package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
-;; (package! fennel-mode :recipe (:host github :repo "emacsmirror/fennel-mode"))
-;; (package! csharp-mode :recipe (:branch "master"))
-;; (package! company-tabnine)
-;; (package! slime)
+
 (package! ssh-deploy :recipe (:branch "master"))
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

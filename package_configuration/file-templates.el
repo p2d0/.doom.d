@@ -30,6 +30,7 @@
   '("Form\\.tsx$" :trigger "__Form.tsx" :mode typescript-tsx-mode)
   '("CommandHandler\\.cs$" :trigger "__CommandHandler.cs" :mode csharp-mode)
   '("CommandResult\\.cs$" :trigger "__CommandResult.cs" :mode csharp-mode)
+  '("\\.service$" :trigger "systemd_service" :mode fundamental-mode)
   '("EntityTypeConfiguration\\.cs$" :trigger "__EntityTypeConfiguration.cs" :mode csharp-mode)
   '("Test\\.cs$" :trigger "__Test.cs" :mode csharp-mode)
   )

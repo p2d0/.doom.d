@@ -38,28 +38,12 @@
 
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 
-(defconst jest-error-match "at.+?(\\(.+?\\):\\([0-9]+\\):\\([0-9]+\\)")
-
-(eval-after-load 'compile
-  (lambda ()
-    (dolist
-      (regexp
-	`((jest-error
-	    ,jest-error-match
-	    1 2 3
-	    )))
-      (add-to-list 'compilation-error-regexp-alist-alist regexp)
-      (add-to-list 'compilation-error-regexp-alist (car regexp)))))
-
-
 (setq doom-localleader-key ",")
-
-(setq org-directory "~/Dropbox/org/")
-
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type nil)
+
 ;; Disable show paren mode
 (show-paren-mode nil)
 
@@ -83,15 +67,9 @@
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
 (mapc 'load (seq-filter (lambda (str) (not (s-contains? "disabled_" str) )) (file-expand-wildcards "~/.doom.d/packages/*/*.el")))
 (mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
-(setq org-startup-folded nil)
-(setq org-hide-block-startup t)
 
-(setq org-roam-graph-viewer "brave")
 
-(if (file-directory-p "~/Dropbox/org")
-  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
 
-(setq org-image-actual-width nil)
 
 ;; patch to emacs@28.0.50
 ;; https://www.reddit.com/r/emacs/comments/kqd9wi/changes_in_emacshead2828050_break_many_packages/
