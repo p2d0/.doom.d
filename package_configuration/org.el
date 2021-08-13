@@ -13,4 +13,18 @@
 
 (setq org-agenda-window-setup 'reorganize-frame)
 
-;; (setq org-image-actual-width nil)
+;; (setq org-image-actual-width nil);; Modified version of contrib/lisp/org-man.el; see
+;; (http://orgmode.org/manual/Adding-hyperlink-types.html#Adding-hyperlink-types)
+
+(defun org-info-store-link ()
+  "Store a link to an info page."
+  (interactive)
+  (when (memq major-mode '(Info-mode))
+    ;; This is a info page, we do make this link
+    (let* ((page (org-info-get-page-name))
+           (link (concat "info:" page))
+           (description (format "Infopage for %s" page)))
+      (org-store-link-props
+       :type "info"
+       :link link
+       :description description))))
