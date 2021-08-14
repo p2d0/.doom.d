@@ -12,6 +12,7 @@
 (push 'org-habit org-modules)
 
 (setq org-agenda-window-setup 'reorganize-frame)
+(setq org-startup-with-inline-images t)
 
 (setq org-image-actual-width nil);; Modified version of contrib/lisp/org-man.el; see
 ;; (http://orgmode.org/manual/Adding-hyperlink-types.html#Adding-hyperlink-types)
@@ -29,8 +30,12 @@
        :type "info"
        :link link
        :description description))))
+(setq org-hide-emphasis-markers t)
 
 (setq-default prettify-symbols-alist '(("#+begin_src" . "λ")
 					("#+end_src" . "λ")
+					("#+attr_html: :width" . "⭤")
+					("#+title:" . "➹")
+					("#+filetags:" . "₮")
 					))
 (add-hook 'org-mode-hook 'prettify-symbols-mode)
