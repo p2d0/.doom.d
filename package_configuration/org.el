@@ -13,8 +13,9 @@
 
 (setq org-agenda-window-setup 'reorganize-frame)
 
-;; (setq org-image-actual-width nil);; Modified version of contrib/lisp/org-man.el; see
+(setq org-image-actual-width nil);; Modified version of contrib/lisp/org-man.el; see
 ;; (http://orgmode.org/manual/Adding-hyperlink-types.html#Adding-hyperlink-types)
+;; (setq org-image-actual-width 400)
 
 (defun org-info-store-link ()
   "Store a link to an info page."
@@ -28,3 +29,8 @@
        :type "info"
        :link link
        :description description))))
+
+(setq-default prettify-symbols-alist '(("#+begin_src" . "λ")
+					("#+end_src" . "λ")
+					))
+(add-hook 'org-mode-hook 'prettify-symbols-mode)
