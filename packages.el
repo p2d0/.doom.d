@@ -10,11 +10,15 @@
 (package! evil-snipe :disable t)
 (package! fd-dired :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer" :branch "master"))
+(package! with-simulated-input)
 (package! dap-mode)
 (package! string-inflection)
 (package! org-attach-screenshot)
 
 (unpin! org-roam)
+(unpin! ox-hugo)
+(package! websocket)
+(package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 
 (package! ssh-deploy :recipe (:branch "master"))
 

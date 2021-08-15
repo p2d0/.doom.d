@@ -37,5 +37,5 @@
 					("#+attr_html: :width" . "⭤")
 					("#+title:" . "➹")
 					("#+filetags:" . "₮")
-					))
+					("->" . "➔")))
 (add-hook 'org-mode-hook 'prettify-symbols-mode)

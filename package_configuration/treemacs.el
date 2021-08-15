@@ -25,7 +25,14 @@
 
 (map!
   :map treemacs-mode-map
-  "og" #'treemacs-visit-node-in-guake)
+  "og" #'treemacs-visit-node-in-guake
+  )
+
+(map!
+  :map evil-treemacs-state-map
+  "H" #'treemacs-root-up
+  "L" #'treemacs-root-down
+  )
 
 
 
@@ -33,8 +40,9 @@
   (treemacs-git-mode -1)
   (map!
     :map treemacs-mode-map
+    "M-H" nil
+    "M-L" nil
     :localleader
     "o" #'treemacs-display-current-project-exclusively)
-
   )
 (setq treemacs-read-string-input 'from-minibuffer)

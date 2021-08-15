@@ -26,7 +26,7 @@
  :map emacs-lisp-mode-map
  :localleader
  :desc "Test"
- "t" #'test-simple-run)
+ "tt" #'ert)
 
 (map!
   "C-c C-c" #'string-inflection-lower-camelcase
