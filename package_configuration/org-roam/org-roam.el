@@ -36,12 +36,12 @@
 
 (add-to-list 'org-hugo-tag-processing-functions 'roam-export/get-tags)
 
+(setq org-hugo-auto-set-lastmod t)
+(setq org-export-with-date t)
+(setq org-export-with-broken-links t)
 
 (defun roam-export/export (&rest args)
   (when (org-roam-file-p)
-    (setq org-hugo-base-dir "~/.dump")
-    (setq org-hugo-section "braindump")
-    (setq org-export-with-broken-links t)
     (org-hugo-export-to-md)))
 
 (add-hook 'org-mode-hook
@@ -52,9 +52,6 @@
 (defun publish-dir-org ()
   "Publish all org files in a directory"
   (interactive)
-  (setq org-hugo-base-dir "~/.dump")
-  (setq org-hugo-section "braindump")
-  (setq org-export-with-broken-links t)
   (dolist (file (file-expand-wildcards "*.org"))
     (with-current-buffer
       (find-file-noselect file)
