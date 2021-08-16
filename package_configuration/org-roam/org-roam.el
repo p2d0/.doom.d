@@ -3,6 +3,8 @@
 (setq org-roam-graph-viewer "brave")
 (setq org-roam-graph-executable "neato")
 
+(require 'ox-hugo)
+
 (defun roam-export--concat-outline (outline)
   (--reduce (concat acc " -> " it) outline))
 
@@ -23,9 +25,29 @@
       (seq-each 'roam-export--insert-backlink backlinks)
       ) )
   )
+
 (add-hook 'org-export-before-processing-hook #'roam-export/insert-backlinks)
 
-(require 'org-id)
+
+(defun roam-export/get-tags (tag-list info)
+  (if (org-roam-buffer-p)
+    (append tag-list (seq-map #'downcase (org-roam-node-tags (org-roam-node-at-point) )))))
+
+
+(add-to-list 'org-hugo-tag-processing-functions 'roam-export/get-tags)
+
+
+(defun roam-export/export (&rest args)
+  (when (org-roam-file-p)
+    (setq org-hugo-base-dir "~/.dump")
+    (setq org-hugo-section "braindump")
+    (setq org-export-with-broken-links t)
+    (org-hugo-export-to-md)))
+
+(add-hook 'org-mode-hook
+  (lambda ()
+    (add-hook 'after-save-hook #'roam-export/export nil t)))
+
 
 (defun publish-dir-org ()
   "Publish all org files in a directory"
@@ -36,7 +58,6 @@
   (dolist (file (file-expand-wildcards "*.org"))
     (with-current-buffer
       (find-file-noselect file)
-      (org-hugo-export-to-md)
-      (message file))))
+      (org-hugo-export-to-md))))
 
 ;; Export

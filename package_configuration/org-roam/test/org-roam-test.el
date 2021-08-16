@@ -19,9 +19,14 @@
 
 (ert-deftest test-exporting-automatically ()
   (with-current-buffer (find-file-noselect "~/Dropbox/org/roam/20210809144731-tdd_the_bad_parts_matt_parker.org" )
-    (publish-dir-org)
+    ;; (publish-dir-org)
     ;; (prin1 (seq-length (file-expand-wildcards "*.org") ) )
     ))
+
+(ert-deftest test-getting-tags ()
+  (with-current-buffer (find-file-noselect "~/Dropbox/org/roam/20210810192401-deep_work.org" )
+    (should (= (seq-length '("fjsdklfj")) 1))
+    (should (equal (list "kek" "book") (roam-export/get-tags (list "kek") "info")))))
 
 ;; (ert-deftest ert-test-record-backtrace ()
 ;;   (let ((test (make-ert-test :body (lambda () (ert-fail "foo")))))
