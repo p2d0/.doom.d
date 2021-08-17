@@ -47,6 +47,10 @@
 ;; Disable show paren mode
 (show-paren-mode nil)
 
+(defun open-hygen-dir ()
+  (interactive)
+  (dired "~/my-hygen-templates/_templates/hygen"))
+
 
 ;; VSYNC rendering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
@@ -60,6 +64,7 @@
 
 (setq indent-tabs-mode t)
 (load! "map.el")
+(load! "guake.el")
 (load! "ssh.el" nil t)
 (load! "util.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/overrides/*.el"))
