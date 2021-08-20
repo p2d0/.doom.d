@@ -57,4 +57,10 @@
       (find-file-noselect file)
       (org-hugo-export-to-md))))
 
+(push '("y" "youtube" plain "%?"
+	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+		   "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]")
+	 :unnarrowed t
+	 ) org-roam-capture-templates)
+
 ;; Export
