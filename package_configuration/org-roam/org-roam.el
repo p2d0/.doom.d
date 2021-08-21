@@ -63,4 +63,10 @@
 	 :unnarrowed t
 	 ) org-roam-capture-templates)
 
+(push '("b" "book" plain "%?"
+	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+		   "#+title: ${title}\n#+filetags: :Book:\n")
+	 :unnarrowed t
+	 ) org-roam-capture-templates)
+
 ;; Export
