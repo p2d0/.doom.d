@@ -24,12 +24,12 @@
   (when (memq major-mode '(Info-mode))
     ;; This is a info page, we do make this link
     (let* ((page (org-info-get-page-name))
-           (link (concat "info:" page))
-           (description (format "Infopage for %s" page)))
+	    (link (concat "info:" page))
+	    (description (format "Infopage for %s" page)))
       (org-store-link-props
-       :type "info"
-       :link link
-       :description description))))
+	:type "info"
+	:link link
+	:description description))))
 (setq org-hide-emphasis-markers t)
 
 (setq-default prettify-symbols-alist '(("#+begin_src" . "λ")
@@ -38,4 +38,20 @@
 					("#+title:" . "➹")
 					("#+filetags:" . "₮")
 					("->" . "➔")))
+
+(setq org-todo-keywords '((sequence  "UNFINISHED(u)" "TODO(t)" "PROJ(p)" "LOOP(r)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "|" "DONE(d)" "KILL(k)")
+			   (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
+			   (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")) )
+
+(setq org-todo-keyword-faces '(("[-]" . +org-todo-active)
+				("UNFINISHED(u)" . +org-todo-active)
+				("STRT" . +org-todo-active)
+				("[?]" . +org-todo-onhold)
+				("WAIT" . +org-todo-onhold)
+				("HOLD" . +org-todo-onhold)
+				("PROJ" . +org-todo-project)
+				("NO" . +org-todo-cancel)
+				("KILL" . +org-todo-cancel)))
+
+
 (add-hook 'org-mode-hook 'prettify-symbols-mode)

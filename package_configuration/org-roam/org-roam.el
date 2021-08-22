@@ -63,9 +63,9 @@
 	 :unnarrowed t
 	 ) org-roam-capture-templates)
 
-(push '("b" "book" plain "%?"
+(push '("b" "book" plain "* 🚀 The Book in 3 Sentences\n1. \n\n* ☘ How the Book Changed Me\n+ \n\n* ✍ My Top 3 Quotes\n\n* 📒 Summary + Notes\n%?"
 	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-		   "#+title: ${title}\n#+filetags: :Book:\n* 🚀 The Book in 3 Sentences\n1. \n\n* ☘️ How the Book Changed Me\n+ \n\n* ✍️ My Top 3 Quotes\n* 📒 Summary + Notes")
+		   "#+title: ${title}\n#+filetags: :Book:\n")
 	 :unnarrowed t
 	 ) org-roam-capture-templates)
 
