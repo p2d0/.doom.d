@@ -65,7 +65,7 @@
 
 (push '("b" "book" plain "%?"
 	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-		   "#+title: ${title}\n#+filetags: :Book:\n")
+		   "#+title: ${title}\n#+filetags: :Book:\n* 🚀 The Book in 3 Sentences\n1. \n\n* ☘️ How the Book Changed Me\n+ \n\n* ✍️ My Top 3 Quotes\n* 📒 Summary + Notes")
 	 :unnarrowed t
 	 ) org-roam-capture-templates)
 
