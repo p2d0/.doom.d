@@ -13,6 +13,7 @@
 
 (setq org-agenda-window-setup 'reorganize-frame)
 (setq org-startup-with-inline-images t)
+(setq org-export-preserve-breaks t)
 
 (setq org-image-actual-width nil);; Modified version of contrib/lisp/org-man.el; see
 ;; (http://orgmode.org/manual/Adding-hyperlink-types.html#Adding-hyperlink-types)
