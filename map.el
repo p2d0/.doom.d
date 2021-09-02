@@ -22,11 +22,17 @@
   :leader
   "pR" #'projectile-replace)
 
+(after! python
+  (map!
+    :map python-mode-map
+    :localleader
+    "tt" #'python-pytest
+    ))
 (map!
- :map emacs-lisp-mode-map
- :localleader
- :desc "Test"
- "tt" #'ert)
+  :map emacs-lisp-mode-map
+  :localleader
+  :desc "Test"
+  "tt" #'ert)
 
 (map!
   "C-c C-c" #'string-inflection-lower-camelcase
@@ -34,12 +40,12 @@
   "C-c C-a" #'string-inflection-all-cycle)
 
 (map!
- :leader
- :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
- "`" nil)
+  :leader
+  :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
+  "`" nil)
 
 (map!
- :desc "Run Hygen..."
+  :desc "Run Hygen..."
   (:leader
     (:prefix "ph"
       "h" #'hygen/run-project
@@ -51,19 +57,19 @@
     "a" #'treemacs-run-hygen-on-directory))
 
 (map!
- :desc "Run Hygen Global..."
+  :desc "Run Hygen Global..."
   (:leader
     (:prefix "gh"
       "h" #'hygen/run-global
       "o" #'hygen/run-global-in-folder)))
 
 (map!
- :map evil-normal-state-map
- "gs" #'avy-goto-char)
+  :map evil-normal-state-map
+  "gs" #'avy-goto-char)
 
 (map!
- :map evil-visual-state-map
- "gs" #'avy-goto-char)
+  :map evil-visual-state-map
+  "gs" #'avy-goto-char)
 (map!
   :leader
   :desc "Git time machine"
@@ -76,7 +82,7 @@
   "ediff the current `init.el' with the example in doom-emacs-dir"
   (interactive)
   (ediff-files (concat doom-private-dir "init.el")
-               (concat doom-emacs-dir "init.example.el")))
+    (concat doom-emacs-dir "init.example.el")))
 
 (define-key! help-map
   "di"   #'doom/ediff-init-and-example
