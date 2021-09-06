@@ -38,6 +38,12 @@
 
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 
+(defun adb-logcat ()
+  (interactive)
+  (start-process "*adb-logcat*" "*adb-logcat*" "/bin/sh" "-c" "adb logcat cz.zdenekhorak.mibandtools:I *:S")
+  (pop-to-buffer "*adb-logcat*")
+  (buffer-disable-undo))
+
 (setq doom-localleader-key ",")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
