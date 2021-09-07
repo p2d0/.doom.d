@@ -13,7 +13,9 @@
 (map!
   :v "R" #'evil-multiedit-toggle-or-restrict-region
   (:leader
-    "se" #'evil-multiedit-match-and-next-and-state)
+    "se" #'evil-multiedit-match-and-next-and-state
+    "sa" #'evil-multiedit-match-all
+    )
   (:map evil-multiedit-state-map
     "C-n" #'evil-multiedit-next
     "C-p" #'evil-multiedit-prev
