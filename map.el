@@ -28,6 +28,7 @@
     :localleader
     "tt" #'python-pytest
     ))
+
 (map!
   :map emacs-lisp-mode-map
   :localleader

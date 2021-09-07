@@ -5,7 +5,7 @@
 ;; on the command line, then restart Emacs for the changes to take effect -- or
 ;; use 'M-x doom/reload'.
 
-(package! evil-iedit-state)
+;; (package! evil-iedit-state)
 (package! hercules)
 (package! evil-snipe :disable t)
 (package! fd-dired :disable t)
