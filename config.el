@@ -38,6 +38,12 @@
 
 (setq doom-font (font-spec :family "Fira Code" :size 15))
 
+(after! rng-loc
+  (add-to-list 'rng-schema-locating-files "~/.doom.d/schemas/schemas.xml")
+  )
+
+
+
 (defun adb-logcat ()
   (interactive)
   (start-process "*adb-logcat*" "*adb-logcat*" "/bin/sh" "-c" "adb logcat cz.zdenekhorak.mibandtools:I *:S")
