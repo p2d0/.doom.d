@@ -2,6 +2,7 @@
 
 
 (setq org-directory "~/Dropbox/org/")
+(setq org-roam-directory "~/Dropbox/org/roam/")
 
 (if (file-directory-p org-directory)
   (setq org-agenda-files (directory-files-recursively org-directory "\\.org$")))
