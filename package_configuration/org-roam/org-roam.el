@@ -63,6 +63,12 @@
 	 :unnarrowed t
 	 ) org-roam-capture-templates)
 
+(push '("p" "private" plain "%?"
+	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}_private.org"
+		   "#+title: ${title}\n")
+	 :unnarrowed t
+	 ) org-roam-capture-templates)
+
 (push '("b" "book" plain "* 🚀 The Book in 3 Sentences\n1. \n\n* ☘ How the Book Changed Me\n+ \n\n* ✍ My Top 3 Quotes\n\n* 📒 Summary + Notes\n%?"
 	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 		   "#+title: ${title}\n#+filetags: :Book:\n")
