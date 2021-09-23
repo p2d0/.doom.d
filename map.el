@@ -30,12 +30,6 @@
     ))
 
 (map!
-  :map emacs-lisp-mode-map
-  :localleader
-  :desc "Test"
-  "tt" #'ert)
-
-(map!
   "C-c C-c" #'string-inflection-lower-camelcase
   "C-c C-l" #'string-inflection-lisp
   "C-c C-a" #'string-inflection-all-cycle)

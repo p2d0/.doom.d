@@ -55,5 +55,8 @@
 				("NO" . +org-todo-cancel)
 				("KILL" . +org-todo-cancel)))
 
+(setq  org-agenda-custom-commands '(("n" "Agenda only todo.org" agenda "" ((org-agenda-files '("~/Dropbox/org/todo.org")))) ))
+
+
 
 (add-hook 'org-mode-hook 'prettify-symbols-mode)
