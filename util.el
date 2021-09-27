@@ -4,8 +4,7 @@
   (if (f-dir? path)
     path
     (file-name-directory
-      path) ))
-
+      path)))
 
 (defun new-systemd-user-service ()
   (interactive)

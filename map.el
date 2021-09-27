@@ -26,8 +26,7 @@
   (map!
     :map python-mode-map
     :localleader
-    "tt" #'python-pytest
-    ))
+    "tt" #'python-pytest))
 
 (map!
   "C-c C-c" #'string-inflection-lower-camelcase
@@ -65,11 +64,11 @@
 (map!
   :map evil-visual-state-map
   "gs" #'avy-goto-char)
+
 (map!
   :leader
   :desc "Git time machine"
-  "gt" #'git-timemachine
-  )
+  "gt" #'git-timemachine)
 
 (map! :v "s" #'evil-surround-region)
 
@@ -80,5 +79,4 @@
     (concat doom-emacs-dir "init.example.el")))
 
 (define-key! help-map
-  "di"   #'doom/ediff-init-and-example
-  )
+  "di"   #'doom/ediff-init-and-example)

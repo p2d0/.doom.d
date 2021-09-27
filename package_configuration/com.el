@@ -2,9 +2,9 @@
 
 
 (set-popup-rule! "^\\*ttyUSB0" :side 'bottom :size 0.25)
-(require 'eshell)
 (defun start-com ()
   (interactive)
+	(require 'eshell)
   (let ((process-name "COM USB")
 	 (process-buffer "*ttyUSB0*"))
     (when (buffer-live-p (get-buffer process-buffer))
