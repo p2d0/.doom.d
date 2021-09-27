@@ -70,19 +70,6 @@
 
 (setq require-final-newline nil)
 
-(set-popup-rule! "^\\*ttyUSB0" :side 'bottom :size 0.2)
-
-(defun start-com ()
-  (interactive)
-  (let ((process-name "COM USB")
-	 (process-buffer "*ttyUSB0*"))
-    (when (buffer-live-p (get-buffer process-buffer))
-      (kill-buffer process-buffer))
-    (start-process process-name process-buffer "com" "/dev/ttyUSB0" "115200")
-    (display-buffer process-buffer)
-    (with-current-buffer process-buffer
-      (goto-char (point-min)))
-    )
 
 
 (setq which-key-idle-delay 0.3)
