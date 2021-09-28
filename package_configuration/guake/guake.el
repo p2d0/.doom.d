@@ -1,5 +1,6 @@
 ;;; guake.el -*- lexical-binding: t; -*-
 
+
 (defun guake-open (path)
   (start-process "" nil "guake" "--show" "-n"
     (concat "--rename-tab=" path)
@@ -39,5 +40,4 @@
 
 (map!
   :map treemacs-mode-map
-  "og" #'treemacs-visit-node-in-guake
-  )
+  "og" #'treemacs-visit-node-in-guake)

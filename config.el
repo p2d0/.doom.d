@@ -72,14 +72,17 @@
 (setq company-idle-delay 0.5)
 
 (setq indent-tabs-mode t)
+
 (load! "map.el")
 (load! "ssh.el" nil t)
 (load! "util.el")
-(mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*.el"))
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
-(require 's)
-(mapc 'load (seq-filter (lambda (str) (not (s-contains? "disabled_" str) )) (file-expand-wildcards "~/.doom.d/packages/*/*.el")))
-(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
+
+;; (require 's)
+;; (mapc 'load (seq-filter (lambda (str) (not (s-contains? "disabled_" str) )) (file-expand-wildcards "~/.doom.d/packages/*/*.el")))
+
+(after! yasnippet
+	(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el")))
 
 
 
