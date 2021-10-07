@@ -18,6 +18,14 @@
 
 (setq iedit-toggle-key-default nil)
 
+;; (map!
+;; 	:leader
+;; 	"SPC" #'consult-find)
+
+(map!
+	:leader
+	"c=" #'+format/region-or-buffer)
+
 (map!
   :leader
   "pR" #'projectile-replace)

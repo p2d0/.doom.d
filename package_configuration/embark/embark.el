@@ -8,3 +8,6 @@
 
 (map! :map embark-file-map
   "g" #'embark-guake)
+
+(map! :map embark-region-map
+	"f" #'consult-find)
