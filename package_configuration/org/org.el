@@ -3,6 +3,7 @@
 
 (setq org-directory "~/Dropbox/org/")
 (setq org-roam-directory "~/Dropbox/org/roam/")
+(set-popup-rule! "^\\*Org Agenda" :size 16)
 
 (after! org
 	(if (file-directory-p org-directory)
@@ -13,7 +14,7 @@
 
 	(push 'org-habit org-modules)
 
-	(setq org-agenda-window-setup 'reorganize-frame)
+	;; (setq org-agenda-window-setup 'reorganize-frame)
 	(setq org-startup-with-inline-images t)
 	(setq org-export-preserve-breaks t)
 
