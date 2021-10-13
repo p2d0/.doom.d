@@ -37,7 +37,10 @@
 (after! hygen
   (setq hygen/template-dir (s-concat (expand-file-name doom-private-dir) "hygen_templates/_templates")))
 
-(setq doom-font (font-spec :family "Fira Code" :size 15))
+(setq doom-font (font-spec :family "Fantasque Sans Mono" :size 16))
+(setq doom-themes-treemacs-enable-variable-pitch nil)
+;; Fira Code
+;; Fantasque Sans Mono
 
 (after! rng-loc
   (add-to-list 'rng-schema-locating-files "~/.doom.d/schemas/schemas.xml"))
@@ -71,7 +74,7 @@
 (setq company-tooltip-idle-delay 0.3)
 (setq company-idle-delay 0.5)
 
-(setq indent-tabs-mode t)
+;; (setq indent-tabs-mode t)
 
 (load! "map.el")
 (load! "ssh.el" nil t)

@@ -39,9 +39,10 @@
 	(setq-default prettify-symbols-alist '(("#+begin_src" . "λ")
 																					("#+end_src" . "λ")
 																					("#+attr_html: :width" . "⭤")
-																					("#+title:" . "➹")
+																					;; ("#+title:" . "➹")
 																					("#+filetags:" . "₮")
-																					("->" . "➔")))
+																					;; ("->" . "➔")
+																					))
 
 	(setq org-todo-keywords '((sequence  "TODO(t)" "UNFINISHED(u)" "PROJ(p)" "LOOP(r)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "|" "DONE(d)" "KILL(k)")
 														 (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
