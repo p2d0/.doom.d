@@ -81,9 +81,6 @@
 (load! "util.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
 
-;; (require 's)
-;; (mapc 'load (seq-filter (lambda (str) (not (s-contains? "disabled_" str) )) (file-expand-wildcards "~/.doom.d/packages/*/*.el")))
-
 (after! yasnippet
 	(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el")))
 

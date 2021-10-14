@@ -16,6 +16,10 @@
 (package! org-attach-screenshot)
 (package! company-fish :recipe (:host github :repo "Patriot720/company-fish" :branch "master"))
 (package! font-lock-ext)
+(package! todokata
+  :recipe (:local-repo "packages/todokata"
+           :build (:not compile)))
+
 
 (unpin! org-roam)
 (unpin! ox-hugo)
