@@ -6,6 +6,6 @@
 		"`" #'+popup/toggle
 		"bp" #'+popup/buffers
 		"~" #'+popup/restore)
-	"C-`" #'+popup/buffer
+		"C-`" #'+popup/buffer
 
 	)

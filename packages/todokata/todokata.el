@@ -21,10 +21,12 @@
 ;;; Code:
 
 
-(defun todokata--display (items)
+(defun todokata--display (&optional items)
   (with-current-buffer (get-buffer-create "*todokata*")
-    (--each items
-      (insert it "\n"))))
+    ;; (read-only-mode)
+    (when items
+      (--each items
+        (insert it "\n")) )))
 
 (defun todokata--toggle ()
   (if (s-contains? "[x]" (thing-at-point 'line))
@@ -35,8 +37,7 @@
     (progn
       (re-search-forward "\\[ \\]")
       (delete-region (match-beginning 0) (match-end 0))
-      (insert "[x]")
-      )))
+      (insert "[x]"))))
 
 (defun todokata--insert ()
   (message "INSERTING")
@@ -48,8 +49,7 @@
     (prin1 (s-contains? "[" (thing-at-point 'line)))
     (if (s-contains? "[" (thing-at-point 'line))
 	(todokata--toggle)
-      (todokata--insert)
-      )))
+      (todokata--insert))))
 
 
 (provide 'todokata)

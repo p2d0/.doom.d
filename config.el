@@ -1,7 +1,7 @@
 ;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 (setq user-full-name "Andrew Cerkin"
-  user-mail-address "cerkin-3@yandex.ru")
+	user-mail-address "cerkin-3@yandex.ru")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -21,12 +21,12 @@
 ;; `load-theme' function. This is the default:
 
 (use-package doom-themes
-  :custom-face
-  (font-lock-comment-face ((t (:foreground "red"))))
-  ;; (lsp-face-highlight-read ((t (:foreground "red" :background nil))))
-  :config
-  (setq doom-themes-enable-bold nil)
-  (load-theme 'doom-dracula t))
+	:custom-face
+	(font-lock-comment-face ((t (:foreground "red"))))
+	;; (lsp-face-highlight-read ((t (:foreground "red" :background nil))))
+	:config
+	(setq doom-themes-enable-bold nil)
+	(load-theme 'doom-dracula t))
 
 (setq buttercup-color nil)
 ;; doom-dracula
@@ -35,21 +35,23 @@
 ;; sanityinc-tomorrow-eighties
 
 (after! hygen
-  (setq hygen/template-dir (s-concat (expand-file-name doom-private-dir) "hygen_templates/_templates")))
+	(setq hygen/template-dir (s-concat (expand-file-name doom-private-dir) "hygen_templates/_templates")))
 
-(setq doom-font (font-spec :family "Fantasque Sans Mono" :size 16))
+(setq doom-font (font-spec :family "JetBrains Mono" :weight 'medium :size 14))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
+
 ;; Fira Code
 ;; Fantasque Sans Mono
+;; JetBrains Mono
 
 (after! rng-loc
-  (add-to-list 'rng-schema-locating-files "~/.doom.d/schemas/schemas.xml"))
+	(add-to-list 'rng-schema-locating-files "~/.doom.d/schemas/schemas.xml"))
 
 (defun adb-logcat ()
-  (interactive)
-  (start-process "*adb-logcat*" "*adb-logcat*" "/bin/sh" "-c" "adb logcat cz.zdenekhorak.mibandtools:I *:S")
-  (pop-to-buffer "*adb-logcat*")
-  (buffer-disable-undo))
+	(interactive)
+	(start-process "*adb-logcat*" "*adb-logcat*" "/bin/sh" "-c" "adb logcat cz.zdenekhorak.mibandtools:I *:S")
+	(pop-to-buffer "*adb-logcat*")
+	(buffer-disable-undo))
 
 (setq doom-localleader-key ",")
 
@@ -61,12 +63,18 @@
 (show-paren-mode nil)
 
 (defun open-hygen-dir ()
-  (interactive)
-  (dired "~/my-hygen-templates/_templates/hygen"))
+	(interactive)
+	(dired "~/my-hygen-templates/_templates/hygen"))
 
 
 ;; VSYNC rendering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+(defun org-roam-everywhere ()
+	(interactive)
+	(org-roam-capture))
+
+(defun encode-buffer ()
+	(interactive))
 
 (setq require-final-newline nil)
 
@@ -123,15 +131,15 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  )
+	;; custom-set-variables was added by Custom.
+	;; If you edit it by hand, you could mess it up, so be careful.
+	;; Your init file should contain only one such instance.
+	;; If there is more than one, they won't work right.
+	)
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+	;; custom-set-faces was added by Custom.
+	;; If you edit it by hand, you could mess it up, so be careful.
+	;; Your init file should contain only one such instance.
+	;; If there is more than one, they won't work right.
 
-  '(web-mode-block-face ((t nil))))
+	'(web-mode-block-face ((t nil))))

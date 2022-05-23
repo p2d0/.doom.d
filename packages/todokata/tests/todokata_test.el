@@ -19,4 +19,9 @@
       (todokata--mark-done)
 			(expect (thing-at-point 'line) :to-equal "[ ] Item2\n")
       (todokata--mark-done)
-      (expect (thing-at-point 'line) :to-equal "[x] Item2\n"))))
+      (expect (thing-at-point 'line) :to-equal "[x] Item2\n")))
+	(it "Should be able to add to-do items"
+
+		)
+	)
+

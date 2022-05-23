@@ -45,11 +45,13 @@
 																					))
 
 	(setq org-todo-keywords '((sequence  "TODO(t)" "UNFINISHED(u)" "PROJ(p)" "LOOP(r)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "|" "DONE(d)" "KILL(k)")
+														 (sequence "QUESTIONABLE(q)")
 														 (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
 														 (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")) )
 
 	(setq org-todo-keyword-faces '(("[-]" . +org-todo-active)
 																	("UNFINISHED(u)" . +org-todo-active)
+																	("QUESTIONABLE" . +org-todo-project)
 																	("STRT" . +org-todo-active)
 																	("[?]" . +org-todo-onhold)
 																	("WAIT" . +org-todo-onhold)

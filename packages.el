@@ -19,6 +19,10 @@
 (package! todokata
   :recipe (:local-repo "packages/todokata"
            :build (:not compile)))
+(package! reverse-im)
+(package! consult-taskrunner
+	:recipe (:local-repo "packages/consult-taskrunner"
+						:build (:not compile)))
 
 
 (unpin! org-roam)

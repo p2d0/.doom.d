@@ -17,6 +17,10 @@
     "M-H" nil
     "M-L" nil
     :localleader
-    "o" #'treemacs-display-current-project-exclusively))
+    "o" #'treemacs-display-current-project-exclusively)
+	(defadvice! +treemacs--follow-project (&optional _)
+		:filter-args #'treemacs--follow-project
+		'("")
+		))
 
 (setq treemacs-read-string-input 'from-minibuffer)

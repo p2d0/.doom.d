@@ -6,6 +6,7 @@
   "C-k" #'evil-paste-pop)
 
 (hercules-def
- :show-funs '(evil-paste-after evil-paste-before)
- :keymap 'custom-paste-map
- :transient t)
+	:show-funs '(evil-paste-after evil-paste-before)
+	:keymap 'custom-paste-map
+	:transient t)
+

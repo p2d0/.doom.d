@@ -16,12 +16,15 @@
     "se" #'evil-multiedit-match-and-next-and-state
     "sa" #'evil-multiedit-match-all
     )
-  (:map evil-multiedit-state-map
+  (:map evil-multiedit-mode-map
     "C-n" #'evil-multiedit-next
     "C-p" #'evil-multiedit-prev
     "C-j" #'evil-multiedit-match-and-next
+    (:n "L" #'iedit-restrict-current-line )
+    (:n "K" #'evil-multiedit-match-and-prev)
+    (:n "J" #'evil-multiedit-match-and-next)
     "C-k" #'evil-multiedit-match-and-prev
-    "F" #'iedit-restrict-function
-    "S" #'evil-multiedit--substitute
+    (:n "F" #'iedit-restrict-function)
+    (:n "S" #'evil-multiedit--change-line)
     )
   )
