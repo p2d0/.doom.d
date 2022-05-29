@@ -2,9 +2,7 @@
 
 
 (defun guake-open (path)
-  (start-process "" nil "guake" "--show" "-n"
-    (concat "--rename-tab=" path)
-    (concat "--execute-command=cd '" path "'")  ) )
+	(start-process "" nil "guake" "--show" "-n" path ) )
 
 
 (defun treemacs-visit-node-in-guake ()
