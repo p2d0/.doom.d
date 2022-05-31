@@ -21,7 +21,7 @@
 	(,dap-ui--sessions-buffer . ((side . right) (slot . 3) (window-width . 0.20)))
 	(,dap-ui--breakpoints-buffer . ((side . left) (slot . 2) (window-width . ,treemacs-width)))
 	(,dap-ui--debug-window-buffer . ((side . bottom) (slot . 3) (window-width . 0.20)))
-	(,dap-ui--repl-buffer . ((side . bottom) (slot . 1) (window-height . 0.25)))))
+	(,dap-ui--repl-buffer . ((side . bottom) (slot . 0) (window-height . 0.25)))))
 (setq dap-auto-configure-features '(sessions repl locals expressions))
 (dap-register-debug-template
   "Php Debug appointments"
@@ -92,6 +92,7 @@ consequently where to show the `posframe'."
 
   (setq! dap-tooltip-echo-area t)
   (set-popup-rule! "^\\*dap-mouse\\*" :side 'bottom :size 0.3 :select 1)
+  (set-popup-rule! "^\\*dap-ui-repl\\*" :side 'bottom :size 0.3 :select 1)
 
   ;; (add-hook 'dap-tooltip-mode-hook
   ;;     (lambda ()

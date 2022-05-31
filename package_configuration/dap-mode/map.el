@@ -11,6 +11,7 @@
 	"dn" #'dap-next
 	"de" #'dap-ui-expressions-add
 	"dc" #'dap-continue
+	"dQ" #'dap-disconnect
   )
 
 (map!
