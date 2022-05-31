@@ -2,6 +2,7 @@
 
 
 (map! :leader "/" #'+default/search-project)
+(map! :leader "ww" #'ace-window)
 
 ;; Expand variants
 (global-set-key (kbd "M-/") 'hippie-expand)
