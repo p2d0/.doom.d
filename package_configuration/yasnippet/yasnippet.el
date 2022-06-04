@@ -3,5 +3,5 @@
 (yas-minor-mode-on)
 
 ;; TODO fix
-;; (add-hook 'yas-after-exit-snippet-hook
-;;   (lambda () (evil-indent (point-min) (point-max))))
+(add-hook 'yas-after-exit-snippet-hook
+  (lambda () (indent-buffer)))
