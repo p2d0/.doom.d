@@ -82,7 +82,7 @@
 (setq company-tooltip-idle-delay 0.3)
 (setq company-idle-delay 0.5)
 
-;; (setq indent-tabs-mode t)
+(setq indent-tabs-mode t)
 
 (load! "map.el")
 (load! "ssh.el" nil t)
