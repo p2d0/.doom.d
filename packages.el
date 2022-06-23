@@ -24,6 +24,8 @@
 	:recipe (:local-repo "packages/consult-taskrunner"
 						:build (:not compile)))
 
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 (unpin! org-roam)
 (unpin! ox-hugo)
