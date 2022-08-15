@@ -6,8 +6,8 @@
 (set-popup-rule! "^\\*Org Agenda" :size 16)
 
 (after! org
-	(if (file-directory-p org-directory)
-		(setq org-agenda-files (directory-files-recursively org-directory "\\.org$")))
+	;; (if (file-directory-p org-directory)
+	;; 	(setq org-agenda-files (directory-files-recursively org-directory "\\.org$")))
 
 	;; (setq org-startup-folded nil)
 	;; (setq org-hide-block-startup t)
