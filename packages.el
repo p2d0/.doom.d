@@ -9,6 +9,7 @@
 (package! groovy-mode)
 (package! hercules)
 (package! evil-snipe :disable t)
+(package! org-pomodoro)
 ;; (package! fd-dired :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer" :branch "master"))
 (package! with-simulated-input)
