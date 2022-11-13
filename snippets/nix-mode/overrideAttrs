@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: Override attrs
+# key:
+# --
+(oldAttrs: rec {
+${1:pname = "$1"
+version = "$2";
+src = fetchFromGitHub {
+owner = "dccsillag";
+repo = "picom";
+rev = "implement-window-animations";
+sha256 = "sha256-crCwRJd859DCIC0pEerpDqdX2j8ZrNAzVaSSB3mTPN8=";}
+$0
+};
+}

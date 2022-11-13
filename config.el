@@ -82,6 +82,13 @@
 (setq company-tooltip-idle-delay 0.3)
 (setq company-idle-delay 0.5)
 
+(defun insert-iso-date () (interactive)
+	(insert (shell-command-to-string "echo -n $(date +\"%Y-%m-%dT%H:%M:%S%z\")")))
+
+;; TODO fix in nixos
+(setq browse-url-browser-function 'browse-url-generic
+          browse-url-generic-program "brave")
+
 (setq indent-tabs-mode t)
 
 (load! "map.el")
@@ -92,21 +99,21 @@
 (after! yasnippet
 	(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el")))
 
-(defun my-tab ()
-  (interactive)
-  (or (copilot-accept-completion)
-      (company-indent-or-complete-common nil)))
+;; (defun my-tab ()
+;;   (interactive)
+;;   (or (copilot-accept-completion)
+;;       (company-indent-or-complete-common nil)))
 
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
-         ("C-<tab>" . 'copilot-accept-completion-by-word)
-         :map company-active-map
-         ("<tab>" . 'my-tab)
-         ("TAB" . 'my-tab)
-         :map company-mode-map
-         ("<tab>" . 'my-tab)
-         ("TAB" . 'my-tab)))
+;; (use-package! copilot
+;;   :hook (prog-mode . copilot-mode)
+;;   :bind (("C-TAB" . 'copilot-accept-completion-by-word)
+;;          ("C-<tab>" . 'copilot-accept-completion-by-word)
+;;          :map company-active-map
+;;          ("<tab>" . 'my-tab)
+;;          ("TAB" . 'my-tab)
+;;          :map company-mode-map
+;;          ("<tab>" . 'my-tab)
+;;          ("TAB" . 'my-tab)))
 
 
 ;; patch to emacs@28.0.50

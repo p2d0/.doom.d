@@ -45,9 +45,9 @@
     (when (org-roam-file-p)
       (org-hugo-export-to-md)))
 
-  (add-hook 'org-mode-hook
-  	(lambda ()
-  		(add-hook 'after-save-hook #'roam-export/export nil t)))
+  ;; (add-hook 'org-mode-hook
+  ;; 	(lambda ()
+  ;; 		(add-hook 'after-save-hook #'roam-export/export nil t)))
 
 
   (defun publish-dir-org ()

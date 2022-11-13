@@ -6,6 +6,7 @@
 ;; use 'M-x doom/reload'.
 
 ;; (package! evil-iedit-state)
+(package! groovy-mode)
 (package! hercules)
 (package! evil-snipe :disable t)
 ;; (package! fd-dired :disable t)
@@ -16,19 +17,21 @@
 (package! org-attach-screenshot)
 (package! company-fish :recipe (:host github :repo "Patriot720/company-fish" :branch "master"))
 (package! font-lock-ext)
-(package! todokata
-  :recipe (:local-repo "packages/todokata"
-           :build (:not compile)))
+;; (package! todokata
+;;   :recipe (:local-repo "packages/todokata"
+;;            :build (:not compile)))
 (package! reverse-im)
-(package! consult-taskrunner
-	:recipe (:local-repo "packages/consult-taskrunner"
-						:build (:not compile)))
+;; (package! consult-taskrunner
+;; 	:recipe (:local-repo "packages/consult-taskrunner"
+;; 						:build (:not compile)))
 
-(package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+;; (package! copilot
+;;   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 (unpin! org-roam)
 (unpin! ox-hugo)
+(unpin! nix-mode)
+
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 
