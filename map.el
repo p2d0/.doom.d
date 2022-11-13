@@ -5,6 +5,10 @@
 (map! :leader "ww" #'ace-window)
 (map! :leader "od" #'dired-jump)
 
+(map!
+	:map dired-mode-map
+	:n "q" nil)
+
 ;; Expand variants
 (global-set-key (kbd "M-/") 'hippie-expand)
 ;; (global-set-key (kbd "M-/") 'evil-complete-next)

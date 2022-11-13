@@ -28,6 +28,9 @@
 	(setq doom-themes-enable-bold nil)
 	(load-theme 'doom-dracula t))
 
+(after! recentf
+	(setq recentf-max-saved-items 1000))
+
 (setq buttercup-color nil)
 ;; doom-dracula
 ;; doom-one
@@ -114,7 +117,6 @@
 ;;          :map company-mode-map
 ;;          ("<tab>" . 'my-tab)
 ;;          ("TAB" . 'my-tab)))
-
 
 ;; patch to emacs@28.0.50
 ;; https://www.reddit.com/r/emacs/comments/kqd9wi/changes_in_emacshead2828050_break_many_packages/

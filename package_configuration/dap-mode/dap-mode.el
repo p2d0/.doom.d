@@ -28,7 +28,7 @@
   (list :type "php"
 	:request "launch"
 	:name "Php Debug"
-	:pathMappings (ht ("/var/www/html" "/mnt/md126/favoka2/prestashop_data/prestashop"))
+	:pathMappings (ht ("/var/www/html" "/mnt/md127/favoka2/prestashop_data/prestashop"))
 	:sourceMaps t)))
 
 ;; TODO fix tooltip

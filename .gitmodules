@@ -1,6 +1,3 @@
-[submodule "fennel-mode"]
-	path = packages/disabled_fennel-mode
-	url = git@gitlab.com:technomancy/fennel-mode.git
 [submodule "hygen_templates"]
 	path = hygen_templates
 	url = https://github.com/Patriot720/my-hygen-templates.git
