@@ -1,6 +1,6 @@
 [submodule "hygen_templates"]
 	path = hygen_templates
-	url = https://github.com/Patriot720/my-hygen-templates.git
+	url = git@github.com:p2d0/my-hygen-templates.git
 [submodule "consult-taskrunner"]
 	path = packages/consult-taskrunner
-	url = https://github.com/Patriot720/consult-taskrunner.git
+	url = git@github.com:p2d0/consult-taskrunner.git
