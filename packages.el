@@ -22,9 +22,11 @@
 ;;   :recipe (:local-repo "packages/todokata"
 ;;            :build (:not compile)))
 (package! reverse-im)
+(package! skeletor)
 (package! consult-taskrunner
   :recipe (:local-repo "packages/consult-taskrunner"
  	    :build (:not compile)))
+(package! run-command)
 
 ;; (package! copilot
 ;;   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))

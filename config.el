@@ -20,6 +20,8 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
+;; TODO Fix emmet in web mode
+;; Fix comments in tpl mode
 (use-package doom-themes
 	:custom-face
 	(font-lock-comment-face ((t (:foreground "red"))))
@@ -30,6 +32,7 @@
 
 (after! recentf
 	(setq recentf-max-saved-items 1000))
+
 
 (setq buttercup-color nil)
 ;; doom-dracula
@@ -90,7 +93,7 @@
 
 ;; TODO fix in nixos
 (setq browse-url-browser-function 'browse-url-generic
-          browse-url-generic-program "brave")
+  browse-url-generic-program "brave")
 
 (setq indent-tabs-mode t)
 

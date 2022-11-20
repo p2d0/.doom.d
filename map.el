@@ -31,11 +31,6 @@
 ;; 	:leader
 ;; 	"SPC" #'consult-find)
 
-(map!
-	:leader
-	"cc" #'consult-taskrunner
-	"cC" #'consult-taskrunner-rerun-last-task
-	)
 
 (map!
 	:leader
