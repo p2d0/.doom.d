@@ -1,6 +1,5 @@
 # -*- mode: snippet -*-
 # name: Override attrs
-# key:
 # --
 (oldAttrs: rec {
 ${1:pname = "$1"
