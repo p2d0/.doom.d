@@ -1,14 +1,59 @@
 ;;; editors/.doom.d/package_configuration/skeletor/skeletor.el -*- lexical-binding: t; -*-
 
 (after! skeletor
-	(setq skeletor-completing-read-function #'completing-read-default)
-	(setq skeletor-user-directory "~/.doom.d/skeletor-templates")
-	(skeletor-define-template "test"
-		:title "Test"
-		:no-license? t
-		)
+	(defun skeletor--process-macro-args (args)
+		"Check ARGS are well-formed, then process them into an alist."
+		(-let* (((name . keys) args)
+						 (arg-alist (skeletor--plist-to-alist keys)))
+			(skeletor--validate-macro-arguments name arg-alist)
+			(let-alist arg-alist
+				(list (cons 'constructor-fname (intern (format "skeletor--create-%s" name)))
+					(cons 'title (or .title (s-join " " (-map 's-capitalize (s-split-words name)))))
+					(cons 'name name)
+					(cons 'project-name .project-name)
+					(cons 'use-git? (not .no-git?))
+					(cons 'initialise-fn .initialise)
+					(cons 'before-git (or .before-git 'ignore))
+					(cons 'after-creation (or .after-creation 'ignore))
+					(cons 'create-license? (not .no-license?))
+					(cons 'license-file-name (or .license-file-name "COPYING"))
+					(cons 'default-license-var (intern (format "%s-default-license" name)))
+					(cons 'substitutions (eval .substitutions))
+					(cons 'required-executables (eval .requires-executables))))))
 
+	(defun skeletor--ctor-runtime-spec (spec)
+		"Concatenate the given macro SPEC with values evaluated at runtime."
+		(let ((project-name (or (alist-get 'project-name spec)
+													(skeletor--read-project-name) )))
+			(let-alist spec
+				(-concat (list
+									 (cons 'project-name project-name)
+									 (cons 'project-dir skeletor-project-directory)
+									 (cons 'dest (f-join skeletor-project-directory project-name))
+									 (cons 'skeleton (skeletor--get-named-skeleton .name))
+									 (cons 'license-file
+										 (when .create-license?
+											 (skeletor--read-license "License: " .license-file-name)))
+									 (cons 'repls (-map 'skeletor--eval-substitution
+																	(-concat
+																		skeletor-global-substitutions
+																		(list (cons "__PROJECT-NAME__" project-name)
+																			(cons "__LICENSE-FILE-NAME__" .license-file-name))
+																		.substitutions))))
+					spec)))))
+
+(after! skeletor
+  (add-to-list 'skeletor--legal-keys 'project-name))
+
+(after! skeletor
+	(require 'string-inflection)
+  (setq skeletor-completing-read-function #'completing-read-default)
+  (setq skeletor-user-directory "~/.doom.d/skeletor-templates"))
+
+(after! skeletor
+	(map! :leader "pc" #'skeletor-create-project-at)
 	)
+
 ;; TODO mini templates without specifiying folder name
 ;; TODO hygen
 
@@ -23,3 +68,36 @@
 ;;   ;; Dynamically rebind the project directory.
 ;;   (let ((skeletor-project-directory dir))
 ;;     (skeletor-create-project skeleton)))
+
+(skeletor-define-template "test"
+  :title "Test"
+  :project-name ""
+  :no-license? t
+  :no-git? t
+  )
+(skeletor-define-template "prestashop_controller"
+  :title "Prestashop controller"
+  :project-name "controllers"
+  :substitutions '(
+										("__CONTROLLER-TYPE__" .
+											(lambda ()
+												(setq controller-type (completing-read "Controller type" '("admin" "front")))))
+										("__CONTROLLER-NAME__" .
+											(lambda ()
+												(let* ((controller-name (read-string "Controller name ():")))
+													(if (string-equal controller-type "admin")
+														(concat "Admin"
+															(string-inflection-pascal-case-function controller-name)
+															"Controller")
+														(concat
+															(string-inflection-pascal-case-function controller-name)
+															"ModuleFrontController")))
+												))
+										("__CONTROLLER-EXTEND__" .
+											(lambda ()
+												(if (string-equal controller-type "admin")
+													"ModuleAdminController"
+													"ModuleFrontController")))
+										)
+  :no-license? t
+  :no-git? t)

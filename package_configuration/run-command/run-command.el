@@ -3,7 +3,15 @@
 ;; ls[lulz]
 ;; https://github.com/bard/emacs-run-command/tree/master/examples
 ;; Replacing path
-;; :command-line "ls -al | sed 's/bashrc//'"
+;; :command-line "ls -al | sed 's/bashrc//'" NOTE Doesnt work
+;; (setq directory-abbrev-alist '(("/var/www/html" . "..."))) NOTE Works
+;; DOCKER:
+;; :command-line
+;; (lambda ()
+;;   (setq directory-abbrev-alist '(("/var/www/html" . "...")))
+;;   "...")
+;;  CACHING:
+
 
 (defvar run-command--last nil)
 (defvar run-command-recipe-dir-locals-fn nil)
