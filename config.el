@@ -29,19 +29,34 @@
 	:config
 	(setq doom-themes-enable-bold nil)
 	(load-theme 'doom-dracula t))
+(setq frame-background-mode 'dark)
 
 (after! recentf
 	(setq recentf-max-saved-items 1000))
 
+(defun toggle-day-night-theme (&optional light-or-dark)
+  "Switch between two (day/night) themes, optional argument LIGHT-OR-DARK determines
+   which setting to switch to, otherwise just toggles between."
+  (interactive)
+  ;;; switch to dark/light based on LIGHT-OR-DARK and based on current background
+  ;;; otherwise toggle theme only (do nothing if mismatch)
+  (cond ((or (and (eq light-or-dark :dark) (eq frame-background-mode 'light))
+             (and (not light-or-dark) (eq frame-background-mode 'light)))
+         (setq frame-background-mode 'dark)
+         (load-theme 'doom-dracula t)
+         (re-fontify-buffers))
+        ((or (and (eq light-or-dark :light) (eq frame-background-mode 'dark))
+             (and (not light-or-dark) (eq frame-background-mode 'dark)))
+         (setq frame-background-mode 'light)
+         (load-theme 'doom-one-light t)
+         (re-fontify-buffers))
+        (t (message "Didn't toggle theme, mismatch in arguments."))))
 
 (setq buttercup-color nil)
 ;; doom-dracula
 ;; doom-one
 ;; doom-spacegrey
 ;; sanityinc-tomorrow-eighties
-
-(after! hygen
-	(setq hygen/template-dir (s-concat (expand-file-name doom-private-dir) "hygen_templates/_templates")))
 
 (setq doom-font (font-spec :family "JetBrains Mono" :weight 'medium :size 14))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
@@ -93,7 +108,7 @@
 
 ;; TODO fix in nixos
 (setq browse-url-browser-function 'browse-url-generic
-  browse-url-generic-program "brave")
+  browse-url-generic-program "firefox")
 
 (setq indent-tabs-mode t)
 

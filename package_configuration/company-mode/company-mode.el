@@ -2,5 +2,7 @@
 
 (setq company-lighter nil)
 
-(after! emacs-lisp-mode
-  (set-company-backend! 'company-capf 'company-yasnippet))
+(set-company-backend! 'prog-mode 'company-capf '(:separate company-yasnippet company-tabnine))
+;; (after! emacs-lisp
+;;   (add-to-list 'company-backends 'company-tabnine)
+;;   )

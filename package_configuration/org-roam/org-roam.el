@@ -27,7 +27,7 @@
 				) )
     )
 
-  (add-hook 'org-export-before-processing-hook #'roam-export/insert-backlinks)
+  ;; (add-hook 'org-export-before-processing-hook #'roam-export/insert-backlinks)
 
 
   (defun roam-export/get-tags (tag-list info)
@@ -68,6 +68,13 @@
 					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 										 "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]")
 					 :unnarrowed t
+					 :immediate-finish t
+					 ) org-roam-capture-templates)
+	(push '("a" "article" plain "%?"
+					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+										 "#+title: ${title}\n#+filetags: :Article:\n[[%^{Please insert the article link}][Article link]]")
+					 :unnarrowed t
+					 :immediate-finish t
 					 ) org-roam-capture-templates)
 
   (push '("p" "private" plain "%?"
@@ -80,6 +87,7 @@
 					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 										 "#+title: ${title}\n#+filetags: :Book:\n")
 					 :unnarrowed t
+					 :immediate-finish t
 					 ) org-roam-capture-templates))
 
 ;; Export
