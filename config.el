@@ -20,7 +20,13 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
-;; TODO Fix emmet in web mode
+(setq +light-theme+ 'doom-nord-light)
+(setq +dark-theme+ 'doom-dracula)
+(setq lsp-python-ms-auto-install-server nil)
+(setq lsp-python-ms-executable "/run/current-system/sw/bin/python-language-server")
+
+(load! "configuration/autodarkmode")
+
 ;; Fix comments in tpl mode
 (use-package doom-themes
 	:custom-face
@@ -28,29 +34,13 @@
 	;; (lsp-face-highlight-read ((t (:foreground "red" :background nil))))
 	:config
 	(setq doom-themes-enable-bold nil)
-	(load-theme 'doom-dracula t))
-(setq frame-background-mode 'dark)
+	(if (= (get-color-scheme) 1)
+		(load-theme +dark-theme+ t)
+		(load-theme +light-theme+ t)))
 
+(setq large-file-warning-threshold 500000)
 (after! recentf
 	(setq recentf-max-saved-items 1000))
-
-(defun toggle-day-night-theme (&optional light-or-dark)
-  "Switch between two (day/night) themes, optional argument LIGHT-OR-DARK determines
-   which setting to switch to, otherwise just toggles between."
-  (interactive)
-  ;;; switch to dark/light based on LIGHT-OR-DARK and based on current background
-  ;;; otherwise toggle theme only (do nothing if mismatch)
-  (cond ((or (and (eq light-or-dark :dark) (eq frame-background-mode 'light))
-             (and (not light-or-dark) (eq frame-background-mode 'light)))
-         (setq frame-background-mode 'dark)
-         (load-theme 'doom-dracula t)
-         (re-fontify-buffers))
-        ((or (and (eq light-or-dark :light) (eq frame-background-mode 'dark))
-             (and (not light-or-dark) (eq frame-background-mode 'dark)))
-         (setq frame-background-mode 'light)
-         (load-theme 'doom-one-light t)
-         (re-fontify-buffers))
-        (t (message "Didn't toggle theme, mismatch in arguments."))))
 
 (setq buttercup-color nil)
 ;; doom-dracula
@@ -64,9 +54,7 @@
 ;; Fira Code
 ;; Fantasque Sans Mono
 ;; JetBrains Mono
-
-(after! rng-loc
-	(add-to-list 'rng-schema-locating-files "~/.doom.d/schemas/schemas.xml"))
+(load! "configuration/xml-schemas")
 
 (defun adb-logcat ()
 	(interactive)
@@ -111,6 +99,31 @@
   browse-url-generic-program "firefox")
 
 (setq indent-tabs-mode t)
+;; (while (re-search-forward "foo[ \t]+bar" nil t)
+;;   (replace-match "foobar"))
+
+(defun recalculate-dates ()
+	(interactive)
+	(setq-local current 11)
+	(while (re-search-forward "\(.+\)" nil t)
+		(replace-match (shell-command-to-string  (s-concat "date -d 'now +" (number-to-string current) "days' '+(%d %b)'")))
+		(setq-local current (+ current 11))
+		))
+
+(defun calculate-stuff ()
+	(interactive)
+	(goto-char (point-min))
+	(if (re-search-forward "* Итого.+" nil t)
+		(replace-match ""))
+	(setq-local current 0)
+	(goto-char (point-min))
+	(while (re-search-forward "\\([0-9]+\\)[PР]" nil t)
+		(prin1 (string-to-number (match-string 1) ))
+		(setq-local current (+ current (string-to-number (match-string 1) )))
+		)
+	(goto-char (point-max))
+	(insert (s-concat "* Итого " (number-to-string current) "P")))
+
 
 (load! "map.el")
 (load! "ssh.el" nil t)

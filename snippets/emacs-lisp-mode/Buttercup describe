@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Buttercup describe
+# name: Buttercup describe test
 # key: describe
 # --
 (describe "$1"

@@ -2,6 +2,7 @@
 
 
 (setq org-directory "~/Dropbox/org/")
+(setq org-roam-directory "~/Dropbox/org/roam/")
 (set-popup-rule! "^\\*Org Agenda" :size 16)
 
 (after! org

@@ -6,8 +6,12 @@
 (map! :leader "od" #'dired-jump)
 
 (map!
-	:map dired-mode-map
-	:n "q" nil)
+ :map dired-mode-map
+ :n "q" nil)
+(map!
+ (:map web-mode-map
+  (:i "TAB" #'+web/indent-or-yas-or-emmet-expand))
+ )
 
 ;; Expand variants
 (global-set-key (kbd "M-/") 'hippie-expand)
@@ -33,61 +37,70 @@
 
 
 (map!
-	:leader
-	"bB" #'+vertico/switch-workspace-buffer
-	"bb" #'consult-buffer
-	)
+ :leader
+ "bB" #'+vertico/switch-workspace-buffer
+ "bb" #'consult-buffer
+ )
 
 (map!
-	:leader
-	"c=" #'+format/region-or-buffer)
+ :leader
+ "c=" #'+format/region-or-buffer)
 
 
 (map!
-	:leader
-	"pR" #'projectile-replace)
+ :leader
+ "pR" #'projectile-replace)
 
 (after! python
-	(map!
-		:map python-mode-map
-		:localleader
-		"tt" #'python-pytest))
+  (map!
+   :map python-mode-map
+   :localleader
+   "tt" #'python-pytest))
 
 (map!
-	"C-c C-c" #'string-inflection-lower-camelcase
-	"C-c C-l" #'string-inflection-lisp
-	"C-c C-a" #'string-inflection-all-cycle)
+ "C-c C-c" #'string-inflection-lower-camelcase
+ "C-c C-l" #'string-inflection-lisp
+ "C-c C-a" #'string-inflection-all-cycle)
 
 (map!
-	:leader
-	:desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
-	"`" nil)
+ :leader
+ :desc "Switch to previous buffer" "TAB" #'evil-switch-to-windows-last-buffer
+ "`" nil)
 
 (map!
-	:map treemacs-mode-map
-	(:localleader
-		"a" #'treemacs-run-hygen-on-directory))
+ :map treemacs-mode-map
+ (:localleader
+  "a" #'treemacs-run-hygen-on-directory))
 
 (map!
-	:map evil-normal-state-map
-	"gs" #'avy-goto-char)
+ :map evil-normal-state-map
+ "gs" #'avy-goto-char)
 
 (map!
-	:map evil-visual-state-map
-	"gs" #'avy-goto-char)
+ :map evil-visual-state-map
+ "gs" #'avy-goto-char)
 
 (map!
-	:leader
-	:desc "Git time machine"
-	"gt" #'git-timemachine)
+ :leader
+ :desc "Git time machine"
+ "gt" #'git-timemachine)
 
 (map! :v "s" #'evil-surround-region)
 
 (defun doom/ediff-init-and-example ()
-	"ediff the current `init.el' with the example in doom-emacs-dir"
-	(interactive)
-	(ediff-files (concat doom-private-dir "init.el")
-		(concat doom-emacs-dir "templates/init.example.el")))
+  "ediff the current `init.el' with the example in doom-emacs-dir"
+  (interactive)
+  (ediff-files (concat doom-private-dir "init.el")
+	       (concat doom-emacs-dir "templates/init.example.el")))
 
 (define-key! help-map
-	"di"   #'doom/ediff-init-and-example)
+  "di"   #'doom/ediff-init-and-example)
+
+(defun doom/search-lsp-folders ()
+  (interactive)
+  (let ((default-directory (completing-read "Select lsp directory" (lsp-session-folders (lsp-session)))))
+    (+default/search-cwd)
+    )
+  )
+
+(map! :leader "sl" #'doom/search-lsp-folders)

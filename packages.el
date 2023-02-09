@@ -5,6 +5,7 @@
 ;; on the command line, then restart Emacs for the changes to take effect -- or
 ;; use 'M-x doom/reload'.
 ;; (package! evil-iedit-state)
+(package! emacsql-sqlite3)
 (package! groovy-mode)
 (package! hercules)
 (package! evil-snipe :disable t)
@@ -20,13 +21,15 @@
 ;; (package! todokata
 ;;   :recipe (:local-repo "packages/todokata"
 ;;            :build (:not compile)))
+(package! vlf)
 (package! reverse-im)
 (package! skeletor)
 ;; (package! consult-taskrunner
 ;;   :recipe (:local-repo "packages/consult-taskrunner"
 ;;  	    :build (:not compile)))
 (package! run-command)
-(package! company-tabnine :recipe (:host github :repo "TommyX12/company-tabnine"))
+;; (package! company-tabnine :recipe (:host github :repo "TommyX12/company-tabnine"))
+(package! logview)
 ;; (package! copilot
 ;;   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
