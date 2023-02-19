@@ -5,3 +5,7 @@
 ;; TODO fix
 (add-hook 'yas-after-exit-snippet-hook
   (lambda () (indent-buffer)))
+
+(after! yasnippet
+	(setq yas-wrap-around-region t)
+	)
