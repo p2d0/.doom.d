@@ -30,6 +30,7 @@
 (package! run-command)
 ;; (package! company-tabnine :recipe (:host github :repo "TommyX12/company-tabnine"))
 (package! logview)
+(package! gimpmode)
 ;; (package! copilot
 ;;   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
