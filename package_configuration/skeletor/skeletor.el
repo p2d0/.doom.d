@@ -77,6 +77,12 @@
 ;;     (skeletor-create-project skeleton)))
 
 (after! skeletor
+(skeletor-define-template "python-mini-project"
+		:title "Python mini project"
+		:no-license? t)
+	(skeletor-define-template "python-script-with-tests"
+		:title "Python script with tests"
+		:no-license? t)
   (skeletor-define-template "prestashop_upgrade"
     :title "prestashop upgrade version template"
     :project-name "upgrade"
