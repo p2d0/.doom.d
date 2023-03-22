@@ -48,7 +48,8 @@
 ;; doom-spacegrey
 ;; sanityinc-tomorrow-eighties
 
-(setq doom-font (font-spec :family "JetBrains Mono" :weight 'medium :size 14))
+(setq doom-font (font-spec :family "JetBrains Mono" :weight 'semibold
+									:size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 
 ;; Fira Code

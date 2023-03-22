@@ -40,6 +40,7 @@
        ;; neotree           ; a project drawer, like NERDTree for vim
        ;; ophints           ; highlight the region an operation acts on
        (popup +all +defaults +hacks)   ; tame sudden yet inevitable temporary windows
+	     ligatures
        ;; ( pretty-code +iosevka)       ; ligatures or substitute text with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler

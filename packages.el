@@ -30,7 +30,22 @@
 (package! run-command)
 ;; (package! company-tabnine :recipe (:host github :repo "TommyX12/company-tabnine"))
 (package! logview)
-(package! gimpmode)
+
+(package! openai
+  :recipe (:host github :repo "emacs-openai/openai" :files ("dist" "*.el")))
+(package! gptel
+  :recipe (:host github :repo "karthink/gptel" :files ("dist" "*.el")))
+
+;; (package! chatgpt
+;;   :recipe (:host github :repo "emacs-openai/chatgpt" :files ("dist" "*.el")))
+
+;; (package! chatgpt
+;;   :recipe (:local-repo "packages/ChatGPT.el"
+;;  	    :build (:not compile)))
+
+;; (package! chatgpt
+;;   :recipe (:host github :repo "joshcho/ChatGPT.el" :files ("dist" "*.el")))
+;; (package! gimpmode)
 ;; (package! copilot
 ;;   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
