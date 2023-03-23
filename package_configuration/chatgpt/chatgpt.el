@@ -54,3 +54,34 @@
 		"C-K" #'erase-buffer
 		(:n "C-<return>" #'gptel-send)
 		(:i "C-<return>" #'gptel-send)))
+
+(after! gptel
+	(defun gptel--insert-response (response info)
+		"Insert RESPONSE from ChatGPT into the gptel buffer.
+
+INFO is a plist containing information relevant to this buffer.
+See `gptel--url-get-response' for details."
+		(let* ((content-str (plist-get response :content))
+						(status-str  (plist-get response :status))
+						(gptel-buffer (plist-get info :gptel-buffer))
+						(response-pt (plist-get info :insert-marker)))
+			(if content-str
+        (with-current-buffer gptel-buffer
+          (setq content-str (gptel--transform-response
+															content-str gptel-buffer))
+          (save-excursion
+            (put-text-property 0 (length content-str) 'gptel 'response content-str)
+            (message "Querying ChatGPT... done.")
+            (goto-char response-pt)
+            (unless (bobp) (insert-before-markers-and-inherit "\n------------------------\nAnswer:\n"))
+            (if gptel-playback
+              (gptel--playback gptel-buffer content-str response-pt)
+              (let ((p (point)))
+                (insert content-str)
+                (pulse-momentary-highlight-region p (point)))
+              (when gptel-mode
+                (insert "\n\n" gptel-prompt-string)
+                (gptel--update-header-line " Ready" 'success))))
+          (goto-char (- (point) 2)))
+				(gptel--update-header-line
+					(format " Response Error: %s" status-str) 'error)))))

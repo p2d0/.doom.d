@@ -30,6 +30,7 @@
 (package! run-command)
 ;; (package! company-tabnine :recipe (:host github :repo "TommyX12/company-tabnine"))
 (package! logview)
+(package! eaf)
 
 (package! openai
   :recipe (:host github :repo "emacs-openai/openai" :files ("dist" "*.el")))
@@ -53,12 +54,24 @@
 (unpin! ox-hugo)
 (unpin! nix-mode)
 
+(package! cape)
+
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 
 (package! ssh-deploy :recipe (:branch "master"))
 (package! dts-mode)
 (package! benchmark-init)
+(package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
+
+;; EAF
+;; (package! ctable :recipe (:host github :repo "kiwanami/emacs-ctable"))
+;; (package! deferred :recipe (:host github :repo "kiwanami/emacs-deferred"))
+;; (package! epc :recipe (:host github :repo "kiwanami/emacs-epc")))
+;; (package! eaf :recipe (:host github
+;;                              :repo "manateelazycat/emacs-application-framework"
+;;                              :files ("*.el" "*.py" "app" "core")
+;;                              :build (:not compile))
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
                                         ;(package! some-package)
