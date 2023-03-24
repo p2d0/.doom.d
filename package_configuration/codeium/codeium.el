@@ -14,7 +14,6 @@
 															(setq-local completion-at-point-functions (cons (car completion-at-point-functions) (cons #'codeium-completion-at-point (cdr completion-at-point-functions))))
 															)))
 
-
 ;; (after! codeium
 ;; (setq codeium-api-enabled
 ;;   (lambda (api)
