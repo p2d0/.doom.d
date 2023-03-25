@@ -4,6 +4,8 @@
   (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive))
 (after! emacs-lisp-mode
   (advice-add #'elisp-completion-at-point :around #'cape-wrap-nonexclusive))
+(after! fish-mode
+  (advice-add #'cape-keyword :around #'cape-wrap-nonexclusive))
 (after! python-mode
   (advice-add #'python-completion-at-point :around #'cape-wrap-nonexclusive))
 
