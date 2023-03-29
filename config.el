@@ -2,7 +2,6 @@
 
 (setq user-full-name "Andrew Cerkin"
 	user-mail-address "cerkin-3@yandex.ru")
-
 ;; (use-package! eaf
 ;;   :load-path "~/.elisp/emacs-application-framework"
 ;;   :init
