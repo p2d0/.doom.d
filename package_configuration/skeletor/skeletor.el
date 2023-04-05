@@ -77,7 +77,7 @@
 ;;     (skeletor-create-project skeleton)))
 
 (after! skeletor
-(skeletor-define-template "python-mini-project"
+	(skeletor-define-template "python-mini-project"
 		:title "Python mini project"
 		:no-license? t)
 	(skeletor-define-template "python-script-with-tests"

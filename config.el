@@ -131,13 +131,10 @@
 ;; Disable show paren mode
 (show-paren-mode nil)
 
-(defun open-hygen-dir ()
-	(interactive)
-	(dired "~/my-hygen-templates/_templates/hygen"))
-
 
 ;; VSYNC rendering
-(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+
 (defun org-roam-everywhere ()
 	(interactive)
 	(org-roam-capture))
@@ -162,27 +159,27 @@
 ;; (while (re-search-forward "foo[ \t]+bar" nil t)
 ;;   (replace-match "foobar"))
 
-(defun recalculate-dates ()
-	(interactive)
-	(setq-local current 11)
-	(while (re-search-forward "\(.+\)" nil t)
-		(replace-match (shell-command-to-string  (s-concat "date -d 'now +" (number-to-string current) "days' '+(%d %b)'")))
-		(setq-local current (+ current 11))
-		))
+;; (defun recalculate-dates ()
+;; 	(interactive)
+;; 	(setq-local current 11)
+;; 	(while (re-search-forward "\(.+\)" nil t)
+;; 		(replace-match (shell-command-to-string  (s-concat "date -d 'now +" (number-to-string current) "days' '+(%d %b)'")))
+;; 		(setq-local current (+ current 11))
+;; 		))
 
-(defun calculate-stuff ()
-	(interactive)
-	(goto-char (point-min))
-	(if (re-search-forward "* Итого.+" nil t)
-		(replace-match ""))
-	(setq-local current 0)
-	(goto-char (point-min))
-	(while (re-search-forward "\\([0-9]+\\)[PР]" nil t)
-		(prin1 (string-to-number (match-string 1) ))
-		(setq-local current (+ current (string-to-number (match-string 1) )))
-		)
-	(goto-char (point-max))
-	(insert (s-concat "* Итого " (number-to-string current) "P")))
+;; (defun calculate-stuff ()
+;; 	(interactive)
+;; 	(goto-char (point-min))
+;; 	(if (re-search-forward "* Итого.+" nil t)
+;; 		(replace-match ""))
+;; 	(setq-local current 0)
+;; 	(goto-char (point-min))
+;; 	(while (re-search-forward "\\([0-9]+\\)[PР]" nil t)
+;; 		(prin1 (string-to-number (match-string 1) ))
+;; 		(setq-local current (+ current (string-to-number (match-string 1) )))
+;; 		)
+;; 	(goto-char (point-max))
+;; 	(insert (s-concat "* Итого " (number-to-string current) "P")))
 
 
 (load! "map.el")

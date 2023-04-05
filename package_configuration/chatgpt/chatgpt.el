@@ -4,15 +4,17 @@
 (set-popup-rule! "*ChatGPT*"
 	:ignore t)
 
-(defvar chatgpt-query-format-string-map
-	'(("doc" . "Please write the documentation for the following function.\n\n%s")
-     ("bug" . "There is a bug in the following function, please help me fix it.\n\n%s")
-     ("understand" . "What is the following?\n\n%s")
-     ("refactor" . "Please refactor the following code.\n\n%s")
-     ("improve" . "Please improve the following.\n\n%s")))
+(after! gptel
+	(defvar chatgpt-query-format-string-map
+		'(("doc" . "Please write the documentation for the following function.\n\n%s")
+			 ("bug" . "There is a bug in the following function, please help me fix it.\n\n%s")
+			 ("understand" . "What is the following?\n\n%s")
+			 ("refactor" . "Please refactor the following code.\n\n%s")
+			 ("improve" . "Please improve the following.\n\n%s")))
 
-(setq gptel-default-mode 'markdown-mode)
-(setq gptel--num-messages-to-send nil)
+	(setq gptel-prompt-string "-> ")
+	(setq gptel-default-mode 'markdown-mode)
+	(setq gptel--num-messages-to-send nil))
 
 (defun chatgpt--get-query-type ()
   "Helper function to get the type of query."
@@ -46,7 +48,6 @@
     (pop-to-buffer buf)))
 
 
-(setq gptel-prompt-string "-> ")
 
 (map! (:leader "sq" #'chatgpt-query
 				"sg" #'gptel)

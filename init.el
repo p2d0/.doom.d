@@ -86,7 +86,7 @@
 
        :tools
        ;;ansible
-        (debugger +lsp +bashdb)          ; FIXME stepping through code, to help you add bugs
+       (debugger +lsp +bashdb)          ; FIXME stepping through code, to help you add bugs
        direnv
        docker
        editorconfig      ; let someone else argue about tabs vs spaces
@@ -102,9 +102,10 @@
        ;;pdf               ; pdf enhancements
        prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
-       taskrunner        ; taskrunner for all your projects
+       ;; taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
+       tree-sitter
        upload            ; map local to remote projects via ssh/ftp
 
        :lang

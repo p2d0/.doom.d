@@ -10,6 +10,7 @@
   (advice-add #'python-completion-at-point :around #'cape-wrap-nonexclusive))
 
 (use-package! codeium
+	:after company
   :hook (doom-first-buffer . codeium-init)
 	:init
 	(add-hook 'prog-mode-hook (lambda ()
