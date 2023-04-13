@@ -84,6 +84,7 @@
 (setq lsp-python-ms-auto-install-server nil)
 (setq lsp-python-ms-executable "/run/current-system/sw/bin/python-language-server")
 
+(load! "use-packages")
 (load! "configuration/autodarkmode")
 
 ;; Fix comments in tpl mode
@@ -106,8 +107,10 @@
 ;; doom-one
 ;; doom-spacegrey
 ;; sanityinc-tomorrow-eighties
+;; (font-spec :family "JetBrains Mono" :weight 'semibold
+;; 									:size 13)
 
-(setq doom-font (font-spec :family "JetBrains Mono" :weight 'semibold
+(setq doom-font (font-spec :family "Fira Code" :weight 'semibold
 									:size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 
@@ -133,7 +136,7 @@
 
 
 ;; VSYNC rendering
-;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (defun org-roam-everywhere ()
 	(interactive)

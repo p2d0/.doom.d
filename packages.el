@@ -16,6 +16,7 @@
 ;; (package! dap-mode)
 (package! string-inflection)
 (package! org-attach-screenshot)
+
 (package! company-fish :recipe (:host github :repo "Patriot720/company-fish" :branch "master"))
 (package! font-lock-ext)
 ;; (package! todokata
@@ -30,12 +31,12 @@
 (package! run-command)
 ;; (package! company-tabnine :recipe (:host github :repo "TommyX12/company-tabnine"))
 (package! logview)
-(package! eaf)
+;; (package! eaf)
 
-(package! openai
-  :recipe (:host github :repo "emacs-openai/openai" :files ("dist" "*.el")))
-(package! gptel
-  :recipe (:host github :repo "karthink/gptel" :files ("dist" "*.el")))
+;; (package! openai
+;;   :recipe (:host github :repo "emacs-openai/openai" :files ("dist" "*.el")))
+;; (package! gptel
+;;   :recipe (:host github :repo "karthink/gptel" :files ("dist" "*.el")))
 
 ;; (package! chatgpt
 ;;   :recipe (:host github :repo "emacs-openai/chatgpt" :files ("dist" "*.el")))

@@ -1,3 +1,5 @@
+;;; editors/.doom.d/package_configuration/which-key/which-key.el -*- lexical-binding: t; -*-
+
 (setq which-key-show-top-level 1)
 (setq which-key-persistent-popup nil)
 
