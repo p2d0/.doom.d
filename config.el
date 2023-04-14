@@ -66,6 +66,15 @@
 		;; NORD
 		(window-divider   ((t (:foreground "#c3d0e1" :background "#c3d0e1"))))
 		(solaire-default-face  ((t (:inherit 'default :background "#c3d0e1" ))))
+		(doom-nano-modeline-evil-emacs-state-face    ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+		(doom-nano-modeline-evil-insert-state-face   ((t (:foreground "#FFFFFF" :background "#FFAB91"))))
+		(doom-nano-modeline-evil-motion-state-face   ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+		(doom-nano-modeline-evil-normal-state-face   ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+		(doom-nano-modeline-evil-operator-state-face ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+		(doom-nano-modeline-evil-replace-state-face  ((t (:foreground "#FFFFFF" :background "#FF6F00"))))
+		(doom-nano-modeline-evil-visual-state-face   ((t (:foreground "#FFFFFF" :background "#673AB7"))))
+		(doom-nano-modeline-inactive-face            ((t (:foreground "#90A4AE" :background "#c3d0e1"))))
+
 		:config
 		(setq doom-themes-enable-bold nil)
 		(load-theme +light-theme+ t)
