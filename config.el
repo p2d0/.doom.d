@@ -73,7 +73,7 @@
 		(doom-nano-modeline-evil-operator-state-face ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
 		(doom-nano-modeline-evil-replace-state-face  ((t (:foreground "#FFFFFF" :background "#FF6F00"))))
 		(doom-nano-modeline-evil-visual-state-face   ((t (:foreground "#FFFFFF" :background "#673AB7"))))
-		(doom-nano-modeline-inactive-face            ((t (:foreground "#90A4AE" :background "#c3d0e1"))))
+		(doom-nano-modeline-inactive-face            ((t (:foreground "#90A4AE" :background "#E5E9F0"))))
 
 		:config
 		(setq doom-themes-enable-bold nil)
@@ -92,7 +92,7 @@
 ;; (font-spec :family "JetBrains Mono" :weight 'semibold
 ;; 									:size 13)
 
-(setq doom-font (font-spec :family "Fira Code" :weight 'semibold
+(setq doom-font (font-spec :family "Fira Code" :weight 'normal
 									:size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 
