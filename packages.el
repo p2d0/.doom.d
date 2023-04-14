@@ -6,6 +6,11 @@
 ;; use 'M-x doom/reload'.
 ;; (package! evil-iedit-state)
 ;; (package! emacsql-sqlite3)
+;; (package! nano-emacs
+;;   :recipe (:host github :repo "rougier/nano-emacs"))
+(package! doom-nano-modeline
+  :recipe (:host github
+  :repo "ronisbr/doom-nano-modeline"))
 (package! groovy-mode)
 ;; (package! hercules)
 (package! evil-snipe :disable t)

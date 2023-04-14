@@ -20,25 +20,56 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
+;; (setq +light-theme+ 'doom-nano-light)
+;; (setq +dark-theme+ 'doom-nano-dark)
+
 (setq +light-theme+ 'doom-nord-light)
 (setq +dark-theme+ 'doom-dracula)
+
 (setq lsp-python-ms-auto-install-server nil)
 (setq lsp-python-ms-executable "/run/current-system/sw/bin/python-language-server")
 
+(load! "nano")
 (load! "use-packages")
 (load! "configuration/autodarkmode")
+;; (solaire-mode t)
+
+(defun solaire-mode-real-buffer-except-treemacs-p ()
+	"Return t if the current buffer is a real (file-visiting) buffer."
+	(or (buffer-file-name (buffer-base-buffer))
+		(string-match "Treemacs" (buffer-name (current-buffer)))))
+
+(after! solaire-mode
+	(setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-except-treemacs-p)
+	)
+
+;; (if (= (get-color-scheme) 1)
+;; 	(load-theme +dark-theme+ t)
+;; 	(load-theme +light-theme+ t))
 
 ;; Fix comments in tpl mode
-(use-package doom-themes
-	:custom-face
-	(font-lock-comment-face ((t (:foreground "red"))))
-	;; (lsp-face-highlight-read ((t (:foreground "red" :background nil))))
-	:config
-	(setq doom-themes-enable-bold nil)
-	(if (= (get-color-scheme) 1)
+(if (= (get-color-scheme) 1)
+	(use-package doom-themes
+		:custom-face
+		(font-lock-comment-face ((t (:foreground "red"))))
+		;; DRACULA
+		(window-divider   ((t (:foreground "#1E2029" :background "#1E2029"))))
+		(solaire-default-face   ((t (:background "#1E2029"))))
+		(internal-border   ((t (:foreground "#1E2029" :background "#1E2029"))))
+		:config
+		(setq doom-themes-enable-bold nil)
 		(load-theme +dark-theme+ t)
-		(load-theme +light-theme+ t))
-	)
+		)
+	(use-package doom-themes
+		:custom-face
+		(font-lock-comment-face ((t (:foreground "red"))))
+		;; NORD
+		(window-divider   ((t (:foreground "#c3d0e1" :background "#c3d0e1"))))
+		(solaire-default-face  ((t (:inherit 'default :background "#c3d0e1" ))))
+		:config
+		(setq doom-themes-enable-bold nil)
+		(load-theme +light-theme+ t)
+		))
 
 (setq large-file-warning-threshold 500000)
 (after! recentf

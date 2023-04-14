@@ -3,7 +3,13 @@
 (use-package! org-attach-screenshot
 	:after org-mode)
 
+;; (use-package! nano
+;; 	:ensure t)
 
+(use-package! doom-nano-modeline
+  :config
+  (doom-nano-modeline-mode 1)
+  (global-hide-mode-line-mode 1))
 ;; TODO only import autoload
 (use-package! benchmark-init
 	:disabled
