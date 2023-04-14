@@ -1,3 +1,4 @@
+;; -*- no-byte-compile: t; -*-
 ;;; lang/hy/config.el -*- lexical-binding: t; -*-
 
 (use-package! hy-mode

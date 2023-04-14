@@ -2,11 +2,11 @@
 
 (after! lsp
   (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive))
-(after! emacs-lisp-mode
+(after! emacs-lisp
   (advice-add #'elisp-completion-at-point :around #'cape-wrap-nonexclusive))
-(after! fish-mode
+(after! fish
   (advice-add #'cape-keyword :around #'cape-wrap-nonexclusive))
-(after! python-mode
+(after! python
   (advice-add #'python-completion-at-point :around #'cape-wrap-nonexclusive))
 
 (use-package! codeium

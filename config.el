@@ -2,6 +2,7 @@
 
 (setq user-full-name "Andrew Cerkin"
 	user-mail-address "cerkin-3@yandex.ru")
+
 ;; (use-package! eaf
 ;;   :load-path "~/.elisp/emacs-application-framework"
 ;;   :init
@@ -96,7 +97,8 @@
 	(setq doom-themes-enable-bold nil)
 	(if (= (get-color-scheme) 1)
 		(load-theme +dark-theme+ t)
-		(load-theme +light-theme+ t)))
+		(load-theme +light-theme+ t))
+	)
 
 (setq large-file-warning-threshold 500000)
 (after! recentf
@@ -136,7 +138,7 @@
 
 
 ;; VSYNC rendering
-(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (defun org-roam-everywhere ()
 	(interactive)
@@ -189,9 +191,10 @@
 (load! "~/Dropbox/emacs/ssh.el" nil t)
 (load! "util.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
+(setq +evil-want-o/O-to-continue-comments nil)
 
-(after! yasnippet
-	(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el")))
+;; (after! yasnippet
+;; 	(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el")))
 
 ;; (defun my-tab ()
 ;;   (interactive)

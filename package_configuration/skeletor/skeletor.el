@@ -3,11 +3,12 @@
 ;; For example you can now create a file with the following template name:
 ;; foo__(alist-get "__PROJECT-NAME__" subs nil nil #'string-equal)__bar
 
-(defun skeletor-sub (variable subs)
-	(alist-get variable subs nil nil #'string-equal))
-
-(after! skeletor
-  (defun skeletor--process-macro-args (args)
+(use-package! skeletor
+	:defer t
+	:config
+	(defun skeletor-sub (variable subs)
+		(alist-get variable subs nil nil #'string-equal))
+	(defun skeletor--process-macro-args (args)
     "Check ARGS are well-formed, then process them into an alist."
     (-let* (((name . keys) args)
 						 (arg-alist (skeletor--plist-to-alist keys)))
@@ -26,8 +27,7 @@
 					(cons 'default-license-var (intern (format "%s-default-license" name)))
 					(cons 'substitutions (eval .substitutions))
 					(cons 'required-executables (eval .requires-executables))))))
-
-  (defun skeletor--ctor-runtime-spec (spec)
+	(defun skeletor--ctor-runtime-spec (spec)
     "Concatenate the given macro SPEC with values evaluated at runtime."
     (let ((project-name (or (alist-get 'project-name spec)
 													(skeletor--read-project-name) )))
@@ -46,20 +46,57 @@
 																		(list (cons "__PROJECT-NAME__" project-name)
 																			(cons "__LICENSE-FILE-NAME__" .license-file-name))
 																		.substitutions))))
-					spec)))))
+					spec))))
 
-(after! skeletor
 	(setq skeletor-python-bin-search-path '("/usr/bin" "~/.nix-profile/bin" "/run/current-system/sw/bin"))
-  (add-to-list 'skeletor--legal-keys 'project-name))
+  (add-to-list 'skeletor--legal-keys 'project-name)
 
-(after! skeletor
-  (require 'string-inflection)
+	(require 'string-inflection)
   (setq skeletor-completing-read-function #'completing-read-default)
-  (setq skeletor-user-directory "~/.doom.d/skeletor-templates"))
+  (setq skeletor-user-directory "~/.doom.d/skeletor-templates")
 
-(after! skeletor
-  (map! :leader "pc" #'skeletor-create-project-at)
-  )
+	(eval
+		'(skeletor-define-template "python-mini-project"
+			 :title "Python mini project"
+			 :no-license? t))
+	(eval '(skeletor-define-template "python-script-with-tests"
+					 :title "Python script with tests"
+					 :no-license? t))
+  (eval '(skeletor-define-template "prestashop_upgrade"
+					 :title "prestashop upgrade version template"
+					 :project-name "upgrade"
+					 :no-license? t
+					 :no-git? t
+					 :substitutions '(("__VERSION__" . (lambda () (read-string "Version in format 1.0.0: "))))))
+  (eval '(skeletor-define-template "prestashop_controller"
+					 :title "Prestashop controller"
+					 :project-name "controllers"
+					 :substitutions
+					 '(("__CONTROLLER-TYPE__" .
+							 (lambda ()
+								 (setq controller-type (completing-read "Controller type: " '("admin" "front")))))
+							("__CONTROLLER-NAME__" .
+								(lambda ()
+									(let* ((controller-name (read-string "Controller name: ")))
+										(if (string-equal controller-type "admin")
+											(concat "Admin"
+												(string-inflection-pascal-case-function controller-name)
+												"Controller")
+											(concat
+												(string-inflection-pascal-case-function controller-name)
+												"ModuleFrontController")))
+									))
+							("__CONTROLLER-EXTEND__" .
+								(lambda ()
+									(if (string-equal controller-type "admin")
+										"ModuleAdminController"
+										"ModuleFrontController"))))
+					 :no-license? t
+					 :no-git? t))
+
+	)
+
+(map! :leader "pc" #'skeletor-create-project-at)
 
 ;; TODO mini templates without specifiying folder name
 ;; TODO hygen
@@ -76,42 +113,3 @@
 ;;   (let ((skeletor-project-directory dir))
 ;;     (skeletor-create-project skeleton)))
 
-(after! skeletor
-	(skeletor-define-template "python-mini-project"
-		:title "Python mini project"
-		:no-license? t)
-	(skeletor-define-template "python-script-with-tests"
-		:title "Python script with tests"
-		:no-license? t)
-  (skeletor-define-template "prestashop_upgrade"
-    :title "prestashop upgrade version template"
-    :project-name "upgrade"
-    :no-license? t
-    :no-git? t
-		:substitutions '(("__VERSION__" . (lambda () (read-string "Version in format 1.0.0: ")))))
-  (skeletor-define-template "prestashop_controller"
-    :title "Prestashop controller"
-    :project-name "controllers"
-    :substitutions
-    '(("__CONTROLLER-TYPE__" .
-				(lambda ()
-					(setq controller-type (completing-read "Controller type: " '("admin" "front")))))
-       ("__CONTROLLER-NAME__" .
-				 (lambda ()
-					 (let* ((controller-name (read-string "Controller name: ")))
-						 (if (string-equal controller-type "admin")
-							 (concat "Admin"
-								 (string-inflection-pascal-case-function controller-name)
-								 "Controller")
-							 (concat
-								 (string-inflection-pascal-case-function controller-name)
-								 "ModuleFrontController")))
-					 ))
-       ("__CONTROLLER-EXTEND__" .
-				 (lambda ()
-					 (if (string-equal controller-type "admin")
-						 "ModuleAdminController"
-						 "ModuleFrontController"))))
-    :no-license? t
-    :no-git? t)
-  )

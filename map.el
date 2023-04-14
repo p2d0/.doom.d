@@ -68,15 +68,18 @@
  "`" nil)
 
 (map!
+	:after treemacs
  :map treemacs-mode-map
  (:localleader
   "a" #'treemacs-run-hygen-on-directory))
 
 (map!
+	:after evil
  :map evil-normal-state-map
  "gs" #'avy-goto-char)
 
 (map!
+ :after evil-states
  :map evil-visual-state-map
  "gs" #'avy-goto-char)
 
@@ -85,22 +88,24 @@
  :desc "Git time machine"
  "gt" #'git-timemachine)
 
-(map! :v "s" #'evil-surround-region)
+(map!
+	:after evil
+	:v "s" #'evil-surround-region)
 
 (defun doom/ediff-init-and-example ()
   "ediff the current `init.el' with the example in doom-emacs-dir"
   (interactive)
-  (ediff-files (concat doom-private-dir "init.el")
+  (ediff-files (concat doom-user-dir "init.el")
 	       (concat doom-emacs-dir "templates/init.example.el")))
 
 (define-key! help-map
   "di"   #'doom/ediff-init-and-example)
 
-(defun doom/search-lsp-folders ()
-  (interactive)
-  (let ((default-directory (completing-read "Select lsp directory" (lsp-session-folders (lsp-session)))))
-    (+default/search-cwd)
-    )
-  )
+;; (defun doom/search-lsp-folders ()
+;;   (interactive)
+;;   (let ((default-directory (completing-read "Select lsp directory" (lsp-session-folders (lsp-session)))))
+;;     (+default/search-cwd)
+;;     )
+;;   )
 
-(map! :leader "sl" #'doom/search-lsp-folders)
+;; (map! :leader "sl" #'doom/search-lsp-folders)

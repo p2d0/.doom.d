@@ -5,10 +5,11 @@
 ;; on the command line, then restart Emacs for the changes to take effect -- or
 ;; use 'M-x doom/reload'.
 ;; (package! evil-iedit-state)
-(package! emacsql-sqlite3)
+;; (package! emacsql-sqlite3)
 (package! groovy-mode)
-(package! hercules)
+;; (package! hercules)
 (package! evil-snipe :disable t)
+;; (package! mail-parse :disable t)
 (package! org-pomodoro)
 ;; (package! fd-dired :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer" :branch "master"))
@@ -16,14 +17,14 @@
 ;; (package! dap-mode)
 (package! string-inflection)
 (package! org-attach-screenshot)
-
+;; (package! smartparens :disable t)
 (package! company-fish :recipe (:host github :repo "Patriot720/company-fish" :branch "master"))
 (package! font-lock-ext)
 ;; (package! todokata
 ;;   :recipe (:local-repo "packages/todokata"
 ;;            :build (:not compile)))
-(package! vlf)
-(package! reverse-im)
+;; (package! vlf)
+(package! reverse-im :disable t)
 (package! skeletor)
 ;; (package! consult-taskrunner
 ;;   :recipe (:local-repo "packages/consult-taskrunner"
