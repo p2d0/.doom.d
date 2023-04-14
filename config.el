@@ -3,66 +3,6 @@
 (setq user-full-name "Andrew Cerkin"
 	user-mail-address "cerkin-3@yandex.ru")
 
-;; (use-package! eaf
-;;   :load-path "~/.elisp/emacs-application-framework"
-;;   :init
-;;   :custom
-;;   (eaf-browser-continue-where-left-off t)
-;;   (eaf-browser-enable-adblocker t)
-;;   (browse-url-browser-function 'eaf-open-browser) ;; Make EAF Browser my default browser
-;;   :config
-;;   (defalias 'browse-web #'eaf-open-browser)
-;;   (require 'eaf-file-manager)
-;;   (require 'eaf-music-player)
-;;   (require 'eaf-image-viewer)
-;;   (require 'eaf-camera)
-;;   (require 'eaf-demo)
-;;   (require 'eaf-airshare)
-;;   (require 'eaf-terminal)
-;;   (require 'eaf-markdown-previewer)
-;;   (require 'eaf-video-player)
-;;   (require 'eaf-vue-demo)
-;;   (require 'eaf-file-sender)
-;;   (require 'eaf-pdf-viewer)
-;;   (require 'eaf-mindmap)
-;;   (require 'eaf-netease-cloud-music)
-;;   (require 'eaf-jupyter)
-;;   (require 'eaf-org-previewer)
-;;   (require 'eaf-system-monitor)
-;;   (require 'eaf-rss-reader)
-;;   (require 'eaf-file-browser)
-;;   (require 'eaf-browser)
-;;   (require 'eaf-org)
-;;   (require 'eaf-mail)
-;;   (require 'eaf-git)
-;;   (when (display-graphic-p)
-;;     (require 'eaf-all-the-icons))
-
-;;   (require 'eaf-evil)
-;; 	(define-key key-translation-map (kbd "SPC")
-;;     (lambda (prompt)
-;;       (if (derived-mode-p 'eaf-mode)
-;;         (pcase eaf--buffer-app-name
-;;           ("browser" (if  eaf-buffer-input-focus
-;;                        (kbd "SPC")
-;;                        (kbd eaf-evil-leader-key)))
-;;           ("pdf-viewer" (kbd eaf-evil-leader-key))
-;;           ("image-viewer" (kbd eaf-evil-leader-key))
-;;           (_  (kbd "SPC")))
-;;         (kbd "SPC"))))
-;;   ;; (define-key key-translation-map (kbd "SPC")
-;;   ;;   (lambda (prompt)
-;;   ;;     (if (derived-mode-p 'eaf-mode)
-;;   ;;         (pcase eaf--buffer-app-name
-;;   ;;           ("browser" (if  (string= (eaf-call-sync "call_function" eaf--buffer-id "is_focus") "True")
-;;   ;;                          (kbd "SPC")
-;;   ;;                        (kbd eaf-evil-leader-key)))
-;;   ;;           ("pdf-viewer" (kbd eaf-evil-leader-key))
-;;   ;;           ("image-viewer" (kbd eaf-evil-leader-key))
-;;   ;;           (_  (kbd "SPC")))
-;;   ;;       (kbd "SPC"))))
-;; 	)
-
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -161,30 +101,6 @@
   browse-url-generic-program "firefox")
 
 (setq indent-tabs-mode t)
-;; (while (re-search-forward "foo[ \t]+bar" nil t)
-;;   (replace-match "foobar"))
-
-;; (defun recalculate-dates ()
-;; 	(interactive)
-;; 	(setq-local current 11)
-;; 	(while (re-search-forward "\(.+\)" nil t)
-;; 		(replace-match (shell-command-to-string  (s-concat "date -d 'now +" (number-to-string current) "days' '+(%d %b)'")))
-;; 		(setq-local current (+ current 11))
-;; 		))
-
-;; (defun calculate-stuff ()
-;; 	(interactive)
-;; 	(goto-char (point-min))
-;; 	(if (re-search-forward "* Итого.+" nil t)
-;; 		(replace-match ""))
-;; 	(setq-local current 0)
-;; 	(goto-char (point-min))
-;; 	(while (re-search-forward "\\([0-9]+\\)[PР]" nil t)
-;; 		(prin1 (string-to-number (match-string 1) ))
-;; 		(setq-local current (+ current (string-to-number (match-string 1) )))
-;; 		)
-;; 	(goto-char (point-max))
-;; 	(insert (s-concat "* Итого " (number-to-string current) "P")))
 
 
 (load! "map.el")
@@ -192,25 +108,6 @@
 (load! "util.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
 (setq +evil-want-o/O-to-continue-comments nil)
-
-;; (after! yasnippet
-;; 	(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el")))
-
-;; (defun my-tab ()
-;;   (interactive)
-;;   (or (copilot-accept-completion)
-;;       (company-indent-or-complete-common nil)))
-
-;; (use-package! copilot
-;;   :hook (prog-mode . copilot-mode)
-;;   :bind (("C-TAB" . 'copilot-accept-completion-by-word)
-;;          ("C-<tab>" . 'copilot-accept-completion-by-word)
-;;          :map company-active-map
-;;          ("<tab>" . 'my-tab)
-;;          ("TAB" . 'my-tab)
-;;          :map company-mode-map
-;;          ("<tab>" . 'my-tab)
-;;          ("TAB" . 'my-tab)))
 
 ;; patch to emacs@28.0.50
 ;; https://www.reddit.com/r/emacs/comments/kqd9wi/changes_in_emacshead2828050_break_many_packages/
