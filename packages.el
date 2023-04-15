@@ -5,7 +5,7 @@
 ;; on the command line, then restart Emacs for the changes to take effect -- or
 ;; use 'M-x doom/reload'.
 ;; (package! evil-iedit-state)
-;; (package! emacsql-sqlite3)
+(package! emacsql-sqlite3)
 ;; (package! nano-emacs
 ;;   :recipe (:host github :repo "rougier/nano-emacs"))
 (package! doom-nano-modeline
