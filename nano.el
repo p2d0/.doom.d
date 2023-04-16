@@ -3,6 +3,7 @@
 (setq default-frame-alist
 	(append '((buffer-predicate . doom-buffer-frame-predicate)
 		 (right-divider-width . 10)
+		 (bottom-divider-width . 10)
 		 (menu-bar-lines . 0)
 		 (tool-bar-lines . 0)
 		 (min-height . 1)
@@ -16,7 +17,8 @@
 	)
 
 (setq window-divider-default-right-width 10)
-(setq window-divider-default-places 'right-only)
+(setq window-divider-default-bottom-width 10)
+(setq window-divider-default-places t)
 (window-divider-mode 1)
 
 ;; No ugly button for checkboxes
