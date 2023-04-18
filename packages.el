@@ -6,6 +6,9 @@
 ;; use 'M-x doom/reload'.
 ;; (package! evil-iedit-state)
 (package! emacsql-sqlite3)
+(package! dired-omit-mode :disable t)
+;; (package! myron-themes :recipe
+;; 	(:host github :repo "neeasade/myron-themes" :files ("*.el" "themes/*.el")))
 ;; (package! nano-emacs
 ;;   :recipe (:host github :repo "rougier/nano-emacs"))
 (package! doom-nano-modeline
