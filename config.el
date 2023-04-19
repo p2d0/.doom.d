@@ -37,7 +37,10 @@
 (defun solaire-mode-real-buffer-except-treemacs-p ()
 	"Return t if the current buffer is a real (file-visiting) buffer."
 	(or (buffer-file-name (buffer-base-buffer))
-		(string-match "Treemacs" (buffer-name (current-buffer)))))
+		(string-match "Treemacs" (buffer-name (current-buffer)))
+		(string-match "*doom*" (buffer-name (current-buffer)))
+		(string-match "magit:" (buffer-name (current-buffer)))
+		))
 
 (after! solaire-mode
 	(setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-except-treemacs-p)
