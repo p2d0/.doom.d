@@ -3,16 +3,15 @@
 (use-package! fish-mode
   :mode ("\\.fish\\'" . fish-mode)
 	:defer t
-	:after flycheck
+	:after company
 	:config
-	;; TODO somehow its slow
 	(setq company-fish-enabled-modes '(fish-mode))
+	(set-company-backend! 'fish-mode 'company-fish 'company-capf 'company-yasnippet)
 	(when (executable-find "fish")
-		(add-to-list 'company-backends 'company-fish)
+		;; (add-to-list 'company-backends 'company-fish)
 		(add-hook 'fish-mode-hook 'company-mode)
 		(add-hook 'shell-mode-hook 'company-mode)
 		(add-hook 'eshell-mode-hook 'company-mode))
-	;; (set-company-backend! 'fish-mode 'company-fish 'company-yasnippet)
 	(eval
 		'(flycheck-define-checker fish
 			 "Fish -n linter"
@@ -26,4 +25,8 @@
 
 
 	(add-to-list 'flycheck-checkers 'fish)
+
+	)
+
+(after! fish-mode
 	)
