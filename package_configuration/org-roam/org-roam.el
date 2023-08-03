@@ -60,7 +60,11 @@
   ;;     (with-current-buffer
 	;; 			(find-file-noselect file)
 	;; 			(org-hugo-export-to-md))))
-
+	(setq org-roam-dailies-capture-templates '(("j" "journal" plain "%?"
+																							 :target (file+head "%<%Y-%m-%d>.org"
+																												 "#+title: %<%Y-%m-%d>\n* Currently trying/Big changes:\n* Table\n|  Time |        | Blood pressure | HeartRate |\n|      |   |                |           |\n* 🍲 Food ate today\n+\n🤺 Activity\n+\n* 📝 Notes")
+																							 :immediate-finish t
+																							 :unnarrowed t)))
 	(setq org-roam-capture-templates '(("d" "default" plain "%?"
 																			 :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 																								 "#+title: ${title}\n")
@@ -94,3 +98,15 @@
 					 ) org-roam-capture-templates))
 
 ;; Export
+;;
+;; :PROPERTIES:
+;; :ID:       84ae1004-f452-4926-b260-154344e379ef
+;; :END:
+;; #+title: 2023-08-03
+;; * Currently trying: Eliminating eggs ([[id:c6ccc52d-1591-4f15-b6b3-636117c7e399][Trigger foods]])
+;; * Table
+;; |  Time |        | Blood pressure | HeartRate |
+;; |-------+--------+----------------+-----------|
+;; | 10:00 | Sleepy | 114/71         |        94 |
+;; |       |        |                |           |
+;; * Notes
