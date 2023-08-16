@@ -62,7 +62,7 @@
 	;; 			(org-hugo-export-to-md))))
 	(setq org-roam-dailies-capture-templates '(("j" "journal" plain "%?"
 																							 :target (file+head "%<%Y-%m-%d>.org"
-																												 "#+title: %<%Y-%m-%d>\n* Currently trying/Big changes:\n*Time i woke up: \n* Table\n|  Time |        | Blood pressure | HeartRate |\n|      |   |                |           |\n* 🍲 Food ate today\n+\n🤺 Activity\n+\n* 📝 Notes")
+																												 "#+title: %<%Y-%m-%d>\n* Currently trying/Big changes:\n* Time i woke up: \n* Table\n|  Time |        | Blood pressure | HeartRate |\n|      |   |                |           |\n* 🍲 Food ate today\n+\n🤺 Activity\n+\n* 📝 Notes")
 																							 :immediate-finish t
 																							 :unnarrowed t)))
 	(setq org-roam-capture-templates '(("d" "default" plain "%?"
