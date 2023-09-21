@@ -1,0 +1,13 @@
+* Currently trying/Big changes:
+**
+* Time i woke up: %^{Time i woke up|9:30}
+* Did i sleep better than yesterday: =%^{Did i sleep better than yesterday?|NO|YES|IDK}=
+* Table
+| Time |   | Blood pressure | HeartRate |
+|      |   |                |           |
+* 🍲 Food ate today
+| Time | Food | Feeling |
+|      |      |         |
+🤺 Activity
++
+* 📝 Notes

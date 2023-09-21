@@ -60,11 +60,12 @@
   ;;     (with-current-buffer
 	;; 			(find-file-noselect file)
 	;; 			(org-hugo-export-to-md))))
-	(setq org-roam-dailies-capture-templates '(("j" "journal" plain "%?"
-																							 :target (file+head "%<%Y-%m-%d>.org"
-																												 "#+title: %<%Y-%m-%d>\n* Currently trying/Big changes:\n* Time i woke up: \n* Table\n|  Time |        | Blood pressure | HeartRate |\n|      |   |                |           |\n* 🍲 Food ate today\n| Time | Food | Feeling |\n| | | |\n🤺 Activity\n+\n* 📝 Notes")
+	(setq daily-template (concat doom-user-dir "package_configuration/org-roam/daily.org"))
+	(setq org-roam-dailies-capture-templates `(("j" "journal" plain "%?\n"
+																							 :if-new (file+head "%<%Y-%m-%d>.org" ,(format "Sleep note\n%%[%s]" daily-template))
 																							 :immediate-finish t
-																							 :unnarrowed t)))
+																							 :unnarrowed t
+																							 )))
 	(setq org-roam-capture-templates '(("d" "default" plain "%?"
 																			 :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 																								 "#+title: ${title}\n")
