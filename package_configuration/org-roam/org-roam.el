@@ -1,11 +1,22 @@
 ;;; package_configuration/org-roam.el -*- lexical-binding: t; -*-
 
+(defun get-text-under-first-heading ()
+	"Return the text under the first heading of type \"Test\"."
+	(interactive)
+	(let* ((data (org-element-parse-buffer)) ; parse the buffer
+					(first-heading (org-element-map data 'headline ; find the first headline
+													 #'identity
+													 nil t)) ; return the first match
+					(text-begin (org-element-property :contents-begin first-heading)) ; get the beginning of the text
+					(text-end (org-element-property :contents-end first-heading))) ; get the end of the text
+		(buffer-substring-no-properties text-begin text-end))) ; return the text as a string
+
 (after! org-roam
 	(setq org-roam-directory (expand-file-name "~/.dropbox-hm/Dropbox/org/roam/"))
 	;; (setq org-roam-db-location "~/Dropbox/org/roam/roam.db")
 	;; (advice-remove 'org-roam-db-query #'+org-roam-try-init-db-a)
-  ;; (setq org-roam-graph-viewer "brave")
-  ;; (setq org-roam-graph-executable "neato")
+	;; (setq org-roam-graph-viewer "brave")
+	;; (setq org-roam-graph-executable "neato")
 
   ;; (require 'ox-hugo)
 
@@ -60,6 +71,13 @@
   ;;     (with-current-buffer
 	;; 			(find-file-noselect file)
 	;; 			(org-hugo-export-to-md))))
+
+	(defun get-last-daily-test-under-first-heading ()
+		(let ((path (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (current-time))) (concat org-roam-directory org-roam-dailies-directory))))
+			(with-current-buffer (find-file-noselect path)
+				(string-trim (get-text-under-first-heading) ))))
+
+
 	(setq daily-template (concat doom-user-dir "package_configuration/org-roam/daily.org"))
 	(setq org-roam-dailies-capture-templates `(("j" "journal" plain "%?\n"
 																							 :if-new (file+head "%<%Y-%m-%d>.org" ,(format "Sleep note\n%%[%s]" daily-template))
