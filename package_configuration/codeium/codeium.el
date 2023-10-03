@@ -1,21 +1,21 @@
 ;;; editors/.doom.d/package_configuration/codeium/codeium.el -*- lexical-binding: t; -*-
 
-(after! lsp
-  (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive))
-(after! emacs-lisp
-  (advice-add #'elisp-completion-at-point :around #'cape-wrap-nonexclusive))
-(after! fish
-  (advice-add #'cape-keyword :around #'cape-wrap-nonexclusive))
-(after! python
-  (advice-add #'python-completion-at-point :around #'cape-wrap-nonexclusive))
+;; (after! lsp
+;;   (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive))
+;; (after! emacs-lisp
+;;   (advice-add #'elisp-completion-at-point :around #'cape-wrap-nonexclusive))
+;; (after! fish
+;;   (advice-add #'cape-keyword :around #'cape-wrap-nonexclusive))
+;; (after! python
+;;   (advice-add #'python-completion-at-point :around #'cape-wrap-nonexclusive))
 
-(use-package! codeium
-	:after company
-  :hook (doom-first-buffer . codeium-init)
-	:init
-	(add-hook 'prog-mode-hook (lambda ()
-															(setq-local completion-at-point-functions (cons (car completion-at-point-functions) (cons #'codeium-completion-at-point (cdr completion-at-point-functions))))
-															)))
+;; (use-package! codeium
+;; 	:after company
+;;   :hook (doom-first-buffer . codeium-init)
+;; 	:init
+;; 	(add-hook 'prog-mode-hook (lambda ()
+;; 															(setq-local completion-at-point-functions (cons (car completion-at-point-functions) (cons #'codeium-completion-at-point (cdr completion-at-point-functions))))
+;; 															)))
 
 ;; (after! codeium
 ;; (setq codeium-api-enabled
