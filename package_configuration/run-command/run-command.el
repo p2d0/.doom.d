@@ -34,6 +34,8 @@
 
 
 (after! run-command
+	(require 'term)
+	;; (setq shell-file-name "/run/current-system/sw/bin/bash")
   (advice-add #'run-command--run :after (lambda (command-spec) (setq run-command--last command-spec)))
   (set-popup-rule! "^.+\\[.+\\]$"
     :size 16
