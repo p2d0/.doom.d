@@ -37,12 +37,13 @@
 ;; (package! consult-taskrunner
 ;;   :recipe (:local-repo "packages/consult-taskrunner"
 ;;  	    :build (:not compile)))
-(package! run-command
-	:recipe (:host github :repo "bard/emacs-run-command" :branch "master"
-						:build (:not compile))
+(package! run-command :pin "84520fe738f3")
+;; (package! emacs-run-command
+;; 	:recipe (:local-repo "packages/emacs-run-command"
+;; 						:build (:not compile)))
 
 	;; :pin "22844ae959ec"
-	)
+	;; )
 ;; (package! company-tabnine :recipe (:host github :repo "TommyX12/company-tabnine"))
 (package! logview)
 ;; (package! eaf)

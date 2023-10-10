@@ -34,7 +34,8 @@
 
 
 (after! run-command
-	(require 'term)
+	;; (require 'term)
+	(setq run-command-default-runner 'run-command-runner-compile)
 	;; (setq shell-file-name "/run/current-system/sw/bin/bash")
   (advice-add #'run-command--run :after (lambda (command-spec) (setq run-command--last command-spec)))
   (set-popup-rule! "^.+\\[.+\\]$"
