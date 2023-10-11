@@ -23,29 +23,37 @@
 
 (load! "run-command-recipe-package-json.el")
 
-; Run a script from the project's package.json file. Supports both npm and yarn.
-; Run package.json scripts END
+                                        ; Run a script from the project's package.json file. Supports both npm and yarn.
+                                        ; Run package.json scripts END
 
 (defun run-command-rerun ()
   (interactive)
   (when run-command--last
     (run-command--run run-command--last)))
 
+(defun docker-example-recipe ()
+  (list
+   (list :command-name "pwd inside docker container"
+	 ;; should return /
+	 ;; but returns my home folder with term
+	 :command-line "pwd"
+	 :working-dir "/docker:example1:/"
+	 )
+   )
+  )
 
 
 (after! run-command
-	;; (require 'term)
-	(setq run-command-default-runner 'run-command-runner-compile)
-	;; (setq shell-file-name "/run/current-system/sw/bin/bash")
+  (require 'term)
+  (setq run-command-default-runner 'run-command-runner-compile)
   (advice-add #'run-command--run :after (lambda (command-spec) (setq run-command--last command-spec)))
   (set-popup-rule! "^.+\\[.+\\]$"
     :size 16
     :quit t)
-  (setq run-command-recipes '(run-command-recipe-dir-locals run-command-recipe-package-json)))
+  (setq run-command-recipes '(run-command-recipe-dir-locals run-command-recipe-package-json docker-example-recipe)))
 
 (map!
-  :leader
-  "cc" #'run-command
-  "cC" #'run-command-rerun
-  )
-
+ :leader
+ "cc" #'run-command
+ "cC" #'run-command-rerun
+ )

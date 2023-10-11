@@ -37,10 +37,11 @@
 ;; (package! consult-taskrunner
 ;;   :recipe (:local-repo "packages/consult-taskrunner"
 ;;  	    :build (:not compile)))
-(package! run-command :pin "84520fe738f3")
-;; (package! emacs-run-command
-;; 	:recipe (:local-repo "packages/emacs-run-command"
-;; 						:build (:not compile)))
+;; (package! run-command :pin "84520fe738f3")
+(package! eat)
+(package! local-run-command
+	:recipe (:local-repo "packages/emacs-run-command"
+						:build (:not compile)))
 
 	;; :pin "22844ae959ec"
 	;; )
