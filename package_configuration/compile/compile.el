@@ -30,3 +30,11 @@
     `(php-compile ,php-error-match 1 2 nil nil)
     )
   )
+
+(after! php-mode
+  (defconst php-other-error-match "^#\\([0-9]+\\) \\([^(:]+\\)(\\([0-9]+\\)):")
+  (add-to-list 'compilation-error-regexp-alist 'php-other-compile)
+  (add-to-list 'compilation-error-regexp-alist-alist
+    `(php-other-compile ,php-other-error-match 2 3 nil nil)
+    )
+  )

@@ -29,31 +29,38 @@
 (defun run-command-rerun ()
   (interactive)
   (when run-command--last
+		(setq-local run-command--rerun t)
     (run-command--run run-command--last)))
 
 (defun docker-example-recipe ()
   (list
-   (list :command-name "pwd inside docker container"
-	 ;; should return /
-	 ;; but returns my home folder with term
-	 :command-line "pwd"
-	 :working-dir "/docker:example1:/"
-	 )
-   )
+    (list :command-name "pwd inside docker container"
+      ;; should return /
+      ;; but returns my home folder with term
+      :command-line "pwd"
+      :working-dir "/docker:example1:/"
+      )
+    )
   )
 
+(defun run-command--cache (orig command-spec)
+	(setq-local cache-variables (plist-get  command-spec :cache-variables))
+  (apply orig (list command-spec))
+  (setq run-command--last command-spec))
 
 (after! run-command
   (require 'term)
   (setq run-command-default-runner 'run-command-runner-compile)
-  (advice-add #'run-command--run :after (lambda (command-spec) (setq run-command--last command-spec)))
+  (advice-add #'run-command--run :around #'run-command--cache
+    )
+  ;; (advice-add #'run-command--run :after (lambda (command-spec) (setq run-command--last command-spec)))
   (set-popup-rule! "^.+\\[.+\\]$"
     :size 16
     :quit t)
-  (setq run-command-recipes '(run-command-recipe-dir-locals run-command-recipe-package-json docker-example-recipe)))
+  (setq run-command-recipes '(run-command-recipe-dir-locals run-command-recipe-package-json)))
 
 (map!
- :leader
- "cc" #'run-command
- "cC" #'run-command-rerun
- )
+  :leader
+  "cc" #'run-command
+  "cC" #'run-command-rerun
+  )
