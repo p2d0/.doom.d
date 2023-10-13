@@ -14,22 +14,22 @@
 
 
 
-;; (after! dap-mode
-;; (setq dap-ui-buffer-configurations
-;;       `((,dap-ui--locals-buffer . ((side . right) (slot . 1) (window-width . 0.20)))
-;; 	(,dap-ui--expressions-buffer . ((side . right) (slot . 2) (window-width . 0.20)))
-;; 	(,dap-ui--sessions-buffer . ((side . right) (slot . 3) (window-width . 0.20)))
-;; 	(,dap-ui--breakpoints-buffer . ((side . left) (slot . 2) (window-width . ,treemacs-width)))
-;; 	(,dap-ui--debug-window-buffer . ((side . bottom) (slot . 3) (window-width . 0.20)))
-;; 	(,dap-ui--repl-buffer . ((side . bottom) (slot . 0) (window-height . 0.25)))))
-;; (setq dap-auto-configure-features '(sessions repl locals expressions))
-;; (dap-register-debug-template
-;;   "Php Debug appointments"
-;;   (list :type "php"
-;; 	:request "launch"
-;; 	:name "Php Debug"
-;; 	:pathMappings (ht ("/var/www/html" "/mnt/md127/favoka2/prestashop_data/prestashop"))
-;; 	:sourceMaps t)))
+(after! dap-mode
+	(setq dap-ui-buffer-configurations
+    `((,dap-ui--locals-buffer . ((side . right) (slot . 1) (window-width . 0.20)))
+			 (,dap-ui--expressions-buffer . ((side . right) (slot . 2) (window-width . 0.20)))
+			 (,dap-ui--sessions-buffer . ((side . right) (slot . 3) (window-width . 0.20)))
+			 (,dap-ui--breakpoints-buffer . ((side . left) (slot . 2) (window-width . ,treemacs-width)))
+			 (,dap-ui--debug-window-buffer . ((side . bottom) (slot . 3) (window-width . 0.20)))
+			 (,dap-ui--repl-buffer . ((side . bottom) (slot . 0) (window-height . 0.15)))))
+	(setq dap-auto-configure-features '(sessions repl locals expressions breakpoints))
+	(dap-register-debug-template
+		"Php Debug appointments"
+		(list :type "php"
+			:request "launch"
+			:name "Php Debug"
+			:pathMappings (ht ("/var/www/html" "/mnt/md127/favoka2/prestashop_data/prestashop"))
+			:sourceMaps t)))
 
 ;; ;; TODO fix tooltip
 ;; (after! dap-mode

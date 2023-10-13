@@ -39,7 +39,7 @@
 ;;  	    :build (:not compile)))
 ;; (package! run-command :pin "84520fe738f3")
 (package! eat)
-(package! local-run-command
+(package! emacs-run-command
 	:recipe (:local-repo "packages/emacs-run-command"
 						:build (:not compile)))
 

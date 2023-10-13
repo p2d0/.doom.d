@@ -29,8 +29,8 @@
 (defun run-command-rerun ()
   (interactive)
   (when run-command--last
-		(setq-local run-command--rerun t)
-    (run-command--run run-command--last)))
+    (setq-local run-command--rerun t)
+    (run-command-core-run run-command--last)))
 
 (defun docker-example-recipe ()
   (list
@@ -44,19 +44,36 @@
   )
 
 (defun run-command--cache (orig command-spec)
-	(setq-local cache-variables (plist-get  command-spec :cache-variables))
-  (apply orig (list command-spec))
+  (setq cache-variables (plist-get  command-spec :cache-variables))
+	(apply orig (list command-spec))
+	(setq cache-variables nil)
   (setq run-command--last command-spec))
+(defun eat--clear-buffer (&rest args)
+	(erase-buffer)
+	)
+
+(defun eat--scroll-down (&rest args)
+	(set-window-point (get-buffer-window (current-buffer)) (point-max)))
 
 (after! run-command
-  (require 'term)
-  (setq run-command-default-runner 'run-command-runner-compile)
-  (advice-add #'run-command--run :around #'run-command--cache
+  ;; (require 'term)
+  (add-hook! 'eat-exit-hook #'compilation-minor-mode)
+	(add-hook! 'eat-exit-hook #'eat--scroll-down)
+	(add-hook! 'eat-exec-hook #'eat--clear-buffer)
+  (setq run-command-default-runner 'run-command-runner-eat)
+  (setq shell-file-name "/bin/sh")
+  (advice-add #'run-command-core-run :around #'run-command--cache
     )
-  ;; (advice-add #'run-command--run :after (lambda (command-spec) (setq run-command--last command-spec)))
-  (set-popup-rule! "^.+\\[.+\\]$"
-    :size 16
+  ;; *rebuild-default[/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/run-command/]*
+  ;; (advice-add #'run-command-core-run :after (lambda (command-spec) (setq run-command--last command-spec)))
+  ;; *rebuild-default[/etc/nixos/]*
+  ;; *rebuild-default[/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/run-command/]*
+  (set-popup-rule! "*.+\\[.+\\]*"
+    :size 20
     :quit t)
+  ;; (set-popup-rule! "^.+\\[.+\\]$"
+  ;;   :size 16
+  ;;   :quit t)
   (setq run-command-recipes '(run-command-recipe-dir-locals run-command-recipe-package-json)))
 
 (map!
