@@ -1,8 +1,10 @@
 * Currently trying/Big changes:
 %(get-last-daily-test-under-first-heading)
 * Time i went to sleep: %^{Time i went to sleep|23:00}
-* Time i woke up: %^{Time i woke up|7:45}
+* Time i woke up: %^{Time i woke up|8:00}
 * Did i sleep better than yesterday: =%^{Did i sleep better than yesterday?|NO|YES|IDK|MAYBE|PROBABLY NOT}=
+* TODOS TODAY
+** [ ]
 * Table
 | Time |   | Blood pressure | HeartRate |
 |      |   |                |           |
