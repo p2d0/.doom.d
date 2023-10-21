@@ -121,7 +121,7 @@
 
 ;; TODO fix in nixos
 (setq browse-url-browser-function 'browse-url-generic
-  browse-url-generic-program "firefox")
+  browse-url-generic-program "brave")
 
 (setq indent-tabs-mode t)
 
