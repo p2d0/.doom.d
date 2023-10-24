@@ -10,6 +10,16 @@
 					(text-begin (org-element-property :contents-begin first-heading)) ; get the beginning of the text
 					(text-end (org-element-property :contents-end first-heading))) ; get the end of the text
 		(buffer-substring-no-properties text-begin text-end))) ; return the text as a string
+(defun org-get-text-under (heading)
+	""
+	(let* ((data (org-element-parse-buffer)) ; parse the buffer
+					(first-heading (org-element-map data 'headline ; find the first headline
+													 (lambda (head) (when (s-contains? heading (org-element-property :raw-value head))
+																			 head))
+													 nil t)) ; return the first match
+					(text-begin (org-element-property :contents-begin first-heading)) ; get the beginning of the text
+					(text-end (org-element-property :contents-end first-heading))) ; get the end of the text
+		(buffer-substring-no-properties text-begin text-end))	)
 
 (after! org-roam
 	(setq org-roam-directory (expand-file-name "~/.dropbox-hm/Dropbox/org/roam/"))
@@ -77,6 +87,10 @@
 			(with-current-buffer (find-file-noselect path)
 				(string-trim (get-text-under-first-heading) ))))
 
+(defun get-last-daily-text-under (heading)
+		(let ((path (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (current-time))) (concat org-roam-directory org-roam-dailies-directory))))
+			(with-current-buffer (find-file-noselect path)
+				(string-trim (org-get-text-under heading)))))
 
 	(setq daily-template (concat doom-user-dir "package_configuration/org-roam/daily.org"))
 	(setq org-roam-dailies-capture-templates `(("j" "journal" plain "%?\n"
