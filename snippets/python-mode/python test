@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: python test
+# --
+import sys
+sys.path.append('../')
+from $1 import $2
+
+def test_main():
+    assert 1 == 1

@@ -4,6 +4,9 @@
 ;; (set-popup-rule! "^\\*Help" :ignore t)
 (set-popup-rule! "^\\*cider-test-report" :ignore t)
 
+;; (set-popup-rule! "\\*pytest" :select nil :side 'bottom :size 0.25)
+
+
 (defun +popup--popup-buffer? (buffer)
   (string-match-p  "\\*" (buffer-name buffer)))
 
