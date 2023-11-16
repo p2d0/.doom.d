@@ -22,6 +22,7 @@
     (funcall run-command-recipe-dir-locals-fn)))
 
 (load! "run-command-recipe-package-json.el")
+(load! "run-command-recipes.el")
 
                                         ; Run a script from the project's package.json file. Supports both npm and yarn.
                                         ; Run package.json scripts END
@@ -74,7 +75,7 @@
   ;; (set-popup-rule! "^.+\\[.+\\]$"
   ;;   :size 16
   ;;   :quit t)
-  (setq run-command-recipes '(run-command-recipe-dir-locals run-command-recipe-package-json)))
+  (setq run-command-recipes '(build-nix-file-recipe run-command-recipe-dir-locals run-command-recipe-package-json)))
 
 (map!
   :leader
