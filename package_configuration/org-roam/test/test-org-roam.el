@@ -27,6 +27,10 @@
       (expect (org-get-text-under "Overmocking") :to-match "** tata")
       )
     )
+	(describe "getting completed todos from previous daily"
+		(it "should return todo"
+			(expect (org-get-unfinished-under "TODOS") :to-match "NOT COMPLETED")
+			))
   (after-all
     (set-buffer-modified-p nil)
     (kill-buffer (current-buffer))))

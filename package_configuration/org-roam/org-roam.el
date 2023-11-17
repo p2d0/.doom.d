@@ -10,6 +10,26 @@
 					(text-begin (org-element-property :contents-begin first-heading)) ; get the beginning of the text
 					(text-end (org-element-property :contents-end first-heading))) ; get the end of the text
 		(buffer-substring-no-properties text-begin text-end))) ; return the text as a string
+
+(defun org-get-unfinished-under (heading)
+	""
+	(let* ((data (org-element-parse-buffer)) ; parse the buffer
+					(first-heading (org-element-map data 'headline ; find the first headline
+													 (lambda (head) (when (s-contains? heading (org-element-property :raw-value head))
+																			 head))
+													 nil t)) ; return the first match
+					(todos (org-element-map data 'headline ; find the first headline
+													 (lambda (head)
+														 (when (s-equals? "todo" (org-element-property :todo-type head))
+																			 (s-concat "** [ ] " (org-element-property :raw-value head) "\n")))
+													 nil))
+					;; (text-begin (org-element-property :contents-begin first-heading)) ; get the beginning of the text
+					;; (text-end (org-element-property :contents-end first-heading))
+					) ; get the end of the text
+		;; (buffer-substring-no-properties text-begin text-end)
+		(apply #'s-concat todos)
+		)	)
+
 (defun org-get-text-under (heading)
 	""
 	(let* ((data (org-element-parse-buffer)) ; parse the buffer
@@ -86,6 +106,11 @@
 		(let ((path (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (current-time))) (concat org-roam-directory org-roam-dailies-directory))))
 			(with-current-buffer (find-file-noselect path)
 				(string-trim (get-text-under-first-heading) ))))
+
+(defun get-last-daily-unfinished ()
+	(let ((path (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (current-time))) (concat org-roam-directory org-roam-dailies-directory))))
+		(with-current-buffer (find-file-noselect path)
+			(string-trim (org-get-unfinished-under "TODOS TODAY") ))))
 
 (defun get-last-daily-text-under (heading)
 		(let ((path (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (current-time))) (concat org-roam-directory org-roam-dailies-directory))))
