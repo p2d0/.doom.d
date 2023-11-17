@@ -92,7 +92,7 @@
 			(with-current-buffer (find-file-noselect path)
 				(string-trim (org-get-text-under heading)))))
 
-	(setq daily-template (concat doom-user-dir "package_configuration/org-roam/daily.org"))
+	(setq daily-template "~/Dropbox/org/daily.org")
 	(setq org-roam-dailies-capture-templates `(("j" "journal" plain "%?\n"
 																							 :if-new (file+head "%<%Y-%m-%d>.org" ,(format "Sleep note\n%%[%s]" daily-template))
 																							 :immediate-finish t
