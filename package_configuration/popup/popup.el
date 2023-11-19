@@ -4,6 +4,8 @@
 ;; (set-popup-rule! "^\\*Help" :ignore t)
 (set-popup-rule! "^\\*cider-test-report" :ignore t)
 
+;; (set-popup-rule! "^\\*doom:scratch" :ignore t)
+
 ;; (set-popup-rule! "\\*pytest" :select nil :side 'bottom :size 0.25)
 
 

@@ -4,6 +4,7 @@
 (map! :leader "/" #'+default/search-project)
 (map! :leader "ww" #'ace-window)
 (map! :leader "od" #'dired-jump)
+(map! :leader "x" (lambda (&rest _) (interactive "P") (doom/open-scratch-buffer nil nil 1)))
 
 (map!
 	:map dired-mode-map

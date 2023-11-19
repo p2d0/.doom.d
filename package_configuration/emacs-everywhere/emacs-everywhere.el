@@ -20,10 +20,16 @@
 (defcustom emacs-everywhere-note-frame-parameters
   `((name . "emacs-note")
      (width . 100)
-     (height . 40))
+     (height . 100))
   "Parameters `make-frame' recognises to apply to the emacs-everywhere frame."
   :type 'list
   :group 'emacs-everywhere)
+
+(setq emacs-everywhere-note-frame-parameters
+`((name . "emacs-note")
+     (width . 100)
+     (height . 60))
+	)
 
 (defun emacs-everywhere-note ()
   "Lanuch the emacs-everywhere frame from emacsclient."
