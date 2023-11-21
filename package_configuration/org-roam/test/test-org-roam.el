@@ -4,6 +4,7 @@
 (describe "Org roam export"
   (before-all
     (load-file "../org-roam.el")
+    (load-file "../daily.el")
     (setq-local post-command-hook '())
     (remove-hook 'post-command-hook #'org-roam-buffer--redisplay-h)
     (set-buffer (find-file-noselect "~/Dropbox/org/roam/20210809144731-tdd_the_bad_parts_matt_parker.org")))
@@ -29,7 +30,13 @@
     )
 	(describe "getting completed todos from previous daily"
 		(it "should return todo"
-			(expect (org-get-unfinished-under "TODOS") :to-match "NOT COMPLETED")
+			(let ((unfinished (org-get-unfinished-under "TODOS")))
+				(expect unfinished :to-match "NOT COMPLETED")
+				(expect unfinished :not :to-match "testing"))
+			))
+	(describe "getting dailies"
+		(it "should update dailies status to [ ]"
+		  (expect (org-get-dailies-under "DAILIES") :to-match "\\[ \\] KEK")
 			))
   (after-all
     (set-buffer-modified-p nil)
@@ -38,10 +45,10 @@
 (describe "org-roam-db-sync"
   (xit "should calculate contents-hash right"
     (let* ((first-file (cl-first (org-roam-list-files)))
-	    (contents-hash (org-roam-db--file-hash first-file))
-	    (db-files (org-roam-db--get-current-files))
-	    (db-hash (gethash first-file db-files))
-	    )
+						(contents-hash (org-roam-db--file-hash first-file))
+						(db-files (org-roam-db--get-current-files))
+						(db-hash (gethash first-file db-files))
+						)
       (expect first-file :to-match "/home/andrew/Dropbox/org/roam/20210808103958-sleep.org")
       ;; (prin1 db-files)
       ;; (prin1 db-files)
