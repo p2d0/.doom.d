@@ -33,6 +33,7 @@
 
 (defun emacs-everywhere-note ()
   "Lanuch the emacs-everywhere frame from emacsclient."
+	(server-start)
   (apply #'call-process "emacsclient" nil 0 nil
     (delq
       nil (list
