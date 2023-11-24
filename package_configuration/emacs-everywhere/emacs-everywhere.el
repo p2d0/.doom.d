@@ -27,13 +27,13 @@
 
 (setq emacs-everywhere-note-frame-parameters
 `((name . "emacs-note")
-     (width . 100)
-     (height . 60))
+     ;; (width . 100)
+     ;; (height . 60)
+	 )
 	)
 
 (defun emacs-everywhere-note ()
   "Lanuch the emacs-everywhere frame from emacsclient."
-	(server-start)
   (apply #'call-process "emacsclient" nil 0 nil
     (delq
       nil (list
@@ -45,6 +45,6 @@
 		(concat "--socket-name="
 		  (shell-quote-argument
 		    (expand-file-name server-name server-socket-dir)))))
-	    "-c" "-F"
+	    "-c"  "-F"
 	    (prin1-to-string emacs-everywhere-note-frame-parameters)
 	    ))))
