@@ -1,7 +1,7 @@
 ;;; package_configuration/org-roam.el -*- lexical-binding: t; -*-
 
 (after! org-roam
-	(setq org-roam-directory (expand-file-name "~/.dropbox-hm/Dropbox/org/roam/"))
+	(setq org-roam-directory (expand-file-name "~/Dropbox/org/roam/"))
 	;; (setq org-roam-db-location "~/Dropbox/org/roam/roam.db")
 	;; (advice-remove 'org-roam-db-query #'+org-roam-try-init-db-a)
 	;; (setq org-roam-graph-viewer "brave")
