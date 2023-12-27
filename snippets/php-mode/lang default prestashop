@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lang default prestashop
+# key: lang
+# --
+Configuration::get('PS_LANG_DEFAULT')
