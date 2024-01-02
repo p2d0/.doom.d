@@ -64,6 +64,55 @@
     (string-trim (org-get-dailies-under "DAILIES")))
 	)
 
+;; (defun get-weather ()
+;;   (let ((url "https://wttr.in/?format=%t")
+;;          (buffer (url-retrieve-synchronously "https://wttr.in/?format=%t%20(feels: %f)")))
+;;     (with-current-buffer buffer
+;;       (goto-char (point-max))
+;; 			(decode-coding-string (thing-at-point 'line) 'utf-8)
+;;       )))
+
+(defun get-weather ()
+	(let* ((url "https://api.open-meteo.com/v1/forecast?latitude=55.7522&longitude=37.6156&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&timezone=Europe%2FMoscow&forecast_days=1")
+					(buffer (url-retrieve-synchronously url))
+					(json-array-type 'list))
+    (with-current-buffer buffer
+      (goto-char url-http-end-of-headers)
+			;; (prin1 (json-read))
+			(let-alist (json-read)
+				(format "MIN: %s (%s) MAX: %s (%s)"
+					(car .daily.temperature_2m_min)
+					(car .daily.apparent_temperature_min)
+					(car .daily.temperature_2m_max)
+					(car .daily.apparent_temperature_max)
+					))
+			)))
+
+(defun get-current-daily-date ()
+	(let ((filename (file-relative-name (buffer-file-name))))
+		(when filename
+			(substring filename 0 10))))
+
+(defun get-weather-for-daily ()
+	(let* ((url
+					 (format "https://api.open-meteo.com/v1/forecast?latitude=55.7522&longitude=37.6156&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&timezone=Europe%%2FMoscow&start_date=%s&end_date=%s"
+						 (get-current-daily-date)
+						 (get-current-daily-date)))
+					(buffer (url-retrieve-synchronously url))
+					(json-array-type 'list))
+		(with-current-buffer buffer
+			(goto-char url-http-end-of-headers)
+			;; (prin1 (json-read))
+			(let-alist (json-read)
+				(format "MIN: %s (%s) MAX: %s (%s)"
+					(car .daily.temperature_2m_min)
+					(car .daily.apparent_temperature_min)
+					(car .daily.temperature_2m_max)
+					(car .daily.apparent_temperature_max)
+					))
+			))
+	)
+
 (defun get-last-daily-text-under (heading)
   "Return the text under a given heading in the last daily file."
   (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function

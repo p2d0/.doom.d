@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: Get temperature
+# --
+* Weather today: =`(get-weather-for-daily)`=
