@@ -16,7 +16,7 @@
   (let* ((data (org-element-parse-buffer)) ; parse the buffer
           (first-heading (org-element-map data 'headline ; find the first headline
                            (lambda (head) (when (s-contains? heading (org-element-property :raw-value head))
-                                       head))
+																			 head))
                            nil t)) ; return the first match
           (headlines (org-element-map first-heading 'headline ; find the headlines under the first heading
                        (lambda (head)
@@ -34,6 +34,7 @@
   "Get the daily headlines under a given heading."
   (org-find-headlines-under heading ; use the helper function
     (lambda (head) (org-element-property :todo-type head)))) ; predicate for any headlines with a todo type
+
 (defun org-get-text-under (heading)
   ""
   (let* ((data (org-element-parse-buffer)) ; parse the buffer
@@ -47,7 +48,18 @@
 
 (defun get-last-daily-path ()
   "Return the path of the last daily file."
-  (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (current-time))) (concat org-roam-directory org-roam-dailies-directory)))
+  (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (org-capture-get :default-time))) (concat org-roam-directory org-roam-dailies-directory)))
+
+;; (defun get-previous-daily-path ()
+;;   "Return the path of the previous daily file."
+;; 	(prin1 )
+;;   ;; (let ((current-daily-date (get-current-daily-date))) ; use the helper function
+;;   ;;   (when current-daily-date
+;;   ;;     (let* ((current-daily-time (org-current-time) ) ; convert the date string to time object
+;; 	;; 						(previous-daily-time (time-add current-daily-time (* -1 86400))) ; subtract one day from the current time
+;; 	;; 						(previous-daily-date (format-time-string "%Y-%m-%d" previous-daily-time))) ; convert the time object back to date string
+;;   ;;       (expand-file-name (concat previous-daily-date ".org") (concat org-roam-directory org-roam-dailies-directory)))))
+;; 	) ; expand the file name like get-last-daily-path
 
 (defun get-last-daily-test-under-first-heading ()
   "Return the text under the first heading of type \"Test\" in the last daily file."
@@ -87,6 +99,26 @@
 					(car .daily.apparent_temperature_max)
 					))
 			)))
+
+(defun get-weather-for-today-daily ()
+	(let* ((url
+					 (format "https://api.open-meteo.com/v1/forecast?latitude=55.7522&longitude=37.6156&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&timezone=Europe%%2FMoscow&start_date=%s&end_date=%s"
+						 (format-time-string "%Y-%m-%d" (time-add (* -1 86400) (org-capture-get :default-time)))
+						 (format-time-string "%Y-%m-%d" (time-add (* -1 86400) (org-capture-get :default-time)))))
+					(buffer (url-retrieve-synchronously url))
+					(json-array-type 'list))
+		(with-current-buffer buffer
+			(goto-char url-http-end-of-headers)
+			;; (prin1 (json-read))
+			(let-alist (json-read)
+				(format "MIN: %s (%s) MAX: %s (%s)"
+					(car .daily.temperature_2m_min)
+					(car .daily.apparent_temperature_min)
+					(car .daily.temperature_2m_max)
+					(car .daily.apparent_temperature_max)
+					))
+			))
+	)
 
 (defun get-current-daily-date ()
 	(let ((filename (file-relative-name (buffer-file-name))))
