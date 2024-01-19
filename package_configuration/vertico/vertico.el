@@ -8,3 +8,6 @@
 	     #'consult-completion-in-region
 	     #'completion--in-region)
       args)))
+
+(after! consult
+	(setq consult--customize-alist nil))
