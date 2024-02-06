@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nix-shell
+# --
+##!/usr/bin/env nix-shell
+##! nix-shell -i python3 -p $1 "python3.withPackages(ps: [ $0 ])"
