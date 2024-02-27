@@ -9,5 +9,5 @@
 	     #'completion--in-region)
       args)))
 
-(after! consult
-	(setq consult--customize-alist nil))
+;; (after! consult
+;; 	(setq consult--customize-alist nil))
