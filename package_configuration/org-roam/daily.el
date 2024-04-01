@@ -44,7 +44,7 @@
 													 nil t)) ; return the first match
 					(text-begin (org-element-property :contents-begin first-heading)) ; get the beginning of the text
 					(text-end (org-element-property :contents-end first-heading))) ; get the end of the text
-    (buffer-substring-no-properties text-begin text-end))	)
+    (buffer-substring-no-properties text-begin text-end)))
 
 (defun get-last-daily-path ()
   "Return the path of the last daily file."
