@@ -33,6 +33,8 @@
   '("\\.service$" :trigger "systemd_service" :mode fundamental-mode)
   '("EntityTypeConfiguration\\.cs$" :trigger "__EntityTypeConfiguration.cs" :mode csharp-mode)
   '("Test\\.cs$" :trigger "__Test.cs" :mode csharp-mode)
+  '("flake\\.nix$" :trigger "__flake.nix" :mode nix-mode)
+  '("devshell\\.nix$" :trigger "__devshell.nix" :mode nix-mode)
   )
 
 (add-hook 'python-mode-hook
