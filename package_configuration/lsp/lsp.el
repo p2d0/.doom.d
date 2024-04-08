@@ -9,3 +9,4 @@
 ;; (setq lsp-disabled-clients '((python-mode . pylsp)))
 (setq read-process-output-max (* 1024 1024))
 ;; (setq lsp-completion-provider :capf)
+;; (add-to-list 'lsp-language-id-configuration '("\\.tpl$" . "smarty"))

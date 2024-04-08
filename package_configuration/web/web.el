@@ -3,4 +3,5 @@
 
 (after! web-mode
 	(setq web-mode-comment-style 2)
+ ;; TODO autocomplete web-mode
 	)

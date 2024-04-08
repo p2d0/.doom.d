@@ -20,7 +20,7 @@
 		(oset section hidden nil)
 		(magit-section--maybe-wash section)
 		(when-let ((beg (oref section content)))
-			(when (< (- (oref section end) beg) 10000)
+			(when (< (- (oref section end) beg) 15000)
 				(remove-overlays beg (oref section end) 'invisible t)))
 		(magit-section-maybe-update-visibility-indicator section)
 		(magit-section-maybe-cache-visibility section)

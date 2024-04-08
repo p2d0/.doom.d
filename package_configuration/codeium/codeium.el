@@ -59,7 +59,7 @@
   ;;   (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
   ;; (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
   ;; ;; alternatively for a more extensive mode-line
-  ;; ;; (add-to-list 'mode-line-format '(-50 "" codeium-mode-line) t)
+  ;; (add-to-list 'mode-line-format '(-50 "" codeium-mode-line) t)
 
   ;; ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
   ;; (setq codeium-api-enabled
