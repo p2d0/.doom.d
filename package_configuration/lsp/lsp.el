@@ -3,6 +3,7 @@
 (setq lsp-ui-doc-enable nil)
 (setq lsp-lens-enable nil)
 (setq lsp-ui-sideline-enable nil)
+(setq lsp-enable-indentation nil)
 
 (setq lsp-enable-file-watchers nil)
 (setq lsp-disabled-clients '())
