@@ -71,6 +71,11 @@
   (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
     (string-trim (org-get-unfinished-under "TODOS TODAY"))))
 
+(defun get-last-daily-unfinished-under (todo)
+  "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
+  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
+    (string-trim (org-get-unfinished-under todo))))
+
 (defun org-get-last-daily-dailies ()
 	(with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
     (string-trim (org-get-dailies-under "DAILIES")))
