@@ -81,6 +81,12 @@
     (string-trim (org-get-dailies-under "DAILIES")))
 	)
 
+(defun org-get-last-daily-under (todo)
+	(with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
+    (string-trim (org-get-dailies-under todo)))
+	)
+
+
 ;; (defun get-weather ()
 ;;   (let ((url "https://wttr.in/?format=%t")
 ;;          (buffer (url-retrieve-synchronously "https://wttr.in/?format=%t%20(feels: %f)")))
