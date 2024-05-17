@@ -78,7 +78,7 @@
 
 (defun org-get-last-daily-dailies ()
 	(with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (string-trim (org-get-dailies-under "DAILIES")))
+    (string-trim (org-get-dailies-under "NORMAL DAILIES")))
 	)
 
 (defun org-get-last-daily-under (todo)
