@@ -28,11 +28,12 @@
 ;; (package! smartparens :disable t)
 (package! company-fish :recipe (:host github :repo "Patriot720/company-fish" :branch "master"))
 (package! font-lock-ext)
+(package! telega)
 ;; (package! todokata
 ;;   :recipe (:local-repo "packages/todokata"
 ;;            :build (:not compile)))
 ;; (package! vlf)
-(package! reverse-im :disable t)
+(package! reverse-im)
 (package! skeletor)
 ;; (package! consult-taskrunner
 ;;   :recipe (:local-repo "packages/consult-taskrunner"
