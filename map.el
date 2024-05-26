@@ -5,7 +5,8 @@
 (map! :leader "ww" #'ace-window)
 (map! :leader "od" #'dired-jump)
 (map! :leader "x" (lambda (&rest _) (interactive "P") (doom/open-scratch-buffer nil nil 1)))
-(map! "C-х" #'evil-force-normal-state)
+(map! :n
+	"C-х" #'evil-force-normal-state)
 
 (map!
 	:map dired-mode-map

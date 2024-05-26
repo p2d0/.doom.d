@@ -1,7 +1,10 @@
 ;;; nixos/editors/.doom.d/package_configuration/telega/telega.el -*- lexical-binding: t; -*-
 
 (after! telega
-	(add-hook 'telega-load-hook 'telega-notifications-mode))
+	(require 'telega-dired-dwim)
+	(global-telega-squash-message-mode)
+	(setq telega-notifications-mode 1)
+	(add-hook 'telega-load-hook #'telega-notifications-mode))
 
 (defvar kek-timer nil
   "Timer object for running `kek` every 10 seconds.")
@@ -13,7 +16,8 @@
     ;; "874727779"
     ;; "216082031"
     ;; "-454024920"
-		 "-1001607382841"
+		 "216082031"
+		 ;; "-1001607382841"
     )
    (list :@type "chatActionTyping")))
 
