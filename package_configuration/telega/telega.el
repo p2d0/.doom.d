@@ -95,21 +95,24 @@
 
 (defun send-sticker (sticker-id &optional msg)
   (let* ((chat
-					 (if msg (plist-put (telega--getChat (telega--tl-get msg :chat_id))
-		 :message_thread_id (plist-get msg :message_thread_id))
-						 telega-chatbuf--chat
-						 )))
+	   (if msg (plist-put (telega--getChat (telega--tl-get msg :chat_id))
+		     :message_thread_id (plist-get msg :message_thread_id))
+	     telega-chatbuf--chat
+	     )))
     (telega--sendMessage
-			chat
+      chat
       (list :@type "inputMessageSticker"
 	:sticker (list :@type "inputFileRemote" :id sticker-id))
-			(list :@type "inputMessageReplyToMessage"
-				:message_id (telega--tl-get msg :id))
+      (list :@type "inputMessageReplyToMessage"
+	:message_id (telega--tl-get msg :id))
       (list :@type "messageSendOptions" :disable_notification t))))
 
 (defun telega-if-kappa-send-sticker (msg)
   "Send a sticker if the message contains 'Kappa', 'Keepo', 'Кееро', or 'лул'."
-	;; (prin1 msg)
+  ;; (prin1 msg)
+  (if-let* ((sticker-id (telega--tl-get msg :content :sticker :sticker :remote :id)))
+    (write-region (concat sticker-id "\n")
+      nil (expand-file-name "sticker.txt" telega-directory) 'append 'quiet))
   (when (and ;; (plist-get msg :is_outgoing)
 	  (not (plist-get msg :is_from_offline)))
     (let* ((text (telega--tl-get msg :content :text :text))

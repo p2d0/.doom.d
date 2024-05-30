@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: Minimal nixos systemd service
+# --
+{
+enable = true;
+description = "$1";
+wantedBy = [ "${2:$$(yas-choose-value '("graphical-session" "default"))}" ];
+serviceConfig = {
+ExecStart =
+"$0";
+};
+}
