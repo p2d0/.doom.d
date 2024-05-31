@@ -159,6 +159,10 @@
     telega-status-history--filename
     telega-status-history-file--entries))
 
+(defun telega-status-history-get ()
+  (-> (read-file-name "History file: " "~/.telega/online-history/")
+    telega-status-history-file--entries))
+
 (defun telega-find-last-online ()
   "Find the last time the given USER-ID was online in the list of TIMESTAMPS."
   (interactive)
@@ -227,6 +231,38 @@
   (let ((user-times (make-hash-table :test 'equal)))
     ;; Calculate total online time for each user
     (dolist (entry (telega-status-history-get-today))
+      (let ((timestamp (nth 0 entry))
+             (status (nth 1 entry))
+             (id (nth 2 entry)))
+        (unless (gethash id user-times)
+          (puthash id (list 0 nil) user-times))  ;; Initialize if not present
+        (let ((user-data (gethash id user-times)))
+          (cond
+            ((equal status :online)
+              (unless (nth 1 user-data)  ;; Only set if not already online
+		(setf (nth 1 user-data) timestamp)))
+            ((equal status :offline)
+              (let ((last-online-time (nth 1 user-data)))
+		(when last-online-time
+                  (setf (nth 0 user-data)
+                    (+ (nth 0 user-data)
+                      (- timestamp last-online-time) ))  ;; Update total time
+                  (setf (nth 1 user-data) nil))))))))  ;; Reset online timestamp
+
+    ;; Format the output
+    (maphash
+      (lambda (id user-data)
+	(let ((title (plist-get (telega-chat-get id) :title))
+               (time (/ (nth 0 user-data) 60)))
+          (message "%s: %d минут." title time)))
+      user-times)))
+
+(defun calculate-time-spent-online-for-file ()
+  "Calculate the total time spent online (in minutes) for each user in the LOG and return formatted results."
+  (interactive)
+  (let ((user-times (make-hash-table :test 'equal)))
+    ;; Calculate total online time for each user
+    (dolist (entry (telega-status-history-get))
       (let ((timestamp (nth 0 entry))
              (status (nth 1 entry))
              (id (nth 2 entry)))
