@@ -114,7 +114,7 @@
     (write-region (concat sticker-id "\n")
       nil (expand-file-name "sticker.txt" telega-directory) 'append 'quiet))
   (when (and ;; (plist-get msg :is_outgoing)
-	  (not (plist-get msg :is_from_offline)))
+	  (not (plist-get msg :is_from_offline)) (not (= (telega--tl-get msg :sender_id :user_id) 216082031)))
     (let* ((text (telega--tl-get msg :content :text :text))
 	    )
       (when text
