@@ -134,7 +134,7 @@
 	  ((string-match-p "\\bхмм\\b" text)
 	    (send-sticker "CAACAgQAAxkBAAEF--NmVcFHU717OH-jcCKbTzcYGyiDjQACNQEAAqghIQYAAaMWQBNooEw1BA" msg))
 	  ((string-match-p "\\bопа\\b" text)
-	    (send-sticker "CAACAgQAAxkBAAEF--JmVcC51aBGOdWHWBtnddkk1b8rHwACMwEAAqghIQaDngab6f9thTUE" msg))
+	    (send-sticker "CAACAgQAAxkBAAEGBr9mXgXkzz1AlmdM_XmEaLd4B6EEZQACrBEAAtXtyVHrPfScnFD59jUE" msg))
 	  ((string-match-p "\\bват\\b" text)
 	    (send-sticker "CAACAgQAAxkBAAEF-95mVcAXn4DR7h-KSPQMh6C2vHgOmAACMwQAAnhXAQ4N5WrISOEcfDUE" msg))
 	  ((string-match-p "\\bимба\\b" text)
