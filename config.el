@@ -65,7 +65,7 @@
 
 (setq large-file-warning-threshold 500000)
 (after! recentf
-	(setq recentf-max-saved-items 1000))
+	(setq recentf-max-saved-items 2000))
 
 (setq buttercup-color nil)
 ;; doom-dracula
