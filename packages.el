@@ -11,6 +11,7 @@
 ;; 	(:host github :repo "neeasade/myron-themes" :files ("*.el" "themes/*.el")))
 ;; (package! nano-emacs
 ;;   :recipe (:host github :repo "rougier/nano-emacs"))
+(package! lsp-nix)
 (package! doom-nano-modeline
   :recipe (:host github
   :repo "ronisbr/doom-nano-modeline"))

@@ -1,5 +1,5 @@
 ;;; nixos/editors/.doom.d/package_configuration/org-roam/daily.el -*- lexical-binding: t; -*-
-
+(require 's)
 (defun get-text-under-first-heading ()
   "Return the text under the first heading of type \"Test\"."
   (interactive)
