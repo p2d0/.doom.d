@@ -1,5 +1,3 @@
-# -*- mode: snippet -*-
-#
 { pkgs }:
 
 with pkgs;
