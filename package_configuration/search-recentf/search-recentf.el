@@ -39,3 +39,7 @@
 
 ;; (map! :leader
 ;;   "sD" #'+config/search-other-cwd)
+
+(after! recentf
+	(run-at-time nil (* 5 60) 'recentf-save-list)
+	)
