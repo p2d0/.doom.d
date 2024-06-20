@@ -4,7 +4,8 @@
 (setq lsp-lens-enable nil)
 (setq lsp-ui-sideline-enable nil)
 (setq lsp-enable-indentation nil)
-
+(after! lsp-java
+	(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx4G" "-Xms100m")))
 (setq lsp-enable-file-watchers nil)
 (setq lsp-disabled-clients '())
 ;; (setq lsp-disabled-clients '((python-mode . pylsp)))
