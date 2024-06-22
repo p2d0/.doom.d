@@ -41,5 +41,7 @@
 ;;   "sD" #'+config/search-other-cwd)
 
 (after! recentf
-	(run-at-time nil (* 5 60) 'recentf-save-list)
+	(setq recentf-max-saved-items 5000)
+	(setq recentf-max-menu-items 1000)
+	(run-at-time 60 (* 5 15) 'recentf-save-list)
 	)
