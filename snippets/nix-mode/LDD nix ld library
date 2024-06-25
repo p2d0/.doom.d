@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: LDD nix ld library
+# --
+NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
+$0
+];
+
+NIX_LD = lib.fileContents "\${stdenv.cc}/nix-support/dynamic-linker";
+shellHook = ''
+export LD_LIBRARY_PATH=\$NIX_LD_LIBRARY_PATH:LD_LIBRARY_PATH
+'';
