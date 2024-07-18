@@ -18,5 +18,5 @@
 
 (setq flycheck-check-syntax-automatically '(save mode-enable))
 (after! flycheck
-	(flycheck-add-next-checker 'lsp 'python-flake8)
+	;; (flycheck-add-next-checker 'lsp 'python-flake8)
 	)
