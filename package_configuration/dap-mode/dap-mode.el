@@ -29,7 +29,16 @@
 			:request "launch"
 			:name "Php Debug"
 			:pathMappings (ht ("/var/www/html" "/mnt/md127/favoka2/prestashop_data/prestashop"))
-			:sourceMaps t)))
+			:sourceMaps t))
+	(dap-register-debug-template "Rust::GDB Attach Configuration"
+    (list :type "gdb"
+      :request "attach"
+			:executable "/nix/store/c8vs0m3pb43imkcbikg6q87wgmym95x4-rustlings/bin/rustlings"
+      :name "GDB::Run"
+      :gdbpath "rust-gdb"
+			:target "103955"
+			))
+	)
 
 ;; ;; TODO fix tooltip
 ;; (after! dap-mode
