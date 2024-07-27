@@ -3,6 +3,23 @@
 (setq user-full-name "Andrew Cerkin"
 	user-mail-address "cerkin-3@yandex.ru")
 
+(defun dired-remove-bak-suffix ()
+  "Remove '_bak' suffix from all marked files in the current dired buffer."
+  (interactive)
+  (let ((files (dired-get-marked-files t current-prefix-arg)))
+    (dolist (file files)
+      (when (stringp file)
+        (let ((new-file (s-replace-regexp "_bak$" "" file)))
+          (when (and (not (string= file new-file))
+                     (not (file-exists-p new-file)))
+            (message "Renaming %s to %s" file new-file)
+            (rename-file file new-file t))
+          (unless (string= file new-file)
+            (message "No change needed for %s" file))))
+      (unless (stringp file)
+        (message "Invalid file: %s" file)))))
+
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
