@@ -46,9 +46,15 @@
 					(text-end (org-element-property :contents-end first-heading))) ; get the end of the text
     (buffer-substring-no-properties text-begin text-end)))
 
+(defun get-last-modified-file (directory)
+  "Return the path of the most recently modified file in the given DIRECTORY."
+  (let ((files (directory-files-and-attributes directory t "^[^.]" t)))
+    (car (car (sort files (lambda (a b)
+                            (time-less-p (nth 5 b) (nth 5 a))))))))
+
 (defun get-last-daily-path ()
-  "Return the path of the last daily file."
-  (expand-file-name (format-time-string "%Y-%m-%d.org" (time-add (* -1 86400) (org-capture-get :default-time))) (concat org-roam-directory org-roam-dailies-directory)))
+  "Return the path of the last daily file in the org-roam-dailies-directory."
+  (get-last-modified-file (expand-file-name org-roam-dailies-directory org-roam-directory)))
 
 ;; (defun get-previous-daily-path ()
 ;;   "Return the path of the previous daily file."
