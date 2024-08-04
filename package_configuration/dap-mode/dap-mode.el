@@ -17,12 +17,12 @@
 (after! dap-mode
 	(setq dap-ui-buffer-configurations
     `((,dap-ui--locals-buffer . ((side . right) (slot . 1) (window-width . 0.20)))
-			 (,dap-ui--expressions-buffer . ((side . right) (slot . 2) (window-width . 0.20)))
-			 (,dap-ui--sessions-buffer . ((side . right) (slot . 3) (window-width . 0.20)))
+			 (,dap-ui--expressions-buffer . ((side . left) (slot . 2) (window-width . ,treemacs-width)))
+			 ;; (,dap-ui--sessions-buffer . ((side . right) (slot . 3) (window-width . 0.20)))
 			 (,dap-ui--breakpoints-buffer . ((side . left) (slot . 2) (window-width . ,treemacs-width)))
 			 (,dap-ui--debug-window-buffer . ((side . bottom) (slot . 3) (window-width . 0.20)))
 			 (,dap-ui--repl-buffer . ((side . bottom) (slot . 0) (window-height . 0.15)))))
-	(setq dap-auto-configure-features '(sessions repl locals expressions breakpoints))
+	(setq dap-auto-configure-features '(repl locals expressions breakpoints))
 	(dap-register-debug-template
 		"Php Debug appointments"
 		(list :type "php"
