@@ -12,3 +12,6 @@
 (setq read-process-output-max (* 1024 1024))
 ;; (setq lsp-completion-provider :capf)
 ;; (add-to-list 'lsp-language-id-configuration '("\\.tpl$" . "smarty"))
+(after! lsp
+	(add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\flake-inputs")
+	)
