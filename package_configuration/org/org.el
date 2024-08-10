@@ -36,6 +36,10 @@
 	;; (setq org-startup-folded nil)
 	;; (setq org-hide-block-startup t)
 
+	(add-to-list 'org-capture-templates
+             '("s" "Possible Solution" entry (file buffer-name)
+               "** %^{Possible solution} \n*** Pros \n**** \n*** Cons \n**** \n*** Rating: =%?= "))
+
 	(push 'org-habit org-modules)
 
 	;; (setq org-agenda-window-setup 'reorganize-frame)
