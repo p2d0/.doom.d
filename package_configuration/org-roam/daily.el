@@ -15,15 +15,19 @@
   "Find the headlines under a given heading that satisfy a predicate."
   (let* ((data (org-element-parse-buffer)) ; parse the buffer
           (first-heading (org-element-map data 'headline ; find the first headline
-                           (lambda (head) (when (s-contains? heading (org-element-property :raw-value head))
-																			 head))
+                           (lambda (head) (if (s-contains? heading (org-element-property :raw-value head))
+																			 (org-element-extract head)
+																			 ))
                            nil t)) ; return the first match
-          (headlines (org-element-map first-heading 'headline ; find the headlines under the first heading
-                       (lambda (head)
-                         (when (funcall predicate head) ; apply the predicate
-                           (s-concat "** [ ] " (org-element-property :raw-value head) "\n")))
-                       nil)))
-    (apply #'s-concat headlines)))
+          (reset-check (org-element-map first-heading 'headline
+												 (lambda (head)
+													 (when (funcall predicate head) ; apply the predicate
+														 (-> (org-element-extract head)
+															 (org-element-put-property :todo-keyword "[ ]")
+															 (org-element-put-property :todo-type 'todo)
+															 ))))))
+    (org-element-interpret-data reset-check)
+		))
 
 (defun org-get-unfinished-under (heading)
   "Get the unfinished headlines under a given heading."
