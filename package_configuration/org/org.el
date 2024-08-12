@@ -6,6 +6,7 @@
 
 (after! org
 	(require 'ox-publish)
+	(setq org-enforce-todo-dependencies nil)
 	(setq org-publish-project-alist
 		'(
 			 ("org-notes"

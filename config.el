@@ -1,7 +1,7 @@
 ;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 (setq user-full-name "Andrew Cerkin"
-	user-mail-address "cerkin-3@yandex.ru")
+  user-mail-address "cerkin-3@yandex.ru")
 
 (defun dired-remove-bak-suffix ()
   "Remove '_bak' suffix from all marked files in the current dired buffer."
@@ -11,7 +11,7 @@
       (when (stringp file)
         (let ((new-file (s-replace-regexp "_bak$" "" file)))
           (when (and (not (string= file new-file))
-                     (not (file-exists-p new-file)))
+                  (not (file-exists-p new-file)))
             (message "Renaming %s to %s" file new-file)
             (rename-file file new-file t))
           (unless (string= file new-file)
@@ -52,31 +52,31 @@
 ;; (solaire-mode t)
 
 (defun solaire-mode-real-buffer-except-treemacs-p ()
-	"Return t if the current buffer is a real (file-visiting) buffer."
-	(or (buffer-file-name (buffer-base-buffer))
-		(string-match "Treemacs" (buffer-name (current-buffer)))
-		(string-match "*doom*" (buffer-name (current-buffer)))
-		(string-match "magit:" (buffer-name (current-buffer)))
-		))
+  "Return t if the current buffer is a real (file-visiting) buffer."
+  (or (buffer-file-name (buffer-base-buffer))
+    (string-match "Treemacs" (buffer-name (current-buffer)))
+    (string-match "*doom*" (buffer-name (current-buffer)))
+    (string-match "magit:" (buffer-name (current-buffer)))
+    ))
 
 (after! solaire-mode
-	(setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-except-treemacs-p)
-	)
+  (setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-except-treemacs-p)
+  )
 
 ;; (if (= (get-color-scheme) 1)
 ;; 	(load-theme +dark-theme+ t)
 ;; 	(load-theme +light-theme+ t))
 (use-package doom-themes
-	:custom-face
-	(font-lock-comment-face ((t (:foreground "red"))))
-	;; DRACULA
-	(window-divider   ((t (:foreground "#1E2029" :background "#1E2029"))))
-	(solaire-default-face   ((t (:background "#1E2029"))))
-	(internal-border   ((t (:foreground "#1E2029" :background "#1E2029"))))
-	:config
-	(setq doom-themes-enable-bold nil)
-	(load-theme +dark-theme+ t)
-	)
+  :custom-face
+  (font-lock-comment-face ((t (:foreground "red"))))
+  ;; DRACULA
+  (window-divider   ((t (:foreground "#1E2029" :background "#1E2029"))))
+  (solaire-default-face   ((t (:background "#1E2029"))))
+  (internal-border   ((t (:foreground "#1E2029" :background "#1E2029"))))
+  :config
+  (setq doom-themes-enable-bold nil)
+  (load-theme +dark-theme+ t)
+  )
 
 ;; Fix comments in tpl mode
 
@@ -90,8 +90,8 @@
 ;; (font-spec :family "JetBrains Mono" :weight 'semibold
 ;; 									:size 13)
 
-(setq doom-font (font-spec :family "Fira Code" :weight 'normal
-									:size 13))
+(setq doom-font (font-spec :family "JetBrains Mono" :weight 'normal
+		  :size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 
 ;; Fira Code
@@ -100,10 +100,10 @@
 (load! "configuration/xml-schemas")
 
 (defun adb-logcat ()
-	(interactive)
-	(start-process "*adb-logcat*" "*adb-logcat*" "/bin/sh" "-c" "adb logcat cz.zdenekhorak.mibandtools:I *:S")
-	(pop-to-buffer "*adb-logcat*")
-	(buffer-disable-undo))
+  (interactive)
+  (start-process "*adb-logcat*" "*adb-logcat*" "/bin/sh" "-c" "adb logcat cz.zdenekhorak.mibandtools:I *:S")
+  (pop-to-buffer "*adb-logcat*")
+  (buffer-disable-undo))
 
 (setq doom-localleader-key ",")
 
@@ -119,11 +119,11 @@
 ;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (defun org-roam-everywhere ()
-	(interactive)
-	(org-roam-capture))
+  (interactive)
+  (org-roam-capture))
 
 (defun encode-buffer ()
-	(interactive))
+  (interactive))
 
 (setq require-final-newline nil)
 
@@ -132,7 +132,7 @@
 (setq company-idle-delay 0.5)
 
 (defun insert-iso-date () (interactive)
-	(insert (shell-command-to-string "echo -n $(date +\"%Y-%m-%dT%H:%M:%S%z\")")))
+  (insert (shell-command-to-string "echo -n $(date +\"%Y-%m-%dT%H:%M:%S%z\")")))
 
 ;; TODO fix in nixos
 (setq browse-url-browser-function 'browse-url-generic
@@ -184,15 +184,15 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (custom-set-variables
-	;; custom-set-variables was added by Custom.
-	;; If you edit it by hand, you could mess it up, so be careful.
-	;; Your init file should contain only one such instance.
-	;; If there is more than one, they won't work right.
-	)
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+  )
 (custom-set-faces
-	;; custom-set-faces was added by Custom.
-	;; If you edit it by hand, you could mess it up, so be careful.
-	;; Your init file should contain only one such instance.
-	;; If there is more than one, they won't work right.
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
 
-	'(web-mode-block-face ((t nil))))
+  '(web-mode-block-face ((t nil))))
