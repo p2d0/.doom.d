@@ -90,7 +90,7 @@
 ;; (font-spec :family "JetBrains Mono" :weight 'semibold
 ;; 									:size 13)
 
-(setq doom-font (font-spec :family "JetBrains Mono" :weight 'normal
+(setq doom-font (font-spec :family "Fira Code" :weight 'normal
 		  :size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 
