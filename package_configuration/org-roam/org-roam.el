@@ -2,6 +2,7 @@
 
 (after! org-roam
 	(setq org-roam-directory (expand-file-name "~/Dropbox/org/roam/"))
+	(setq org-roam-node-default-sort 'file-atime)
 	;; (setq org-roam-db-location "~/Dropbox/org/roam/roam.db")
 	;; (advice-remove 'org-roam-db-query #'+org-roam-try-init-db-a)
 	;; (setq org-roam-graph-viewer "brave")
