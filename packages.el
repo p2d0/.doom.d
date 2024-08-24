@@ -15,6 +15,7 @@
 (package! doom-nano-modeline
   :recipe (:host github
   :repo "ronisbr/doom-nano-modeline"))
+(package! org-tidy)
 (package! groovy-mode)
 ;; (package! hercules)
 (package! evil-snipe :disable t)

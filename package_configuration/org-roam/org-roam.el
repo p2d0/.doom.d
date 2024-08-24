@@ -64,7 +64,7 @@
 
 	(setq daily-template "~/Dropbox/org/daily.org")
 	(setq org-roam-dailies-capture-templates `(("j" "journal" plain "%?\n"
-																							 :if-new (file+head "%<%Y-%m-%d>.org" ,(format "Sleep note\n%%[%s]" daily-template))
+																							 :if-new (file+head "%<%Y-%m-%d>.org" ,(format "%%[%s]" daily-template))
 																							 :immediate-finish t
 																							 :unnarrowed t
 																							 )))

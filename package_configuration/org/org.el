@@ -4,6 +4,11 @@
 (setq org-directory "~/Dropbox/org/")
 (set-popup-rule! "^\\*Org Agenda" :size 16)
 
+(use-package org-tidy
+  :ensure t
+  :hook
+  (org-mode . org-tidy-mode))
+
 (after! org
 	(require 'ox-publish)
 	(setq org-enforce-todo-dependencies nil)
