@@ -1,0 +1,8 @@
+[package]
+name = "__PROJECT-NAME__"
+version = "0.0.1"
+authors = [ "Andrew Cerkin <cerkin-3@yandex.ru>" ]
+
+[dependencies]
+
+[dev-dependencies]

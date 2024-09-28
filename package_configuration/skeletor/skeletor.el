@@ -59,6 +59,7 @@
 		'(skeletor-define-template "python-mini-project"
 			 :title "Python mini project"
 			 :no-license? t))
+	(eval '(skeletor-define-template "rust_project" :title "Rust Project" :no-license? t))
 	(eval '(skeletor-define-template "python-script-with-tests"
 					 :title "Python script with tests"
 					 :no-license? t))
