@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: wrap appimage
+# --
+{ appimageTools, lib, fetchurl }:
+
+appimageTools.wrapType2 rec {
+pname = "$1";
+version = "$2";
+
+src = fetchurl {
+url = "$3";
+sha256 = "";
+};
+}
