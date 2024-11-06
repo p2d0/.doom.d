@@ -15,6 +15,7 @@
 
 
 (after! dap-mode
+	(setq dap-python-debugger 'debugpy)
 	(setq dap-ui-buffer-configurations
     `((,dap-ui--locals-buffer . ((side . right) (slot . 1) (window-width . 0.20)))
 			 (,dap-ui--expressions-buffer . ((side . left) (slot . 2) (window-width . ,treemacs-width)))
