@@ -10,6 +10,30 @@
 	;; (setq! gptel-api-key "your key")
 	)
 
+;; OpenRouter offers an OpenAI compatible API
+(gptel-make-openai "OpenRouter"               ;Any name you want
+  :host "openrouter.ai"
+  :endpoint "/api/v1/chat/completions"
+  :stream t
+  :key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
+  :models '(qwen/qwen-2.5-coder-32b-instruct))
+
+;; write test
+
+;; OPTIONAL configuration
+;; (setq gptel-model   'qwen-2.5-coder-32b-instruct
+;;       gptel-backend
+;;       (gptel-make-openai "OpenRouter"               ;Any name you want
+;;         :host "openrouter.ai"
+;;         :endpoint "/api/v1/chat/completions"
+;;         :stream t
+;;         :key "your-api-key"                   ;can be a function that returns the key
+;;         :models '(mistralai/mixtral-8x7b-instruct
+;;                   meta-llama/codellama-34b-instruct
+;;                   codellama/codellama-70b-instruct
+;;                   google/palm-2-codechat-bison-32k
+;;                   google/gemini-pro)))
+
 (defun gptel--update-message ()
 	"Set a generic refactor/rewrite message for the buffer."
   (format "You are a %s programmer. Generate only code, no explanation, no code fences. Update the following code part with following instruction: %s"

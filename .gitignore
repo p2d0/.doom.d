@@ -5,3 +5,5 @@ tmp/
 custom.el
 ssh.el
 cache.el
+.env.el
+.env

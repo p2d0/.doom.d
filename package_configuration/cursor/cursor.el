@@ -1,7 +1,8 @@
 ;;; nixos/editors/.doom.d/package_configuration/cursor/cursor.el -*- lexical-binding: t; -*-
 
 (defun cursor-open (path)
-	(start-process "" "*cursor*" "/run/current-system/sw/bin/cursor" path ) )
+	(start-process "" "*cursor*" "/run/current-system/sw/bin/cursor" ;; (projectile-project-root)
+		path))
 
 (defun cursor-open-current-file ()
   (interactive)
