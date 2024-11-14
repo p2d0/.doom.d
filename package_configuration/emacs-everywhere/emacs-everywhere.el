@@ -48,3 +48,8 @@
 	    "-c"  "-F"
 	    (prin1-to-string emacs-everywhere-note-frame-parameters)
 	    ))))
+
+(defun emacs-todo ()
+	(interactive)
+	(org-roam-dailies-goto-today)
+	(save-buffer))
