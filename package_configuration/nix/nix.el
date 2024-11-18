@@ -1,7 +1,7 @@
 ;;; package_configuration/nix/nix.el -*- lexical-binding: t; -*-
 
 (after! nix-mode
-  (setq lsp-nix-server-path "nixd")
+  (setq lsp-nix-server-path "nil")
 	)
 
 
