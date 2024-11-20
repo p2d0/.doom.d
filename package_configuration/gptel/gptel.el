@@ -42,7 +42,7 @@
 													(buffer-substring-no-properties
 														(region-beginning) (region-end))
 													)
-		(format "Update the following code part with following instruction: %s\n\nCode Above: %s\nCode Below: %s"
+		(format "Update the following code part with following instruction: %s\n\nCode Above: %s\nCode Below: %s \n(don't output code above and below)"
 			(read-string "Prompt: ")
       (buffer-substring-no-properties (line-beginning-position 0) (line-end-position 0))
       (buffer-substring-no-properties (line-beginning-position 2) (line-end-position 2))
@@ -236,7 +236,7 @@
 						(system-extra nil)
 						(dry-run nil)
 						(prompt (gptel--update-message-end)))
-			(gptel-context-add)
+			;; (gptel-context-add)
       (prog1
 				(gptel-request prompt
           :buffer (or buffer (current-buffer))
@@ -248,7 +248,7 @@
                     gptel--system-message)
           :callback callback
           :dry-run dry-run)
-				(gptel-context-add)
+				;; (gptel-context-add)
 				(gptel--update-status " Waiting..." 'warning)
 				(when (and in-place (use-region-p))
 					(let ((beg (region-beginning))
