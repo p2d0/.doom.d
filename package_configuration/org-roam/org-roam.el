@@ -2,7 +2,7 @@
 
 (after! org-roam
 	(setq org-roam-directory (expand-file-name "~/Dropbox/org/roam/"))
-	(setq org-roam-node-default-sort 'file-atime)
+	(setq org-roam-node-default-sort 'file-mtime)
 	;; (setq org-roam-db-location "~/Dropbox/org/roam/roam.db")
 	;; (advice-remove 'org-roam-db-query #'+org-roam-try-init-db-a)
 	;; (setq org-roam-graph-viewer "brave")
@@ -76,7 +76,7 @@
 
   (push '("y" "youtube" plain "%?"
 					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-										 "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]")
+										 "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]* 🥇 First pass summary\n**\n* 🥈  Second pass summary\n* 🤖 AI Summary")
 					 :unnarrowed t
 					 :immediate-finish t
 					 ) org-roam-capture-templates)
