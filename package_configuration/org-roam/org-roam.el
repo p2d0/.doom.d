@@ -76,7 +76,7 @@
 
   (push '("y" "youtube" plain "%?"
 					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-										 "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]* 🥇 First pass summary\n**\n* 🥈  Second pass summary\n* 🤖 AI Summary")
+										 "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]\n* 🥇 First pass summary\n** ?\n* 🥈  Second pass summary\n* 🤖 AI Summary")
 					 :unnarrowed t
 					 :immediate-finish t
 					 ) org-roam-capture-templates)
