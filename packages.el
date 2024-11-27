@@ -23,6 +23,7 @@
 (package! evil-snipe :disable t)
 ;; (package! mail-parse :disable t)
 (package! org-pomodoro)
+(package! xenops)
 ;; (package! fd-dired :disable t)
 (package! evil-motion-trainer :recipe (:host github :repo "martinbaillie/evil-motion-trainer" :branch "master"))
 (package! with-simulated-input)
