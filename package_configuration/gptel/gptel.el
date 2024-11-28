@@ -1,6 +1,16 @@
 ;; TODO test
 (after! gptel
-	(setq gptel-model   'qwen/qwen-2.5-coder-32b-instruct)
+	(setq gptel--system-message "
+    You are an intelligent programmer named EmacsBot. You are powered by qwen-2.5-coder-32b-instruct.
+
+    You are helping a colleague answer a programming question.
+
+    Please make your response as concise as possible, and avoid being too verbose.
+
+    You will be given a query and various pieces of context which may or may not be helpful in answering the query.
+
+    Your goal is to answer their query in a freeform markdown-formatted response in a faithful manner. You must not lie or make up facts.
+")
   (map!
     (:leader
       "a" nil
@@ -13,13 +23,38 @@
   ;; (setq! gptel-api-key "your key")
   )
 
+(set-popup-rule! "^\\*OpenRouter\\*" :side 'right :size 0.4 :select 1)
+
 ;; OpenRouter offers an OpenAI compatible API
-(gptel-make-openai "OpenRouter"               ;Any name you want
+(setq gptel-model 'qwen/qwen-2.5-coder-32b-instruct
+	gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
   :host "openrouter.ai"
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
-  :models '(qwen/qwen-2.5-coder-32b-instruct))
+  :models '(qwen/qwen-2.5-coder-32b-instruct)))
+
+(cl-defun my/clean-up-gptel-refactored-code (beg end)
+  "Clean up the code responses for refactored code in the current buffer.
+
+The response is placed between BEG and END.  The current buffer is
+guaranteed to be the response buffer."
+  (when gptel-mode          ; Don't want this to happen in the dedicated buffer.
+    (cl-return-from my/clean-up-gptel-refactored-code))
+  (when (and beg end)
+    (save-excursion
+      (let ((contents
+             (replace-regexp-in-string
+              "\n*``.*\n*" ""
+              (buffer-substring-no-properties beg end))))
+        (delete-region beg end)
+        (goto-char beg)
+        (insert contents))
+      ;; Indent the code to match the buffer indentation if it's messed up.
+      (indent-region beg end)
+      (pulse-momentary-highlight-region beg end))))
+
+(add-hook 'gptel-post-response-functions #'my/clean-up-gptel-refactored-code)
 
 ;; write test
 
@@ -33,7 +68,7 @@
     (gptel--strip-mode-suffix major-mode) (read-string "Prompt: ")))
 
 (defun gptel--update-message-programmer ()
-  (format "You are a %s programmer. Generate only code, no explanation, no code fences."
+  (format "You are a %s programmer. Generate only code, no explanation, no code fences. Preserve identation."
     (gptel--strip-mode-suffix major-mode)))
 
 (defun gptel--update-message-end ()
