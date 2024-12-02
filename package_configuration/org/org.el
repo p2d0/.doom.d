@@ -12,6 +12,7 @@
 (after! org
 	(require 'ox-publish)
 	(setq org-enforce-todo-dependencies nil)
+	(add-hook! 'org-mode-hook #'+zen/toggle)
 	;; (add-hook 'org-mode-hook #'xenops-mode)
 	;; (setq xenops-math-image-scale-factor 1.7
 	;; 	xenops-reveal-on-entry t)
