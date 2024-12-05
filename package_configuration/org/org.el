@@ -9,6 +9,15 @@
   :hook
   (org-mode . org-tidy-mode))
 
+(defun toggle-org-zen ()
+  (interactive)
+	(require 'writeroom-mode)
+  (if (member #'writeroom-mode org-mode-hook)
+    (remove-hook! 'org-mode-hook #'writeroom-mode)
+    (add-hook! 'org-mode-hook #'writeroom-mode))
+	(writeroom--disable)
+	(revert-buffer))
+
 (after! org
 	(require 'ox-publish)
 	(setq org-enforce-todo-dependencies nil)
