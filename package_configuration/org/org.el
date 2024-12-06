@@ -10,18 +10,24 @@
   (org-mode . org-tidy-mode))
 
 (defun toggle-org-zen ()
-  (interactive)
 	(require 'writeroom-mode)
-  (if (member #'writeroom-mode org-mode-hook)
-    (remove-hook! 'org-mode-hook #'writeroom-mode)
-    (add-hook! 'org-mode-hook #'writeroom-mode))
+	(if (member #'writeroom-mode org-mode-hook)
+		(remove-hook! 'org-mode-hook #'writeroom-mode)
+		(add-hook! 'org-mode-hook #'writeroom-mode))
 	(writeroom--disable)
 	(revert-buffer))
 
+(defun zen-mode-enable ()
+	(when (> (frame-width) 200)
+		(writeroom-mode))
+	)
+
 (after! org
 	(require 'ox-publish)
+	(require 'writeroom-mode)
 	(setq org-enforce-todo-dependencies nil)
-	;; (add-hook! 'org-mode-hook #'+zen/toggle)
+
+	(add-hook! 'org-mode-hook #'zen-mode-enable)
 	;; (add-hook 'org-mode-hook #'xenops-mode)
 	;; (setq xenops-math-image-scale-factor 1.7
 	;; 	xenops-reveal-on-entry t)
@@ -56,8 +62,8 @@
 	;; (setq org-hide-block-startup t)
 
 	(add-to-list 'org-capture-templates
-             '("s" "Possible Solution" entry (file buffer-name)
-               "** %^{Possible solution} \n*** Pros \n**** \n*** Cons \n**** \n*** Rating: =%?= "))
+    '("s" "Possible Solution" entry (file buffer-name)
+       "** %^{Possible solution} \n*** Pros \n**** \n*** Cons \n**** \n*** Rating: =%?= "))
 
 	(push 'org-habit org-modules)
 
