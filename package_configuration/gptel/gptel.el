@@ -22,17 +22,16 @@
   (map! :i "C-k" #'gptel--suffix-inplace)
   ;; (setq! gptel-api-key "your key")
   )
-
 (set-popup-rule! "^\\*OpenRouter\\*" :side 'right :size 0.4 :select 1)
 
 ;; OpenRouter offers an OpenAI compatible API
-(setq gptel-model 'qwen/qwen-2.5-coder-32b-instruct
+(setq gptel-model 'deepseek/deepseek-chat
 	gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
   :host "openrouter.ai"
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
-  :models '(qwen/qwen-2.5-coder-32b-instruct)))
+  :models '(qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct deepseek/deepseek-chat )))
 
 (cl-defun my/clean-up-gptel-refactored-code (beg end)
   "Clean up the code responses for refactored code in the current buffer.
@@ -77,7 +76,7 @@ guaranteed to be the response buffer."
 													(buffer-substring-no-properties
 														(region-beginning) (region-end))
 													)
-		(format "Update the following code part with following instruction: %s\n\nCode Above: %s\nCode Below: %s \n(don't output code above and below)"
+		(format "Update the following code part with following instruction: %s\n\nCode (for context, DON'T OUTPUT) Above: %s\nCode (for context, DON'T OUTPUT) Below: %s \n DON'T OUTPUT CODE ABOVE AND BELOW!!!"
 			(read-string "Prompt: ")
       (buffer-substring-no-properties (line-beginning-position 0) (line-end-position 0))
       (buffer-substring-no-properties (line-beginning-position 2) (line-end-position 2))
