@@ -3,6 +3,7 @@
 (setq user-full-name "Andrew Cerkin"
   user-mail-address "cerkin-3@yandex.ru")
 
+(require 's)
 (defun dired-remove-bak-suffix ()
   "Remove '_bak' suffix from all marked files in the current dired buffer."
   (interactive)
