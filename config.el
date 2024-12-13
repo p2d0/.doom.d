@@ -44,6 +44,10 @@
 (setq +light-theme+ 'doom-nord-light)
 (setq +dark-theme+ 'doom-dracula)
 
+(after! persp-mode
+	(setq persp-emacsclient-init-frame-behaviour-override "main")
+	)
+
 (setq lsp-python-ms-auto-install-server nil)
 (setq lsp-python-ms-executable "/run/current-system/sw/bin/python-language-server")
 
