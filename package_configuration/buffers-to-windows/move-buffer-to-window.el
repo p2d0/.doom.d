@@ -3,11 +3,11 @@
 ;; Note that this duplicates code from select-window-by-number, ideally should
 ;; upstream this function into windows.el
 (defun spacemacs/get-window-by-number (i)
-  (let ((windows winum--window-vector)
-        window)
+  (let ((windows (winum--list-windows-in-frame))
+         window)
     (if (and (>= i 0) (< i 10)
-             (setq window (aref windows i)))
-        window
+          (setq window (nth (- i 1) windows)))
+      window
       (error "No window numbered %s" i))))
 
 (defun spacemacs/move-buffer-to-window (windownum follow-focus-p)
@@ -40,6 +40,7 @@
       (unrecord-window-buffer w2 b2)))
   (when follow-focus-p (select-window-by-number windownum)))
 
+(require 'winum)
 (dotimes (i 9)
   (let ((n (+ i 1)))
     (eval `(defun ,(intern (format "buffer-to-window-%s" n)) (&optional arg)
