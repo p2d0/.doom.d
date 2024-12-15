@@ -17,10 +17,13 @@
 	(writeroom--disable)
 	(revert-buffer))
 
+(defun buffer-name-contains-date ()
+  "Check if the current buffer name contains a date in the format YYYY-MM-DD."
+  (string-match-p "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}.org" (buffer-name)))
+
 (defun zen-mode-enable ()
-	(when (> (frame-width) 200)
-		(writeroom-mode))
-	)
+	(when (and (> (frame-width) 200) (not (buffer-name-contains-date)))
+		(writeroom-mode)))
 
 (after! org
 	(require 'ox-publish)

@@ -44,6 +44,8 @@
 (setq +light-theme+ 'doom-nord-light)
 (setq +dark-theme+ 'doom-dracula)
 
+(use-package! kbd-mode)
+
 (after! persp-mode
 	(setq persp-emacsclient-init-frame-behaviour-override "main")
 	)
