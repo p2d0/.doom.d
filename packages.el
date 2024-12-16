@@ -24,6 +24,7 @@
 ;; (package! mail-parse :disable t)
 (package! org-pomodoro)
 (package! xenops)
+(package! drag-stuff)
 (package! kbd-mode
   :recipe (:host github
            :repo "kmonad/kbd-mode"))

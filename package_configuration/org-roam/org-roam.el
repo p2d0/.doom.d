@@ -7,7 +7,7 @@
 
 (after! org-roam
   (setq org-roam-directory (expand-file-name "~/Dropbox/org/roam/"))
-  (setq org-roam-node-default-sort 'file-mtime)
+  (setq org-roam-node-default-sort 'file-atime)
 	(add-hook! 'org-mode-hook #'display-org-roam-buffer)
   ;; (setq org-roam-buffer-postrender-functions '(display-org-roam-buffer))
 

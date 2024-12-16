@@ -55,7 +55,7 @@
 
 (load! "nano")
 (load! "use-packages")
-;; (load! "configuration/autodarkmode")
+(load! "configuration/autodarkmode")
 ;; (solaire-mode t)
 
 (defun solaire-mode-real-buffer-except-treemacs-p ()
@@ -73,17 +73,46 @@
 ;; (if (= (get-color-scheme) 1)
 ;; 	(load-theme +dark-theme+ t)
 ;; 	(load-theme +light-theme+ t))
-(use-package doom-themes
-  :custom-face
-  (font-lock-comment-face ((t (:foreground "red"))))
-  ;; DRACULA
-  (window-divider   ((t (:foreground "#1E2029" :background "#1E2029"))))
-  (solaire-default-face   ((t (:background "#1E2029"))))
-  (internal-border   ((t (:foreground "#1E2029" :background "#1E2029"))))
-  :config
-  (setq doom-themes-enable-bold nil)
-  (load-theme +dark-theme+ t)
-  )
+(if (= (get-color-scheme) 1)
+	(use-package doom-themes
+	  :custom-face
+	  (font-lock-comment-face ((t (:foreground "red"))))
+	  ;; DRACULA
+	  (window-divider   ((t (:foreground "#1E2029" :background "#1E2029"))))
+	  (solaire-default-face   ((t (:background "#1E2029"))))
+	  (internal-border   ((t (:foreground "#1E2029" :background "#1E2029"))))
+	  (doom-nano-modeline-evil-emacs-state-face    ((t ())))
+	  (doom-nano-modeline-evil-insert-state-face  ((t ())))
+	  (doom-nano-modeline-evil-motion-state-face  ((t ())))
+	  (doom-nano-modeline-evil-normal-state-face  ((t ())))
+	  (doom-nano-modeline-evil-operator-state-face((t ())))
+	  (doom-nano-modeline-evil-replace-state-face ((t ())))
+	  (doom-nano-modeline-evil-visual-state-face  ((t ())))
+	  (doom-nano-modeline-inactive-face           ((t ())))
+	  :config
+	  (setq doom-themes-enable-bold nil)
+	  (load-theme +dark-theme+ t)
+	  )
+	(use-package doom-themes
+	  :custom-face
+	  (font-lock-comment-face ((t (:foreground "red"))))
+	  ;; NORD
+	  (internal-border   ((t (:foreground "#c3d0e1" :background "#c3d0e1"))))
+	  (window-divider   ((t (:foreground "#c3d0e1" :background "#c3d0e1"))))
+	  (solaire-default-face  ((t (:inherit 'default :background "#c3d0e1" ))))
+	  (doom-nano-modeline-evil-emacs-state-face    ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+	  (doom-nano-modeline-evil-insert-state-face   ((t (:foreground "#FFFFFF" :background "#FFAB91"))))
+	  (doom-nano-modeline-evil-motion-state-face   ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+	  (doom-nano-modeline-evil-normal-state-face   ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+	  (doom-nano-modeline-evil-operator-state-face ((t (:foreground "#FFFFFF" :background "#90A4AE"))))
+	  (doom-nano-modeline-evil-replace-state-face  ((t (:foreground "#FFFFFF" :background "#FF6F00"))))
+	  (doom-nano-modeline-evil-visual-state-face   ((t (:foreground "#FFFFFF" :background "#673AB7"))))
+	  (doom-nano-modeline-inactive-face            ((t (:foreground "#90A4AE" :background "#E5E9F0"))))
+
+	  :config
+	  (setq doom-themes-enable-bold nil)
+	  (load-theme +light-theme+ t)
+	  ))
 
 ;; Fix comments in tpl mode
 
@@ -98,7 +127,7 @@
 ;; 									:size 13)
 
 (setq doom-font (font-spec :family "Fira Code" :weight 'normal
-		  :size 13))
+									:size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 
 ;; Fira Code

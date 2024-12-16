@@ -16,7 +16,7 @@
       lsp-nix-nixd-formatting-command [ "nixfmt" ]
       lsp-nix-nixd-nixpkgs-expr "import (builtins.getFlake \"/etc/nixos/\").inputs.nixpkgs { }"
       lsp-nix-nixd-nixos-options-expr "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.mysystem.options"
-      lsp-nix-nixd-home-manager-options-expr nil
+      lsp-nix-nixd-home-manager-options-expr "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.mysystem.options.home-manager.users.type.getSubOptions []"
 	))
 
 (with-eval-after-load 'lsp-mode
@@ -37,19 +37,19 @@
 ;;                     :major-modes '(nix-mode)
 ;;                     :server-id 'nix)))
 
-;; (use-package lsp-nix
-;;   :ensure lsp-mode
-;;   :after (lsp-mode)
-;;   :demand t
-;; 	;; :config
-;;   ;; (setq +lsp-company-backends '(:separate  company-capf))
-;;   ;; :custom
-;;   ;; (lsp-nix-nil-formatter ["nixpkgs-fmt"])
-;; 	)
+(use-package lsp-nix
+  :ensure lsp-mode
+  :after (lsp-mode)
+  :demand t
+	;; :config
+  ;; (setq +lsp-company-backends '(:separate  company-capf))
+  ;; :custom
+  ;; (lsp-nix-nil-formatter ["nixpkgs-fmt"])
+	)
 
-;; (use-package nix-mode
-;;   :hook (nix-mode . lsp-deferred)
-;; 	:config
-;;   (setq +lsp-company-backends '(:separate  company-capf))
-;;   ;; :ensure t
-;; 	)
+(use-package nix-mode
+  :hook (nix-mode . lsp-deferred)
+	:config
+  (setq +lsp-company-backends '(:separate  company-capf))
+  ;; :ensure t
+	)
