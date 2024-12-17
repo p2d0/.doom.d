@@ -46,5 +46,5 @@
 (after! recentf
 	(setq recentf-max-saved-items 5000)
 	(setq recentf-max-menu-items 1000)
-	;; (run-at-time 60 (* 5 15) 'recentf-save-list)
+	(run-at-time 60 (* 5 15) 'recentf-save-list)
 	)
