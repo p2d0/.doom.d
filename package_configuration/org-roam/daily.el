@@ -16,8 +16,8 @@
   (let* ((data (org-element-parse-buffer)) ; parse the buffer
           (first-heading (org-element-map data 'headline ; find the first headline
                            (lambda (head) (if (s-contains? heading (org-element-property :raw-value head))
-																			 (org-element-extract head)
-																			 ))
+																						(org-element-extract head)
+																						))
                            nil t)) ; return the first match
           (reset-check (org-element-map first-heading 'headline
 												 (lambda (head)
@@ -28,6 +28,35 @@
 															 ))))))
     (org-element-interpret-data reset-check)
 		))
+
+;; (defun get-text-before-first-heading ()
+;; 	(org-element-map (org-element-parse-buffer) 'section
+;; 		(lambda (section)
+;; 			(prin1 section)
+;; 			(org-element-map section t (lambda (s)
+;; 																					 (org-element-property :value s) ))
+;; 			;; (org-element-property :value section)
+;; 			) nil t)
+;; 	)
+
+(defun get-text-before-first-heading ()
+  "Return the text before the first heading in the buffer."
+  (interactive)
+  (let* ((data (org-element-parse-buffer)) ; parse the buffer
+					(first-heading (org-element-map data 'headline ; find the first headline
+                           #'identity
+                           nil t)) ; return the first match
+					(property-drawer (org-element-map data 'property-drawer ; find the first headline
+														 #'identity
+														 nil t))
+					(text-begin (org-element-property :end property-drawer)) ; start from the beginning of the buffer
+					(text-end (org-element-property :begin first-heading))) ; get the beginning of the first heading
+    (buffer-substring text-begin text-end)
+		))
+
+(defun org-get-last-daily-text-before-first-heading ()
+	(with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
+    (string-trim (get-text-before-first-heading))))
 
 (defun org-get-unfinished-under (heading)
   "Get the unfinished headlines under a given heading."
@@ -44,11 +73,12 @@
   (let* ((data (org-element-parse-buffer)) ; parse the buffer
 					(first-heading (org-element-map data 'headline ; find the first headline
 													 (lambda (head) (when (s-contains? heading (org-element-property :raw-value head))
-																			 head))
+																						head))
 													 nil t)) ; return the first match
 					(text-begin (org-element-property :contents-begin first-heading)) ; get the beginning of the text
 					(text-end (org-element-property :contents-end first-heading))) ; get the end of the text
     (buffer-substring-no-properties text-begin text-end)))
+
 
 (defun get-last-modified-file (directory)
   "Return the path of the most recently modified file in the given DIRECTORY."

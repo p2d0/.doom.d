@@ -22,8 +22,12 @@
 ;; (package! hercules)
 (package! evil-snipe :disable t)
 ;; (package! mail-parse :disable t)
+
 (package! org-pomodoro)
 (package! xenops)
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 (package! drag-stuff)
 (package! kbd-mode
   :recipe (:host github
