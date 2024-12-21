@@ -4,4 +4,7 @@
 (after! web-mode
 	(setq web-mode-comment-style 2)
  ;; TODO autocomplete web-mode
+	(map! :map web-mode-map
+		:i "C-j" #'emmet-expand-line
+		)
 	)
