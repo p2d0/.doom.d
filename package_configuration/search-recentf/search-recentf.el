@@ -43,8 +43,20 @@
 (defun recentf-save-only-if-main ()
 
 	)
-(after! recentf
-	(setq recentf-max-saved-items 5000)
-	(setq recentf-max-menu-items 1000)
-	;; (run-at-time 60 (* 5 15) 'recentf-save-list)
-	)
+
+;; (after! recentf
+;; 	(setq recentf-max-saved-items 5000)
+;; 	(setq recentf-max-menu-items 1000)
+;; 	;; (run-at-time 60 (* 5 15) 'recentf-save-list)
+;; 	)
+
+(use-package recentf
+  :init
+  (setq
+    recentf-save-file "~/.cache/emacs/recentf"
+    recentf-max-saved-items 10000
+    recentf-max-menu-items 5000
+    )
+  (recentf-mode 1)
+  (run-at-time nil (* 5 60) 'recentf-save-list)
+  )
