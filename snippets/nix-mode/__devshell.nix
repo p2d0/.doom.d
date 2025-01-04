@@ -9,14 +9,7 @@ devshell.mkShell {
 Entered $2 app development environment.
 '';
   env = [
-    # {
-    #   name = "ANDROID_HOME";
-    #   value = "${android-sdk}/share/android-sdk";
-    # }
-    # {
-    #   name = "PATH";
-    #   prefix = "${android-sdk}/bin";
-    # }
+
   ];
   packages = [
 
