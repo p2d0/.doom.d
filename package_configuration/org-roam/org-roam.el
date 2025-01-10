@@ -88,6 +88,14 @@
 	   :unnarrowed t
 	   :immediate-finish t
 	   ) org-roam-capture-templates)
+
+  (push '("k" "Dr.K" plain "%?"
+	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+		     "#+title: ${title}\n#+filetags: :Youtube:DR.K:\n[[%^{Please insert the youtube link}][Youtube link]]\n* ?\n* 🤖 AI Summary")
+	   :unnarrowed t
+	   :immediate-finish t
+	   ) org-roam-capture-templates)
+
   (push '("a" "article" plain "%?"
 	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 		     "#+title: ${title}\n#+filetags: :Article:\n[[%^{Please insert the article link}][Article link]]")
