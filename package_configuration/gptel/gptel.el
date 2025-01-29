@@ -31,7 +31,7 @@
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
-  :models '(qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct deepseek/deepseek-chat )))
+  :models '(qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct)))
 
 (cl-defun my/clean-up-gptel-refactored-code (beg end)
   "Clean up the code responses for refactored code in the current buffer.
