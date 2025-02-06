@@ -20,8 +20,9 @@
 	)
 
 ;; Expand variants
-(global-set-key (kbd "M-/") 'hippie-expand)
+;; (global-set-key (kbd "M-/") 'hippie-expand)
 ;; (global-set-key (kbd "M-/") 'evil-complete-next)
+(global-set-key (kbd "M-/") 'dabbrev-expand)
 
 ;; Put in insert mode
 ;; (global-set-key (kbd "C-p") 'evil-paste-after)
