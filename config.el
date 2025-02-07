@@ -114,6 +114,8 @@
 	  (load-theme +light-theme+ t)
 	  ))
 
+(setq user-full-name "p2d0")
+
 ;; Fix comments in tpl mode
 
 (setq large-file-warning-threshold 500000)
