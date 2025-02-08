@@ -9,112 +9,85 @@
   (setq org-roam-directory (expand-file-name "~/Dropbox/org/roam/"))
   (setq org-roam-node-default-sort 'file-mtime)
 	(add-hook! 'org-mode-hook #'display-org-roam-buffer)
-  ;; (setq org-roam-buffer-postrender-functions '(display-org-roam-buffer))
 
-  ;; (setq org-roam-db-location "~/Dropbox/org/roam/roam.db")
-  ;; (advice-remove 'org-roam-db-query #'+org-roam-try-init-db-a)
-  ;; (setq org-roam-graph-viewer "brave")
-  ;; (setq org-roam-graph-executable "neato")
+	;; Override to not get backlinks from dailies
+	(defun org-roam-backlinks-remove-if-daily (backlinks)
+		(cl-remove-if (pcase-lambda (`(,source-id ,dest-id ,pos ,properties))
+										(string-match "daily" (org-roam-node-file (org-roam-node-from-id  source-id))))
+      backlinks))
 
-  ;; (require 'ox-hugo)
+	(cl-defun org-roam-backlinks-get (node &key unique)
+		"Return the backlinks for NODE.
 
-  ;; (defun roam-export--concat-outline (outline)
-  ;;   (--reduce (concat acc " -> " it) outline))
-
-  ;; (defun roam-export--insert-backlink (backlink)
-  ;;   (let* ((source (org-roam-backlink-source-node backlink))
-  ;; 					(text (concat "[[id:" (org-roam-node-id source) "][" (org-roam-node-title source) "]]"))
-  ;; 					(outline (roam-export--concat-outline (plist-get (org-roam-backlink-properties backlink) :outline)))
-  ;; 					)
-  ;;     (insert text)
-  ;;     (insert " (" outline ")\n\n")
-  ;;     ))
-
-  ;; (defun roam-export/insert-backlinks (&optional backend)
-  ;;   (if (org-roam-buffer-p)
-  ;; 		(let ((backlinks (org-roam-backlinks-get (org-roam-node-at-point))))
-  ;; 			(goto-char (point-max))
-  ;; 			(insert (concat "\n* Backlinks\n"))
-  ;; 			(seq-each 'roam-export--insert-backlink backlinks)
-  ;; 			) )
-  ;;   )
-
-  ;; ;; (add-hook 'org-export-before-processing-hook #'roam-export/insert-backlinks)
-
-
-  ;; (defun roam-export/get-tags (tag-list info)
-  ;;   (if (org-roam-buffer-p)
-  ;; 		(append tag-list (seq-map #'downcase (org-roam-node-tags (org-roam-node-at-point) )))))
-
-
-  ;; (add-to-list 'org-hugo-tag-processing-functions 'roam-export/get-tags)
-
-  ;; (setq org-hugo-auto-set-lastmod t)
-  ;; (setq org-export-with-date t)
-  ;; (setq org-export-with-broken-links t)
-
-  ;; (defun roam-export/export (&rest args)
-  ;;   (when (org-roam-file-p)
-  ;;     (org-hugo-export-to-md)))
-
-  ;; (add-hook 'org-mode-hook
-  ;; 	(lambda ()
-  ;; 		(add-hook 'after-save-hook #'roam-export/export nil t)))
-
-
-  ;; (defun publish-dir-org ()
-  ;;   "Publish all org files in a directory"
-  ;;   (interactive)
-  ;;   (dolist (file (file-expand-wildcards "*.org"))
-  ;;     (with-current-buffer
-  ;; 			(find-file-noselect file)
-  ;; 			(org-hugo-export-to-md))))
+ When UNIQUE is nil, show all positions where references are found.
+ When UNIQUE is t, limit to unique sources."
+		(let* ((sql (if unique
+                  [:select :distinct [source dest pos properties]
+										:from links
+										:where (= dest $s1)
+										:and (= type "id")
+										:group :by source
+										:having (funcall min pos)]
+									[:select [source dest pos properties]
+										:from links
+										:where (= dest $s1)
+										:and (= type "id")]))
+						(backlinks (org-roam-backlinks-remove-if-daily (org-roam-db-query sql (org-roam-node-id node)))))
+			(cl-loop for backlink in  backlinks
+        collect (pcase-let ((`(,source-id ,dest-id ,pos ,properties) backlink))
+                  (prin1 "WATAFAK")
+                  (org-roam-populate
+                    (org-roam-backlink-create
+                      :source-node (org-roam-node-create :id source-id)
+                      :target-node (org-roam-node-create :id dest-id)
+                      :point pos
+                      :properties properties))))))
 
   (setq daily-template "~/Dropbox/org/daily.org")
   (setq org-roam-dailies-capture-templates `(("j" "journal" plain "%?\n"
-					       :if-new (file+head "%<%Y-%m-%d>.org" ,(format "%%[%s]" daily-template))
-					       :immediate-finish t
-					       :unnarrowed t
-					       )))
+																							 :if-new (file+head "%<%Y-%m-%d>.org" ,(format "%%[%s]" daily-template))
+																							 :immediate-finish t
+																							 :unnarrowed t
+																							 )))
   (setq org-roam-capture-templates '(("d" "default" plain "%?"
-				       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-						 "#+title: ${title}\n")
-				       :immediate-finish t
-				       :unnarrowed t)))
+																			 :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+																								 "#+title: ${title}\n")
+																			 :immediate-finish t
+																			 :unnarrowed t)))
 
   (push '("y" "youtube" plain "%?"
-	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-		     "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]\n* ?\n* 🤖 AI Summary")
-	   :unnarrowed t
-	   :immediate-finish t
-	   ) org-roam-capture-templates)
+					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+										 "#+title: ${title}\n#+filetags: :Youtube:\n[[%^{Please insert the youtube link}][Youtube link]]\n* ?\n* 🤖 AI Summary")
+					 :unnarrowed t
+					 :immediate-finish t
+					 ) org-roam-capture-templates)
 
   (push '("k" "Dr.K" plain "%?"
-	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-		     "#+title: ${title}\n#+filetags: :Youtube:DR.K:\n[[%^{Please insert the youtube link}][Youtube link]]\n* ?\n* 🤖 AI Summary")
-	   :unnarrowed t
-	   :immediate-finish t
-	   ) org-roam-capture-templates)
+					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+										 "#+title: ${title}\n#+filetags: :Youtube:DR.K:\n[[%^{Please insert the youtube link}][Youtube link]]\n* ?\n* 🤖 AI Summary")
+					 :unnarrowed t
+					 :immediate-finish t
+					 ) org-roam-capture-templates)
 
   (push '("a" "article" plain "%?"
-	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-		     "#+title: ${title}\n#+filetags: :Article:\n[[%^{Please insert the article link}][Article link]]")
-	   :unnarrowed t
-	   :immediate-finish t
-	   ) org-roam-capture-templates)
+					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+										 "#+title: ${title}\n#+filetags: :Article:\n[[%^{Please insert the article link}][Article link]]")
+					 :unnarrowed t
+					 :immediate-finish t
+					 ) org-roam-capture-templates)
 
   (push '("p" "private" plain "%?"
-	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}_private.org"
-		     "#+title: ${title}\n")
-	   :unnarrowed t
-	   ) org-roam-capture-templates)
+					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}_private.org"
+										 "#+title: ${title}\n")
+					 :unnarrowed t
+					 ) org-roam-capture-templates)
 
   (push '("b" "book" plain "* 🚀 The Book in 3 Sentences\n1. \n\n* ☘ How the Book Changed Me\n+ \n\n* ✍ My Top 3 Quotes\n\n* 📒 Summary + Notes\n%?"
-	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-		     "#+title: ${title}\n#+filetags: :Book:\n")
-	   :unnarrowed t
-	   :immediate-finish t
-	   ) org-roam-capture-templates))
+					 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+										 "#+title: ${title}\n#+filetags: :Book:\n")
+					 :unnarrowed t
+					 :immediate-finish t
+					 ) org-roam-capture-templates))
 
 ;; Export
 ;;

@@ -63,7 +63,7 @@ guaranteed to be the response buffer."
 
 (defun gptel--update-message ()
   "Set a generic refactor/rewrite message for the buffer."
-  (format "You are a %s programmer. Generate only code, no explanation, no code fences. Update the following code part with following instruction: %s"
+  (format "You are a %s programmer. Generate only code, no explanation, no code fences. Update the following code part with following instruction: <instruction>%s</instruction>"
     (gptel--strip-mode-suffix major-mode) (read-string "Prompt: ")))
 
 (defun gptel--update-message-programmer ()
@@ -72,11 +72,11 @@ guaranteed to be the response buffer."
 
 (defun gptel--update-message-end ()
   "Set a generic refactor/rewrite message for the buffer."
-  (if (region-active-p) (format "Update the following code part with following instruction: %s\n\n Code: %s" (read-string "Prompt: ")
+  (if (region-active-p) (format "Update the following code part with following instruction <instruction>%s</instruction>\n\n Code: <code>%s</code>" (read-string "Prompt: ")
 													(buffer-substring-no-properties
 														(region-beginning) (region-end))
 													)
-		(format "Update the following code part with following instruction: %s\n\nCode (for context, DON'T OUTPUT) Above: %s\nCode (for context, DON'T OUTPUT) Below: %s \n DON'T OUTPUT CODE ABOVE AND BELOW!!!"
+		(format "Update the following code part with following instruction: <instruction>%s</instruction>\n\n<context_above>%s</context_above><context_below>%s</context_below>"
 			(read-string "Prompt: ")
       (buffer-substring-no-properties (line-beginning-position 0) (line-end-position 0))
       (buffer-substring-no-properties (line-beginning-position 2) (line-end-position 2))
