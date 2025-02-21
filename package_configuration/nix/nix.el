@@ -4,27 +4,27 @@
 ;;   (setq lsp-nix-server-path "nil")
 ;; 	)
 
-;; ;; (use-package nix-mode
-;; ;; :after lsp-mode
-;; ;; :ensure t
-;; ;; :hook
-;; ;; (nix-mode . lsp-deferred) ;; So that envrc mode will work
-;; ;; :custom
-;; ;; (lsp-disabled-clients '((nix-mode . nix-nil))) ;; Disable nil so that nixd will be used as lsp-server
-;; ;; :config
-;; ;; (setq lsp-nix-nixd-server-path "nixd"
-;; ;;       lsp-nix-nixd-formatting-command [ "nixfmt" ]
-;; ;;       lsp-nix-nixd-nixpkgs-expr "import (builtins.getFlake \"/etc/nixos/\").inputs.nixpkgs { }"
-;; ;;       lsp-nix-nixd-nixos-options-expr "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.mysystem.options"
-;; ;;       lsp-nix-nixd-home-manager-options-expr "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.mysystem.options.home-manager.users.type.getSubOptions []"
-;; ;; 	))
+(use-package nix-mode
+:after lsp-mode
+:ensure t
+:hook
+(nix-mode . lsp-deferred) ;; So that envrc mode will work
+:custom
+(lsp-disabled-clients '((nix-mode . nix-nil))) ;; Disable nil so that nixd will be used as lsp-server
+:config
+(setq lsp-nix-nixd-server-path "nixd"
+      lsp-nix-nixd-formatting-command [ "nixfmt" ]
+      lsp-nix-nixd-nixpkgs-expr "import (builtins.getFlake \"/etc/nixos/\").inputs.nixpkgs { }"
+      lsp-nix-nixd-nixos-options-expr "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.mysystem.options"
+      lsp-nix-nixd-home-manager-options-expr "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.mysystem.options.home-manager.users.type.getSubOptions []"
+	))
 
-;; ;; (with-eval-after-load 'lsp-mode
-;; ;;   (lsp-register-client
-;; ;;     (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
-;; ;;                      :major-modes '(nix-mode)
-;; ;;                      :priority 0
-;; ;;                      :server-id 'nixd)))
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+    (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
+                     :major-modes '(nix-mode)
+                     :priority 0
+                     :server-id 'nixd)))
 
 ;; (add-hook! 'nix-mode-hook
 ;;          ;; enable autocompletion with company
@@ -57,15 +57,15 @@
 (use-package lsp-mode
   :ensure t)
 
-(use-package lsp-nix
-  :ensure lsp-mode
-  :after (lsp-mode)
-  :demand t
-  :custom
-  (lsp-nix-nil-formatter ["nixfmt"])
-	(lsp-nix-nil-max-mem 16000)
-	(lsp-nix-nil-auto-eval-inputs nil)
-	)
+;; (use-package lsp-nix
+;;   :ensure lsp-mode
+;;   :after (lsp-mode)
+;;   :demand t
+;;   :custom
+;;   (lsp-nix-nil-formatter ["nixfmt"])
+;; 	(lsp-nix-nil-max-mem 16000)
+;; 	(lsp-nix-nil-auto-eval-inputs nil)
+;; 	)
 
 (use-package nix-mode
   :hook (nix-mode . lsp-deferred)
