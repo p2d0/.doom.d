@@ -7,6 +7,11 @@
 (map! :leader "x" (lambda (&rest _) (interactive "P") (doom/open-scratch-buffer nil nil 1)))
 (map! :n
 	"C-х" #'evil-force-normal-state)
+(defun find-file-in-dir ()
+	(interactive)
+	(doom-project-find-file (read-directory-name "Find file in directory: ")))
+
+(map! :leader "fd" #'find-file-in-dir)
 
 (map!
 	:map dired-mode-map
