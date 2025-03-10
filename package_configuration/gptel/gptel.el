@@ -1,7 +1,7 @@
 ;; TODO test
 (after! gptel
 	(setq gptel--system-message "
-    You are an intelligent programmer named EmacsBot. You are powered by qwen-2.5-coder-32b-instruct.
+    You are an intelligent programmer named EmacsBot. You are powered by gemini 2.0 flash.
 
     You are helping a colleague answer a programming question.
 
@@ -22,16 +22,17 @@
   (map! :i "C-k" #'gptel--suffix-inplace)
   ;; (setq! gptel-api-key "your key")
   )
+
 (set-popup-rule! "^\\*OpenRouter\\*" :side 'right :size 0.4 :select 1)
 
 ;; OpenRouter offers an OpenAI compatible API
-(setq gptel-model 'deepseek/deepseek-chat
+(setq gptel-model 'google/gemini-2.0-flash-001
 	gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
   :host "openrouter.ai"
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
-  :models '(qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct)))
+  :models '(google/gemini-2.0-flash-001 qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct)))
 
 (cl-defun my/clean-up-gptel-refactored-code (beg end)
   "Clean up the code responses for refactored code in the current buffer.
@@ -74,8 +75,7 @@ guaranteed to be the response buffer."
   "Set a generic refactor/rewrite message for the buffer."
   (if (region-active-p) (format "Update the following code part with following instruction <instruction>%s</instruction>\n\n Code: <code>%s</code>" (read-string "Prompt: ")
 													(buffer-substring-no-properties
-														(region-beginning) (region-end))
-													)
+														(region-beginning) (region-end)))
 		(format "Update the following code part with following instruction: <instruction>%s</instruction>\n\n<context_above>%s</context_above><context_below>%s</context_below>"
 			(read-string "Prompt: ")
       (buffer-substring-no-properties (line-beginning-position 0) (line-end-position 0))
