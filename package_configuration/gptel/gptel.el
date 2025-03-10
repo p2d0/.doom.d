@@ -17,7 +17,7 @@
       (:n "aa" #'gptel-menu)
       (:v "ak" #'gptel--suffix-update-and-ediff)
       (:n "ab" #'gptel-add)))
-  (map! "C-k" #'gptel--suffix-inplace)
+  (map! "C-k" #'gptel-rewrite)
   (map! :n "C-k" #'gptel--suffix-inplace)
   (map! :i "C-k" #'gptel--suffix-inplace)
   ;; (setq! gptel-api-key "your key")
@@ -28,11 +28,11 @@
 ;; OpenRouter offers an OpenAI compatible API
 (setq gptel-model 'google/gemini-2.0-flash-001
 	gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
-  :host "openrouter.ai"
-  :endpoint "/api/v1/chat/completions"
-  :stream t
-  :key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
-  :models '(google/gemini-2.0-flash-001 qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct)))
+									:host "openrouter.ai"
+									:endpoint "/api/v1/chat/completions"
+									:stream t
+									:key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
+									:models '(google/gemini-2.0-flash-001 qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct)))
 
 (cl-defun my/clean-up-gptel-refactored-code (beg end)
   "Clean up the code responses for refactored code in the current buffer.
@@ -44,9 +44,9 @@ guaranteed to be the response buffer."
   (when (and beg end)
     (save-excursion
       (let ((contents
-             (replace-regexp-in-string
-              "\n*``.*\n*" ""
-              (buffer-substring-no-properties beg end))))
+							(replace-regexp-in-string
+								"\n*``.*\n*" ""
+								(buffer-substring-no-properties beg end))))
         (delete-region beg end)
         (goto-char beg)
         (insert contents))
@@ -61,6 +61,7 @@ guaranteed to be the response buffer."
 ;; OPTIONAL configuration
 ;; (setq gptel-model   'qwen-2.5-coder-32b-instruct
 ;;       gptel-backend nil)
+
 
 (defun gptel--update-message ()
   "Set a generic refactor/rewrite message for the buffer."
@@ -172,4 +173,28 @@ guaranteed to be the response buffer."
 						(unless output-to-other-buffer-p
 							(gptel--attach-response-history (list (buffer-substring-no-properties beg end))))
 						(kill-region beg end))))))
+
+	(transient-define-suffix gptel--suffix-inplace2 (&rest args)
+		"Rewrite or refactor region contents."
+		:key "r"
+		(interactive)
+		(let* ((nosystem (gptel--model-capable-p 'nosystem))
+						;; Try to send context with system message
+						(gptel--system-message (gptel--update-message-programmer))
+						(gptel-use-context
+							(and gptel-use-context (if nosystem 'user 'system)))
+						(prompt (gptel--update-message-end)))
+			(prog1 (gptel-request prompt
+							 :system (or (and gptel--system-message system-extra
+														 (concat gptel--system-message "\n\n" system-extra))
+												 gptel--system-message)
+							 :stream gptel-stream
+							 :context
+							 (let ((ov (or (cdr-safe (get-char-property-and-overlay (point) 'gptel-rewrite))
+													 (make-overlay (region-beginning) (region-end) nil t))))
+								 (overlay-put ov 'category 'gptel)
+								 (overlay-put ov 'evaporate t)
+								 (cons ov (generate-new-buffer "*gptel-rewrite*")))
+							 :callback #'gptel--rewrite-callback)
+				)))
   )
