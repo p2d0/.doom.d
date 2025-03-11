@@ -12,7 +12,7 @@
 ;; (package! nano-emacs
 ;;   :recipe (:host github :repo "rougier/nano-emacs"))
 ;; (package! lsp-nix)
-(package! gptel)
+;; (package! gptel)
 (package! elysium :recipe (:host github :repo "lanceberge/elysium" :branch "main"))
 (package! doom-nano-modeline
   :recipe (:host github
@@ -65,8 +65,8 @@
 
 ;; (package! openai
 ;;   :recipe (:host github :repo "emacs-openai/openai" :files ("dist" "*.el")))
-;; (package! gptel
-;;   :recipe (:host github :repo "karthink/gptel" :files ("dist" "*.el")))
+(package! gptel
+  :recipe (:host github :repo "karthink/gptel" :files ("dist" "*.el")))
 
 ;; (package! chatgpt
 ;;   :recipe (:host github :repo "emacs-openai/chatgpt" :files ("dist" "*.el")))

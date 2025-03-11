@@ -74,10 +74,10 @@ guaranteed to be the response buffer."
 
 (defun gptel--update-message-end ()
   "Set a generic refactor/rewrite message for the buffer."
-  (if (region-active-p) (format "Update the following code part with following instruction <instruction>%s</instruction>\n\n Code: <code>%s</code>" (read-string "Prompt: ")
+  (if (region-active-p) (format "Update the following code part with following instruction <instruction>%s</instruction>\n\n Code: <code_to_update>%s</code_to_update>" (read-string "Prompt: ")
 													(buffer-substring-no-properties
 														(region-beginning) (region-end)))
-		(format "Update the following code part with following instruction: <instruction>%s</instruction>\n\n<context_above>%s</context_above><context_below>%s</context_below>"
+		(format "Insert code with following instruction: <instruction>%s</instruction>\n\n<context_above>%s</context_above><context_below>%s</context_below>"
 			(read-string "Prompt: ")
       (buffer-substring-no-properties (line-beginning-position 0) (line-end-position 0))
       (buffer-substring-no-properties (line-beginning-position 2) (line-end-position 2))
@@ -174,27 +174,55 @@ guaranteed to be the response buffer."
 							(gptel--attach-response-history (list (buffer-substring-no-properties beg end))))
 						(kill-region beg end))))))
 
-	(transient-define-suffix gptel--suffix-inplace2 (&rest args)
-		"Rewrite or refactor region contents."
-		:key "r"
-		(interactive)
-		(let* ((nosystem (gptel--model-capable-p 'nosystem))
-						;; Try to send context with system message
-						(gptel--system-message (gptel--update-message-programmer))
-						(gptel-use-context
-							(and gptel-use-context (if nosystem 'user 'system)))
-						(prompt (gptel--update-message-end)))
-			(prog1 (gptel-request prompt
-							 :system (or (and gptel--system-message system-extra
-														 (concat gptel--system-message "\n\n" system-extra))
-												 gptel--system-message)
-							 :stream gptel-stream
-							 :context
-							 (let ((ov (or (cdr-safe (get-char-property-and-overlay (point) 'gptel-rewrite))
-													 (make-overlay (region-beginning) (region-end) nil t))))
-								 (overlay-put ov 'category 'gptel)
-								 (overlay-put ov 'evaporate t)
-								 (cons ov (generate-new-buffer "*gptel-rewrite*")))
-							 :callback #'gptel--rewrite-callback)
-				)))
+	(transient-define-suffix gptel--suffix-send2 (&rest args)
+  "Send ARGS."
+  :key "RET"
+	(interactive)
+  (let ((stream gptel-stream)
+        (in-place nil)
+        (output-to-other-buffer-p nil)
+        (backend gptel-backend)
+        (model gptel-model)
+        (backend-name (gptel-backend-name gptel-backend))
+        (buffer nil) (position (point))
+        (callback) (gptel-buffer-name)
+        (system-extra nil)
+        (dry-run nil)
+        ;; Input redirection: grab prompt from elsewhere?
+        (prompt (gptel--update-message-end)))
+
+    (prog1 (gptel-request prompt
+             :buffer (or buffer (current-buffer))
+             :position position
+             :in-place (and in-place (not output-to-other-buffer-p))
+             :stream stream
+             :system
+             (if system-extra
+                 (gptel--merge-additional-directive system-extra)
+               gptel--system-message)
+             :callback callback
+             :fsm (gptel-make-fsm :handlers gptel-send--handlers)
+             :dry-run dry-run)
+
+      (unless dry-run
+        (gptel--update-status " Waiting..." 'warning))
+
+      ;; NOTE: Possible future race condition here if Emacs ever drops the GIL.
+      ;; The HTTP request callback might modify the buffer before the in-place
+      ;; text is killed below.
+      (when in-place
+        (if (or buffer-read-only (get-char-property (point) 'read-only))
+            (message "Not replacing prompt: region is read-only")
+          (let ((beg (if (use-region-p)
+                         (region-beginning)
+                       (max (previous-single-property-change
+                             (point) 'gptel nil (point-min))
+                            (previous-single-property-change
+                             (point) 'read-only nil (point-min)))))
+                (end (if (use-region-p) (region-end) (point))))
+            (unless output-to-other-buffer-p
+              ;; store the killed text in gptel-history
+              (gptel--attach-response-history
+               (list (buffer-substring-no-properties beg end))))
+            (kill-region beg end)))))))
   )
