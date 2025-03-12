@@ -20,4 +20,6 @@
 
 (map!
   :leader
-  "fc" #'cursor-open-current-file)
+  "fc" #'cursor-open-current-file
+	"fC" #'cursor-open-project-folder
+	)
