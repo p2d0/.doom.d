@@ -1,8 +1,9 @@
 ;;; package_configuration/org.el -*- lexical-binding: t; -*-
 
 
-(setq org-directory "~/Dropbox/org/")
-(set-popup-rule! "^\\*Org Agenda" :size 16)
+(after! org
+	(setq org-directory "~/Dropbox/org/")
+	(set-popup-rule! "^\\*Org Agenda" :size 16))
 
 (use-package org-tidy
   :ensure t
