@@ -9,6 +9,7 @@
   (setq org-roam-directory (expand-file-name "~/Dropbox/org/roam/"))
   (setq org-roam-node-default-sort 'file-mtime)
 	(add-hook! 'org-mode-hook #'display-org-roam-buffer)
+	(add-hook! 'org-mode-hook #'update-total-minutes)
 
 	;; Override to not get backlinks from dailies
 	(defun org-roam-backlinks-remove-if-daily (backlinks)

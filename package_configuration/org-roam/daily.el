@@ -58,6 +58,24 @@
 	(with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
     (string-trim (get-text-before-first-heading))))
 
+(defun get-total-minutes-done ()
+	(let* ((data (org-element-parse-buffer)) ; parse the buffer
+					(first-heading (org-element-map data 'headline ; find the first headline
+                           (lambda (item)
+														 ;; (prin1 item)
+														 (when (and
+																		 (s-contains? "Minute" (org-element-property :raw-value item))
+																		 (s-equals? "done" (org-element-property :todo-type item)) )
+															 (org-element-property :raw-value item )
+															 )
+														 )
+                           nil)))
+		(apply '+ (mapcar (lambda (item)
+												(string-to-number (car (s-split "-" item))))
+								first-heading))
+		)
+	)
+
 (defun org-get-unfinished-under (heading)
   "Get the unfinished headlines under a given heading."
   (org-find-headlines-under heading ; use the helper function
@@ -86,6 +104,16 @@
     (car (car (sort files (lambda (a b)
                             (time-less-p (nth 5 b) (nth 5 a))))))))
 
+(defun update-total-minutes ()
+  (interactive)
+  (save-excursion
+		(goto-char (point-min))
+    (let ((total-minutes (get-total-minutes-done)))
+      (when (and (re-search-forward "TOTAL TODAY: =\\([0-9]+\\) Minutes=" nil t)
+							(not (= (string-to-number (match-string 1)) total-minutes)))
+        (replace-match (format "TOTAL TODAY: =%d Minutes=" total-minutes))))))
+
+;; NOTE That somehow works most of the time lol
 (defun get-last-daily-path ()
   "Return the path of the last daily file in the org-roam-dailies-directory."
   (get-last-modified-file (expand-file-name org-roam-dailies-directory org-roam-directory)))
@@ -110,6 +138,11 @@
   "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
   (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
     (string-trim (org-get-unfinished-under "TODOS TODAY"))))
+
+(defun get-last-daily-total-minutes-done ()
+  "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
+  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
+    (string-trim (get-total-minutes-done))))
 
 (defun get-last-daily-unfinished-under (todo)
   "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
