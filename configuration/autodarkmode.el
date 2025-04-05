@@ -13,6 +13,12 @@
 	    :custom-face
 	    (font-lock-comment-face ((t (:foreground "red"))))
 	    ;; DRACULA
+	    (+org-todo-active    ((t (:background "#1E2029"))))
+	    (+org-todo-cancel    ((t (:background "#1E2029"))))
+	    (+org-todo-onhold    ((t (:background "#1E2029"))))
+	    (+org-todo-project    ((t (:background "#1E2029"))))
+	    (org-todo    ((t (:background "#1E2029"))))
+			(org-done    ((t (:background "#1E2029"))))
 	    (window-divider   ((t (:foreground "#1E2029" :background "#1E2029"))))
 	    (solaire-default-face   ((t (:background "#1E2029"))))
 	    (internal-border   ((t (:foreground "#1E2029" :background "#1E2029"))))

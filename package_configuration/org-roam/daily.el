@@ -142,7 +142,7 @@
 (defun get-last-daily-total-minutes-done ()
   "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
   (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (string-trim (get-total-minutes-done))))
+    (number-to-string (get-total-minutes-done) )))
 
 (defun get-last-daily-unfinished-under (todo)
   "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
