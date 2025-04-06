@@ -12,6 +12,11 @@
 	(doom-project-find-file (read-directory-name "Find file in directory: ")))
 
 (map! :leader "fd" #'find-file-in-dir)
+(map! :leader "it" #'insert-current-time);
+
+(defun insert-current-time ()
+	(interactive)
+	(insert (format-time-string "%H:%M")))
 
 (map!
 	:map dired-mode-map
