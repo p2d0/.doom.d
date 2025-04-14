@@ -36,7 +36,6 @@
 						(backlinks (org-roam-backlinks-remove-if-daily (org-roam-db-query sql (org-roam-node-id node)))))
 			(cl-loop for backlink in  backlinks
         collect (pcase-let ((`(,source-id ,dest-id ,pos ,properties) backlink))
-                  (prin1 "WATAFAK")
                   (org-roam-populate
                     (org-roam-backlink-create
                       :source-node (org-roam-node-create :id source-id)
