@@ -16,6 +16,7 @@
 
 (after! dap-mode
 
+	(setq dap-output-buffer-filter nil)
 	(setq dap-python-debugger 'debugpy)
 	(setq dap-ui-controls-mode nil)
 	(setq dap-ui-buffer-configurations

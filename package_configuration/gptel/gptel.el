@@ -26,13 +26,13 @@
 (set-popup-rule! "^\\*OpenRouter\\*" :side 'right :size 0.4 :select 1)
 
 ;; OpenRouter offers an OpenAI compatible API
-(setq gptel-model 'google/gemini-2.0-flash-001
+(setq gptel-model 'deepseek/deepseek-chat-v3-0324
 	gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
 									:host "openrouter.ai"
 									:endpoint "/api/v1/chat/completions"
 									:stream t
 									:key (with-temp-buffer (insert-file-contents "/etc/nixos/modules/nixos/editors/.doom.d/package_configuration/gptel/.env") (s-trim (buffer-string) ))
-									:models '(google/gemini-2.0-flash-001 qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct)))
+									:models '(google/gemini-2.0-flash-001 deepseek/deepseek-chat-v3-0324 qwen/qwen-2.5-coder-32b-instruct meta-llama/llama-3.3-70b-instruct)))
 
 (cl-defun my/clean-up-gptel-refactored-code (beg end)
   "Clean up the code responses for refactored code in the current buffer.
