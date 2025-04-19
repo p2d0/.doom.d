@@ -34,6 +34,7 @@
 				(expect (org-get-text-under "Overmocking") :to-match "** tata")
 				)
 			)
+
 		(describe "get-total-minutes-done"
 			(it "should return minutes done tasks"
 				(with-current-buffer buf
@@ -41,6 +42,15 @@
 					)
 				)
 			)
+
+		(describe "get-total-points-done"
+			(it "should return minutes done tasks"
+				(with-current-buffer buf
+					(expect (get-total-story-points-done) :to-equal 70)
+					)
+				)
+			)
+
 
 		(describe "getting completed todos from previous daily"
 			(it "should return todo"

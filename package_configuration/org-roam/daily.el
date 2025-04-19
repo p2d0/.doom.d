@@ -76,6 +76,26 @@
 		)
 	)
 
+(defun get-total-story-points-done ()
+	(let* ((data (org-element-parse-buffer)) ; parse the buffer
+					(first-heading (org-element-map data 'headline ; find the first headline
+                           (lambda (item)
+														 (when-let*
+															 ((value (org-element-property :raw-value item))
+																 (match (string-match "S\\([[:digit:]]+\\)" value))
+																 (_ (s-equals? "done" (org-element-property :todo-type item)))
+																 (match-1 (match-string 1 value)))
+															 match-1
+															 )
+														 )
+													 nil)))
+		(apply '+ (mapcar (lambda (item)
+												(string-to-number (replace-regexp-in-string "S" "" item)))
+								first-heading))
+		)
+	)
+
+
 (defun org-get-unfinished-under (heading)
   "Get the unfinished headlines under a given heading."
   (org-find-headlines-under heading ; use the helper function
@@ -113,6 +133,15 @@
 							(not (= (string-to-number (match-string 1)) total-minutes)))
         (replace-match (format "TOTAL TODAY: =%d Minutes=" total-minutes))))))
 
+(defun update-total-story-points ()
+  (interactive)
+  (save-excursion
+		(goto-char (point-min))
+    (let ((total-minutes (get-total-minutes-done)))
+      (when (and (re-search-forward "TOTAL SP TODAY: =\\([0-9]+\\) Points=" nil t)
+							(not (= (string-to-number (match-string 1)) total-minutes)))
+        (replace-match (format "TOTAL SP TODAY: =%d Points=" total-minutes))))))
+
 ;; NOTE That somehow works most of the time lol
 (defun get-last-daily-path ()
   "Return the path of the last daily file in the org-roam-dailies-directory."
@@ -143,6 +172,11 @@
   "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
   (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
     (number-to-string (get-total-minutes-done) )))
+
+(defun get-last-daily-total-story-points-done ()
+  "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
+  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
+    (number-to-string (get-total-story-points-done) )))
 
 (defun get-last-daily-unfinished-under (todo)
   "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
