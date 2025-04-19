@@ -21,6 +21,7 @@
 (package! groovy-mode)
 ;; (package! hercules)
 (package! evil-snipe :disable t)
+(package! org-modern :disable t)
 ;; (package! mail-parse :disable t)
 
 (package! org-pomodoro)

@@ -5,11 +5,16 @@
     (display-buffer (get-buffer-create org-roam-buffer))
     (org-roam-buffer-persistent-redisplay)))
 
+(defun org-daily-setup-hook ()
+	(add-hook! 'before-save-hook :local #'display-org-roam-buffer #'update-total-story-points #'update-total-minutes))
+
 (after! org-roam
   (setq org-roam-directory (expand-file-name "~/Dropbox/org/roam/"))
   (setq org-roam-node-default-sort 'file-mtime)
-	(add-hook! 'org-mode-hook #'display-org-roam-buffer)
-	(add-hook! 'org-mode-hook #'update-total-minutes)
+	(add-hook 'org-roam-find-file-hook #'org-daily-setup-hook)
+
+	;; (add-hook! 'save-buffer)
+	;; (add-hook! 'after-save-hook )
 
 	;; Override to not get backlinks from dailies
 	(defun org-roam-backlinks-remove-if-daily (backlinks)

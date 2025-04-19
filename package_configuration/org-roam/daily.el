@@ -95,7 +95,6 @@
 		)
 	)
 
-
 (defun org-get-unfinished-under (heading)
   "Get the unfinished headlines under a given heading."
   (org-find-headlines-under heading ; use the helper function
@@ -137,7 +136,7 @@
   (interactive)
   (save-excursion
 		(goto-char (point-min))
-    (let ((total-minutes (get-total-minutes-done)))
+    (let ((total-minutes (get-total-story-points-done)))
       (when (and (re-search-forward "TOTAL SP TODAY: =\\([0-9]+\\) Points=" nil t)
 							(not (= (string-to-number (match-string 1)) total-minutes)))
         (replace-match (format "TOTAL SP TODAY: =%d Points=" total-minutes))))))
@@ -158,49 +157,39 @@
 ;;   ;;       (expand-file-name (concat previous-daily-date ".org") (concat org-roam-directory org-roam-dailies-directory)))))
 ;; 	) ; expand the file name like get-last-daily-path
 
+(defmacro with-last-daily-file (&rest body)
+  "Execute BODY in the context of the last daily file.
+Automatically handles file opening/closing and string trimming."
+  `(with-current-buffer (find-file-noselect (get-last-daily-path))
+     (string-trim ,@body)))
+
 (defun get-last-daily-test-under-first-heading ()
   "Return the text under the first heading of type \"Test\" in the last daily file."
-  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (string-trim (get-text-under-first-heading))))
+  (with-last-daily-file (get-text-under-first-heading)))
 
 (defun get-last-daily-unfinished ()
   "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
-  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (string-trim (org-get-unfinished-under "TODOS TODAY"))))
+  (with-last-daily-file (org-get-unfinished-under "TODOS TODAY")))
 
 (defun get-last-daily-total-minutes-done ()
-  "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
-  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (number-to-string (get-total-minutes-done) )))
+  "Return the total minutes done in the last daily file."
+  (with-last-daily-file (number-to-string (get-total-minutes-done))))
 
 (defun get-last-daily-total-story-points-done ()
-  "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
-  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (number-to-string (get-total-story-points-done) )))
+  "Return the total story points done in the last daily file."
+  (with-last-daily-file (number-to-string (get-total-story-points-done))))
 
 (defun get-last-daily-unfinished-under (todo)
-  "Return the unfinished headlines under the heading \"TODOS TODAY\" in the last daily file."
-  (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (string-trim (org-get-unfinished-under todo))))
+  "Return the unfinished headlines under the given TODO heading in the last daily file."
+  (with-last-daily-file (org-get-unfinished-under todo)))
 
 (defun org-get-last-daily-dailies ()
-	(with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (string-trim (org-get-dailies-under "NORMAL DAILIES")))
-	)
+  "Return the dailies under \"NORMAL DAILIES\" in the last daily file."
+  (with-last-daily-file (org-get-dailies-under "NORMAL DAILIES")))
 
 (defun org-get-last-daily-under (todo)
-	(with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
-    (string-trim (org-get-dailies-under todo)))
-	)
-
-
-;; (defun get-weather ()
-;;   (let ((url "https://wttr.in/?format=%t")
-;;          (buffer (url-retrieve-synchronously "https://wttr.in/?format=%t%20(feels: %f)")))
-;;     (with-current-buffer buffer
-;;       (goto-char (point-max))
-;; 			(decode-coding-string (thing-at-point 'line) 'utf-8)
-;;       )))
+  "Return content under the given TODO heading in the last daily file."
+  (with-last-daily-file (org-get-dailies-under todo)))
 
 (defun get-weather ()
 	(let* ((url "https://api.open-meteo.com/v1/forecast?latitude=55.7522&longitude=37.6156&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&timezone=Europe%2FMoscow&forecast_days=1")
