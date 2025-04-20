@@ -74,6 +74,7 @@
 ;; (if (= (get-color-scheme) 1)
 ;; 	(load-theme +dark-theme+ t)
 ;; 	(load-theme +light-theme+ t))
+
 (if (= (get-color-scheme) 1)
 	(use-package doom-themes
 	  :custom-face

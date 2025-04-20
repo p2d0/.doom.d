@@ -1,7 +1,9 @@
 ;;; editors/.doom.d/configuration/autodarkmode.el -*- lexical-binding: t; -*-
 (require 'dbus)
 (defun get-color-scheme ()
-  (car (car (dbus-call-method :session "org.freedesktop.portal.Desktop" "/org/freedesktop/portal/desktop" "org.freedesktop.portal.Settings"  "Read" "org.freedesktop.appearance" "color-scheme") )))
+  (car (car (condition-case nil
+							(dbus-call-method :session "org.freedesktop.portal.Desktop" "/org/freedesktop/portal/desktop" "org.freedesktop.portal.Settings"  "Read" :timeout 1000 "org.freedesktop.appearance" "color-scheme")
+							(dbus-error '((1)))))))
 
 (defun theme--handle-dbus-event (a setting values)
   "Handler for FreeDesktop theme changes."
