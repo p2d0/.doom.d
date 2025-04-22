@@ -13,14 +13,18 @@
 ;; ;;   (dap-eval (thing-at-point 'symbol)))
 
 
+(after! dap-variables
+	(push '("\\`workspaceRoot\\'" . dap-variables-project-root)
+		dap-variables-standard-variables))
 
 (after! dap-mode
-
+	(setq dap-netcore-install-dir (f-join user-emacs-directory ".cache" "lsp"))
+	(setq dap-netcore-download-url "https://github.com/Samsung/netcoredbg/releases/download/3.1.2-1054/netcoredbg-linux-amd64.tar.gz")
 	(setq dap-output-buffer-filter nil)
 	(setq dap-python-debugger 'debugpy)
 	(setq dap-ui-controls-mode nil)
 	(setq dap-ui-buffer-configurations
-    `((,dap-ui--locals-buffer . ((side . left) (slot . 1) (window-width . 0.20)))
+		`((,dap-ui--locals-buffer . ((side . left) (slot . 1) (window-width . 0.20)))
 			 (,dap-ui--expressions-buffer . ((side . left) (slot . 2) (window-width . ,treemacs-width)))
 			 ;; (,dap-ui--sessions-buffer . ((side . right) (slot . 3) (window-width . 0.20)))
 			 (,dap-ui--breakpoints-buffer . ((side . left) (slot . 3) (window-width . ,treemacs-width)))
@@ -40,11 +44,11 @@
 			:pathMappings (ht ("/var/www/html" "/mnt/md127/favoka2/prestashop_data/prestashop"))
 			:sourceMaps t))
 	(dap-register-debug-template "Rust::GDB Attach Configuration"
-    (list :type "gdb"
-      :request "attach"
+		(list :type "gdb"
+			:request "attach"
 			:executable "/nix/store/c8vs0m3pb43imkcbikg6q87wgmym95x4-rustlings/bin/rustlings"
-      :name "GDB::Run"
-      :gdbpath "rust-gdb"
+			:name "GDB::Run"
+			:gdbpath "rust-gdb"
 			:target "103955"
 			))
 	)
