@@ -10,6 +10,7 @@
 (defun find-file-in-dir ()
 	(interactive)
 	(doom-project-find-file (read-directory-name "Find file in directory: ")))
+(map! :i "C-c u" #'insert-char)
 
 (map! :leader "fd" #'find-file-in-dir)
 (map! :leader "it" #'insert-current-time);
