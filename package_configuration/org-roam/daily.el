@@ -256,3 +256,31 @@ Automatically handles file opening/closing and string trimming."
   "Return the text under a given heading in the last daily file."
   (with-current-buffer (find-file-noselect (get-last-daily-path)) ; use the helper function
     (string-trim (org-get-text-under heading))))
+
+(defun get-total-minutes-done-last-week ()
+  "Return the total minutes done in the last 7 days."
+  (let ((total 0))
+    (dotimes (i 7 total)
+      (let* ((date (format-time-string "%Y-%m-%d"
+                                      (time-add (current-time) (* -86400 (1+ i)))))
+             (file-path (expand-file-name (concat date ".org")
+                                         (expand-file-name org-roam-dailies-directory org-roam-directory))))
+        (when (file-exists-p file-path)
+          (with-current-buffer (find-file-noselect file-path)
+            (goto-char (point-min))
+            (let ((buffer-total (get-total-minutes-done)))
+              (setq total (+ total buffer-total)))))))))
+
+(defun get-total-story-points-done-last-week ()
+  "Return the total story points done in the last 7 days."
+  (let ((total 0))
+    (dotimes (i 7 total)
+      (let* ((date (format-time-string "%Y-%m-%d"
+                                      (time-add (current-time) (* -86400 (1+ i)))))
+             (file-path (expand-file-name (concat date ".org")
+                                         (expand-file-name org-roam-dailies-directory org-roam-directory))))
+        (when (file-exists-p file-path)
+          (with-current-buffer (find-file-noselect file-path)
+            (goto-char (point-min))
+            (let ((buffer-total (get-total-story-points-done)))
+              (setq total (+ total buffer-total)))))))))
