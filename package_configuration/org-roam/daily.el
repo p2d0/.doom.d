@@ -141,10 +141,18 @@
 							(not (= (string-to-number (match-string 1)) total-minutes)))
         (replace-match (format "TOTAL SP TODAY: =%d Points=" total-minutes))))))
 
-;; NOTE That somehow works most of the time lol
-(defun get-last-daily-path ()
-  "Return the path of the last daily file in the org-roam-dailies-directory."
-  (get-last-modified-file (expand-file-name org-roam-dailies-directory org-roam-directory)))
+(defun get-last-daily-path (&optional days)
+  "Return the path of the most recent existing daily file in the org-roam-dailies-directory.
+When DAYS is non-nil, look back that many days from today."
+  (let* ((days (or days 1))
+         (date (format-time-string "%Y-%m-%d" 
+                                 (time-subtract (current-time) (days-to-time days))))
+         (file (expand-file-name (concat date ".org")
+                               (expand-file-name org-roam-dailies-directory org-roam-directory))))
+    (cond
+     ((file-exists-p file) file)
+     ((< days 30) (get-last-daily-path (1+ days)))
+     (t nil))))
 
 ;; (defun get-previous-daily-path ()
 ;;   "Return the path of the previous daily file."
