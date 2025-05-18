@@ -9,3 +9,11 @@
 (defun dired-jpg-down-to ()
 	(interactive)
 	(dired--do-shell (s-concat "jpegoptim -S " (read-string "Size in Kb default 768: " nil nil "768") " ?" )))
+
+(after! dired-preview
+	(setq dired-preview-delay 0.2)
+	(map! :map dired-mode-map
+		:n "C-d" #'dired-preview-page-down
+		:n "C-u" #'dired-preview-page-up
+		)
+	)
