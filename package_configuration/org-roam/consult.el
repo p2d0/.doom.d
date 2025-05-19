@@ -45,14 +45,15 @@ Used to preselect nearest headings and imenu items.")
 
 (defun consult--set-current-node (&rest _)
 	"Save location of point. Used before entering the minibuffer."
-	(if (org-roam-node-at-point)
+	(if (org-roam-buffer-p)
 		(setq consult--current-node (org-roam-node-id (org-roam-node-at-point)))))
 
 ;; (advice-add #'consult-org-heading :before #'consult--set-previous-point)
 ;; (advice-add #'consult-outline :before #'consult--set-previous-point)
 ;; (advice-add #'my/org-roam-find-node-custom :after #'consult--set-current-node)
 
-(add-hook 'org-roam-find-file-hook #'consult--set-current-node)
+;; (add-hook 'org-roam-find-file-hook #'consult--set-current-node -100)
+(add-hook 'window-selection-change-functions #'consult--set-current-node)
 
 (advice-add #'vertico--update :after #'consult-vertico--update-choose)
 
@@ -60,7 +61,7 @@ Used to preselect nearest headings and imenu items.")
   "Pick the nearest candidate rather than the first after updating candidates."
   (when (and (memq current-minibuffer-command
                '(consult-org-heading consult-outline my/org-roam-find-node-custom consult-org-roam-search))
-          (not (equal vertico--input vertico--previous-input))
+					(or (not (boundp 'repositioned)) (not (equal vertico--input vertico--previous-input)))
 					)
     (setq vertico--previous-input (copy-tree vertico--input))
     (let* ((pos (seq-position vertico--candidates 0
@@ -70,7 +71,9 @@ Used to preselect nearest headings and imenu items.")
 												(when (org-roam-node-id (get-text-property 0 'node cand))
 													(s-equals? consult--current-node (org-roam-node-id (get-text-property 0 'node cand))))))))))
 			(when (< (or pos 0) (length vertico--candidates))
-				(setq vertico--index (or pos 0)))
+				(setq vertico--index (or pos 0))
+				(setq-local repositioned t)
+				)
 			)))
 
 (after! consult-org-roam

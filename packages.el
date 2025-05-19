@@ -21,7 +21,8 @@
 (package! groovy-mode)
 ;; (package! hercules)
 (package! evil-snipe :disable t)
-(package! org-modern :disable t)
+;; (package! org-modern :disable t)
+
 (package! consult-org-roam)
 (package! dired-preview)
 ;; (package! mail-parse :disable t)

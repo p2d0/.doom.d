@@ -9,10 +9,23 @@
 	"C-х" #'evil-force-normal-state)
 (defun find-file-in-dir ()
 	(interactive)
-	(doom-project-find-file (read-directory-name "Find file in directory: ")))
+	(let* ((doom-project-root (read-directory-name "Find file in directory: "))
+				 (projectile-project-root doom-project-root)
+					(default-directory doom-project-root)
+					)
+		(projectile-find-file doom-project-root) ))
+
+(defun find-file-current-dir ()
+	(interactive)
+	(let* ((doom-project-root default-directory)
+				 (projectile-project-root doom-project-root)
+					(default-directory doom-project-root)
+					)
+		(projectile-find-file doom-project-root) ))
+
 (map! :i "C-c u" #'insert-char)
 
-(map! :leader "fd" #'find-file-in-dir)
+(map! :leader "fd" #'find-file-current-dir)
 (map! :leader "it" #'insert-current-time);
 
 (defun insert-current-time ()
