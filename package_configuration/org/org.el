@@ -31,7 +31,9 @@
 	(require 'writeroom-mode)
 	(setq org-enforce-todo-dependencies nil)
 
-	(add-hook! 'org-mode-hook #'zen-mode-enable)
+	(add-hook! 'org-mode-hook (lambda nil (evil-motion-trainer-mode 0)))
+	(add-hook! 'org-mode-hook #'writeroom-mode)
+	;; (add-hook! 'org-mode-hook #'zen-mode-enable)
 	;; (add-hook 'org-mode-hook #'xenops-mode)
 	;; (setq xenops-math-image-scale-factor 1.7
 	;; 	xenops-reveal-on-entry t)

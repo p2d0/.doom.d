@@ -15,6 +15,9 @@
 					)
 		(projectile-find-file doom-project-root) ))
 
+(map! :map evil-org-mode-map :n "<mouse-1>" #'+org/dwim-at-point)
+;; (map! :map evil-org-mode-map :n "<down-mouse-1>" #'+org/dwim-at-point)
+
 (defun find-file-current-dir ()
 	(interactive)
 	(let* ((doom-project-root default-directory)

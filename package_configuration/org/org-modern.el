@@ -17,8 +17,11 @@
 		org-agenda-tags-column 0
 		org-ellipsis "…")
 	)
-(setq org-modern-fold-stars '(("○" . "◉")
-                          ("○" . "◉")
+(setq org-modern-fold-stars '(("▸" . "▾")
+                          ("▸" . "▾")
+                          ("▸" . "▾")
+                          ("▸" . "▾")
+                          ("▸" . "▾")
                           ("○" . "◉")
                           ("○" . "◉")
                           ("○" . "◉")
