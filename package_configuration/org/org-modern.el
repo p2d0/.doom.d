@@ -18,27 +18,27 @@
 		org-ellipsis "…")
 	)
 (setq org-modern-fold-stars '(("▸" . "▾")
-                          ("▸" . "▾")
-                          ("▸" . "▾")
-                          ("▸" . "▾")
-                          ("▸" . "▾")
-                          ("○" . "◉")
-                          ("○" . "◉")
-                          ("○" . "◉")
-                          ("□" . "▣")  ;; ⯀  geometric shapes
-                          ;; ("♡" . "♥")
-                          ("◇" . "◈")
-                          ("♤" . "♠")
-                          ("▽" . "▼")
-                          ("♧" . "♣")  ;; Miscellaneous symbols
-                          ("✳" . "✸")
-                          ("♕" . "♛")
-                          ("⬡" . "⬢") ;; hexagon
-                          ("☆" . "★")
-                          ("⬠" . "⬟") ;; white pentagon and black (this is large)
-                          ;; ("🟕" . "🟖") ;; circle triangle and negative
-                          ;; ("🟗" . "🟘") ;; circle square and negative
-                          ))
+															 ("▸" . "▾")
+															 ("▸" . "▾")
+															 ("▸" . "▾")
+															 ("▸" . "▾")
+															 ("○" . "◉")
+															 ("○" . "◉")
+															 ("○" . "◉")
+															 ("□" . "▣")  ;; ⯀  geometric shapes
+															 ;; ("♡" . "♥")
+															 ("◇" . "◈")
+															 ("♤" . "♠")
+															 ("▽" . "▼")
+															 ("♧" . "♣")  ;; Miscellaneous symbols
+															 ("✳" . "✸")
+															 ("♕" . "♛")
+															 ("⬡" . "⬢") ;; hexagon
+															 ("☆" . "★")
+															 ("⬠" . "⬟") ;; white pentagon and black (this is large)
+															 ;; ("🟕" . "🟖") ;; circle triangle and negative
+															 ;; ("🟗" . "🟘") ;; circle square and negative
+															 ))
 (setq org-modern-hide-stars 'leading
 	org-modern-priority
 	(quote ((?A . "")
@@ -52,5 +52,5 @@
 	(quote (("options" . "🔧")
 					 ("tag" . "")
 					 ("#+" . "➤")
-					 (t . t))))
-'(org-modern-list'(("+" . "➤") (?- . "✦") (?* . "•")))
+					 (t . t)))
+	org-modern-list'(("+" . "➤") (?- . "✦") (?* . "•")))

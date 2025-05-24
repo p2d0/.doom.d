@@ -22,6 +22,7 @@
 ;; (package! hercules)
 (package! evil-snipe :disable t)
 ;; (package! org-modern :disable t)
+(package! igist)
 
 (package! consult-org-roam)
 (package! dired-preview)

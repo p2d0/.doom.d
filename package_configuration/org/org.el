@@ -30,6 +30,7 @@
 	(require 'ox-publish)
 	(require 'writeroom-mode)
 	(setq org-enforce-todo-dependencies nil)
+	(setq org-cycle-include-plain-lists 'integrate)
 
 	(add-hook! 'org-mode-hook (lambda nil (evil-motion-trainer-mode 0)))
 	(add-hook! 'org-mode-hook #'writeroom-mode)

@@ -133,6 +133,7 @@
 (setq doom-font (font-spec :family "Fira Code" :weight 'normal
 									:size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
+(add-to-list 'auth-sources "~/Dropbox/.authinfo")
 
 ;; Fira Code
 ;; Fantasque Sans Mono

@@ -1,6 +1,7 @@
 ;;; ~/.doom.d/map.el -*- lexical-binding: t; -*-
 
 
+(map! :leader "ii" #'igist-dispatch)
 (map! :leader "/" #'+default/search-project)
 (map! :leader "ww" #'ace-window)
 (map! :leader "od" #'dired-jump)
@@ -16,6 +17,8 @@
 		(projectile-find-file doom-project-root) ))
 
 (map! :map evil-org-mode-map :n "<mouse-1>" #'+org/dwim-at-point)
+(map! :map org-mode-map "M-RET" #'+org/insert-item-below)
+(map! :map evil-org-mode-map :n "M-RET" #'+org/insert-item-below)
 ;; (map! :map evil-org-mode-map :n "<down-mouse-1>" #'+org/dwim-at-point)
 
 (defun find-file-current-dir ()

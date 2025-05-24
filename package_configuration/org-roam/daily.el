@@ -19,13 +19,14 @@
 																						(org-element-extract head)
 																						))
                            nil t)) ; return the first match
-          (reset-check (org-element-map first-heading 'headline
+          (reset-check (org-element-map first-heading 'item
 												 (lambda (head)
 													 (when (funcall predicate head) ; apply the predicate
-														 (-> (org-element-extract head)
-															 (org-element-put-property :todo-keyword "[ ]")
-															 (org-element-put-property :todo-type 'todo)
-															 ))))))
+														 (->  head
+															 (org-element-put-property :checkbox 'off)
+															 ;; (org-element-put-property :todo-keyword "[ ]")
+															 ;; (org-element-put-property :todo-type 'todo)
+															 ))) nil nil t nil)))
     (org-element-interpret-data reset-check)
 		))
 
@@ -77,33 +78,36 @@
 	)
 
 (defun get-total-story-points-done ()
-	(let* ((data (org-element-parse-buffer)) ; parse the buffer
-					(first-heading (org-element-map data 'headline ; find the first headline
-                           (lambda (item)
-														 (when-let*
-															 ((value (org-element-property :raw-value item))
-																 (match (string-match "S\\([[:digit:]]+\\)" value))
-																 (_ (s-equals? "done" (org-element-property :todo-type item)))
-																 (match-1 (match-string 1 value)))
-															 match-1
-															 )
-														 )
-													 nil)))
-		(apply '+ (mapcar (lambda (item)
-												(string-to-number (replace-regexp-in-string "S" "" item)))
-								first-heading))
-		)
-	)
+  "Sum the story points from checked items in the Org-mode buffer.
+Items must have a checkbox marked as [X] and contain 'S<number>' in their text."
+  (let ((data (org-element-parse-buffer)))
+    (apply '+ (org-element-map data 'item
+                (lambda (item)
+                  (when (eq (org-element-property :checkbox item) 'on)
+                    (let* ((begin (org-element-property :begin item))
+                           (end (org-element-property :end item))
+                           (text (buffer-substring-no-properties
+                                  (save-excursion
+                                    (goto-char begin)
+                                    (re-search-forward "\\[.\\]\\s-+" end)
+                                    (point))
+                                  end)))
+                      (when (and text (string-match "S\\([[:digit:]]+\\)" text))
+                        (string-to-number (match-string 1 text))))))
+                nil nil))))
 
 (defun org-get-unfinished-under (heading)
   "Get the unfinished headlines under a given heading."
   (org-find-headlines-under heading ; use the helper function
-    (lambda (head) (s-equals? "todo" (org-element-property :todo-type head))))) ; predicate for unfinished headlines
+
+    (lambda (head)
+			(member (org-element-property :checkbox head) '(off trans))))) ; predicate for unfinished headlines
 
 (defun org-get-dailies-under (heading)
   "Get the daily headlines under a given heading."
   (org-find-headlines-under heading ; use the helper function
-    (lambda (head) (org-element-property :todo-type head)))) ; predicate for any headlines with a todo type
+    (lambda (head)
+			(org-element-property :checkbox head)))) ; predicate for any headlines with a todo type
 
 (defun org-get-text-under (heading)
   ""
