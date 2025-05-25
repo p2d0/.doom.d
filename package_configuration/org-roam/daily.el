@@ -19,16 +19,15 @@
 																						(org-element-extract head)
 																						))
                            nil t)) ; return the first match
-          (reset-check (org-element-map first-heading 'item
-												 (lambda (head)
-													 (when (funcall predicate head) ; apply the predicate
-														 (->  head
-															 (org-element-put-property :checkbox 'off)
-															 ;; (org-element-put-property :todo-keyword "[ ]")
-															 ;; (org-element-put-property :todo-type 'todo)
-															 ))) nil nil t nil)))
-    (org-element-interpret-data reset-check)
-		))
+          (reset-check  (org-element-map first-heading 'item
+											  	 (lambda (head)
+											  		 (when (funcall predicate head)
+															 (if (org-element-type-p (org-element-parent (org-element-parent head)) 'section)
+																 (org-element-put-property head :checkbox 'off)
+																 (progn
+																	 (org-element-put-property head :checkbox 'off)
+																	 nil)))))))
+    (org-element-interpret-data reset-check)))
 
 ;; (defun get-text-before-first-heading ()
 ;; 	(org-element-map (org-element-parse-buffer) 'section

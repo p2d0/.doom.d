@@ -134,6 +134,7 @@
 									:size 13))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 (add-to-list 'auth-sources "~/Dropbox/.authinfo")
+(setq igist-current-user-name "p2d0")
 
 ;; Fira Code
 ;; Fantasque Sans Mono

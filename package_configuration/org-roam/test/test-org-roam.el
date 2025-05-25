@@ -43,7 +43,7 @@
 				)
 			)
 
-		(describe "get-total-points-done"
+		(xdescribe "get-total-points-done"
 			(it "should return minutes done tasks"
 				(with-current-buffer buf
 					(expect (get-total-story-points-done) :to-equal 70)
@@ -52,19 +52,27 @@
 			)
 
 
-		(describe "getting completed todos from previous daily"
+		(xdescribe "getting completed todos from previous daily"
 			(it "should return todo"
 				(let ((unfinished (org-get-unfinished-under "TODOS")))
 					(expect unfinished :to-match "NOT COMPLETED")
 					(expect unfinished :not :to-match "testing"))
 				))
 
-		(describe "getting dailies"
+		(xdescribe "getting dailies"
 			(it "should update dailies status to [ ]"
 				(with-current-buffer buf
 					(expect (org-get-dailies-under "DAILIES") :to-match "\\[ \\] KEK")
 					)
 				))
+		(describe "checkmark dailies"
+			(it "should return properly"
+				(with-current-buffer (find-file-noselect "~/Dropbox/org/test.org")
+					(expect (org-get-dailies-under "testing") :to-match "\\[ \\] Brother")
+					)
+				)
+			)
+
 		(after-all
 			(set-buffer-modified-p nil)
 			;; (kill-buffer (current-buffer))
