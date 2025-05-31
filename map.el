@@ -17,8 +17,13 @@
 		(projectile-find-file doom-project-root) ))
 
 (map! :map evil-org-mode-map :n "<mouse-1>" #'+org/dwim-at-point)
-(map! :map org-mode-map "M-RET" #'+org/insert-item-below)
-(map! :map evil-org-mode-map :n "M-RET" #'+org/insert-item-below)
+(map! :map org-mode-map "<normal-state> M-<return>" #'+org/insert-item-below)
+(map!
+	:after org
+	:map org-mode-map "M-RET" #'+org/insert-item-below)
+(map!
+	:after org
+	:map evil-org-mode-map :n "M-RET" #'+org/insert-item-below)
 ;; (map! :map evil-org-mode-map :n "<down-mouse-1>" #'+org/dwim-at-point)
 
 (defun find-file-current-dir ()
