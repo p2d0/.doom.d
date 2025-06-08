@@ -23,6 +23,7 @@
 (package! evil-snipe :disable t)
 ;; (package! org-modern :disable t)
 (package! igist)
+(package! qml-ts-mode :recipe (:host github :repo "xhcoding/qml-ts-mode" :files ("*.el")))
 
 (package! consult-org-roam)
 (package! dired-preview)
