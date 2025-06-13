@@ -24,6 +24,7 @@
 ;; (package! org-modern :disable t)
 (package! igist)
 (package! qml-ts-mode :recipe (:host github :repo "xhcoding/qml-ts-mode" :files ("*.el")))
+(package! ztree)
 
 (package! consult-org-roam)
 (package! dired-preview)
