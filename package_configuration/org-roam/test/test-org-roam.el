@@ -73,6 +73,14 @@
 				)
 			)
 
+		(describe "getting first 3 unfinished tasks under heading"
+			(it "should return properly"
+				(with-current-buffer (find-file-noselect "~/Dropbox/org/unfinished_test.org")
+					(expect (my-get-unfinished-tasks-under-heading-current-buffer "Repeatable" 3) :to-equal '("Velobike S4" "Workout (1/2 subset+1) S2" "90-Minute Standing S1"))
+					)
+				)
+			)
+
 		(after-all
 			(set-buffer-modified-p nil)
 			;; (kill-buffer (current-buffer))
