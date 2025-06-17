@@ -132,26 +132,46 @@ that only consists of '(TYPE PROPS)'."
 
 ;; --- 3. The Notification Function ---
 (defun my-notify-unfinished-tasks (&rest args)
-  "Fetch the top 3 unfinished tasks from 'Repeatable' and send a styled desktop notification using Pango markup in the body with high-contrast colors for a black background."
-  (let ((tasks (my-get-unfinished-tasks-under-heading "Repeatable" 5)))
-    (if tasks
-        ;; If tasks were found, format with Pango markup and send the notification
-        (let* ((task-list (let ((i 1))
-                            (mapconcat
-                             (lambda (task)
-                               (prog1 (format "<b>%d.</b> %s" i task) (setq i (1+ i))))
-                             tasks
-                             "\n")))
-               (message-body (format "<span font='14' foreground='#d3d3d3'>Time to get back on track:</span>\n\n<span font='12' foreground='#e0e0e0'>%s</span>" task-list)))
+  "Fetch top 3 unfinished tasks from 'Repeatable' and 'Speedruns'.
+Send a styled desktop notification using Pango markup with
+high-contrast colors for a black background."
+  (interactive)
+  (let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Repeatable" 6))
+         (speedrun-tasks (my-get-unfinished-tasks-under-heading "Speedruns" 3)))
+
+    (if (or repeatable-tasks speedrun-tasks)
+        ;; If tasks were found in either category, format and send the notification
+        (let* ((format-task-list
+                ;; Helper lambda to format a list of tasks into a numbered string
+                (lambda (tasks)
+                  (let ((i 1))
+                    (mapconcat
+                     (lambda (task)
+                       (prog1 (format "<b>%d.</b> %s" i task) (setq i (1+ i))))
+                     tasks
+                     "\n"))))
+               (repeatable-section
+                (when repeatable-tasks
+                  (format "<span font='13' weight='bold' foreground='#c0c0c0'>Repeatable:</span>\n<span font='12' foreground='#e0e0e0'>%s</span>"
+                          (funcall format-task-list repeatable-tasks))))
+               (speedrun-section
+                (when speedrun-tasks
+                  (format "<span font='13' weight='bold' foreground='#c0c0c0'>Speedruns:</span>\n<span font='12' foreground='#e0e0e0'>%s</span>"
+                          (funcall format-task-list speedrun-tasks))))
+               ;; Join the sections that are not nil with a double newline
+               (task-sections (string-join (delq nil (list repeatable-section speedrun-section)) "\n\n"))
+               (message-body task-sections))
+
           (notifications-notify
            :title "Org Daily Reminder"
            :body message-body
            :app-name "Emacs"
            :urgency 'normal))
-      ;; If no tasks were found, send a styled notification indicating no tasks
+
+      ;; If no tasks were found in either category
       (notifications-notify
        :title "Org Daily Reminder"
-       :body "<span font='12' foreground='#e0e0e0'>No unfinished 'Repeatable' tasks found.</span>"
+       :body "<span font='12' foreground='#e0e0e0'>No unfinished 'Repeatable' or 'Speedruns' tasks found.</span>"
        :app-name "Emacs"
        :urgency 'normal))))
 
