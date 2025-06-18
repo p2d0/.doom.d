@@ -107,7 +107,7 @@ that only consists of '(TYPE PROPS)'."
       (replace-match ""))
     ;; Remove Org-mode links ([[id:...][text]] -> text)
     (goto-char (point-min))
-    (while (re-search-forward "\\[\\[id:[^]]+\\]\\[\\([^]]+\\)\\]\\]" nil t)
+    (while (re-search-forward "\\[\\[[^]]+\\]\\[\\([^]]+\\)\\]\\]" nil t)
       (replace-match "\\1"))
     ;; Return cleaned text, split into lines
     (split-string (buffer-string) "\n" t)))
@@ -136,44 +136,46 @@ that only consists of '(TYPE PROPS)'."
 Send a styled desktop notification using Pango markup with
 high-contrast colors for a black background."
   (interactive)
-  (let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Repeatable" 6))
-         (speedrun-tasks (my-get-unfinished-tasks-under-heading "Speedruns" 3)))
+	(when (not (file-exists-p (my-get-todays-daily-path)))
+		(org-roam-dailies-capture-today))
+	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Repeatable" 6))
+					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Speedruns" 3)))
 
     (if (or repeatable-tasks speedrun-tasks)
-        ;; If tasks were found in either category, format and send the notification
-        (let* ((format-task-list
-                ;; Helper lambda to format a list of tasks into a numbered string
-                (lambda (tasks)
-                  (let ((i 1))
-                    (mapconcat
+      ;; If tasks were found in either category, format and send the notification
+      (let* ((format-task-list
+               ;; Helper lambda to format a list of tasks into a numbered string
+               (lambda (tasks)
+                 (let ((i 1))
+                   (mapconcat
                      (lambda (task)
                        (prog1 (format "<b>%d.</b> %s" i task) (setq i (1+ i))))
                      tasks
                      "\n"))))
-               (repeatable-section
+              (repeatable-section
                 (when repeatable-tasks
-                  (format "<span font='13' weight='bold' foreground='#c0c0c0'>Repeatable:</span>\n<span font='12' foreground='#e0e0e0'>%s</span>"
-                          (funcall format-task-list repeatable-tasks))))
-               (speedrun-section
+                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Repeatable:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
+                    (funcall format-task-list repeatable-tasks))))
+              (speedrun-section
                 (when speedrun-tasks
-                  (format "<span font='13' weight='bold' foreground='#c0c0c0'>Speedruns:</span>\n<span font='12' foreground='#e0e0e0'>%s</span>"
-                          (funcall format-task-list speedrun-tasks))))
-               ;; Join the sections that are not nil with a double newline
-               (task-sections (string-join (delq nil (list repeatable-section speedrun-section)) "\n\n"))
-               (message-body task-sections))
+                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Speedruns:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
+                    (funcall format-task-list speedrun-tasks))))
+              ;; Join the sections that are not nil with a double newline
+              (task-sections (string-join (delq nil (list repeatable-section speedrun-section)) "\n\n"))
+              (message-body task-sections))
 
-          (notifications-notify
-           :title "Org Daily Reminder"
-           :body message-body
-           :app-name "Emacs"
-           :urgency 'normal))
+        (notifications-notify
+          :title "Org Daily Reminder"
+          :body message-body
+          :app-name "Emacs"
+          :urgency 'normal))
 
       ;; If no tasks were found in either category
       (notifications-notify
-       :title "Org Daily Reminder"
-       :body "<span font='12' foreground='#e0e0e0'>No unfinished 'Repeatable' or 'Speedruns' tasks found.</span>"
-       :app-name "Emacs"
-       :urgency 'normal))))
+				:title "Org Daily Reminder"
+				:body "<span font='12' foreground='#e0e0e0'>No unfinished 'Repeatable' or 'Speedruns' tasks found.</span>"
+				:app-name "Emacs"
+				:urgency 'normal))))
 
 ;; --- 4. Timer Management ---
 ;; We store the timer in a variable so we can cancel it later.
