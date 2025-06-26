@@ -95,6 +95,10 @@ Items must have a checkbox marked as [X] and contain 'S<number>' in their text."
                         (string-to-number (match-string 1 text))))))
                 nil nil))))
 
+(defun get-total-story-points-done-today ()
+	(with-current-buffer (find-file-noselect (my-get-todays-daily-path)) ; use the helper function
+		(get-total-story-points-done)))
+
 (defun org-get-unfinished-under (heading)
   "Get the unfinished headlines under a given heading."
   (org-find-headlines-under heading ; use the helper function

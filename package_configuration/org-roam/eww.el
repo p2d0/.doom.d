@@ -47,3 +47,22 @@ This function is data-driven, configured by `my-eww-task-categories`."
 
     ;; Encode the final data and print it to stdout for eww
     (json-encode task-data)))
+
+(defun my-eww-get-todays-json ()
+  "Fetch unfinished Org tasks and print them as a JSON string for eww.
+This function is data-driven, configured by `my-eww-task-categories`."
+  (interactive) ; For easier testing with M-x my-eww-get-todos-json
+  ;; Ensure the daily file exists, if that's part of your workflow
+  (when (and (fboundp 'my-get-todays-daily-path)
+             (not (file-exists-p (my-get-todays-daily-path))))
+    (org-roam-dailies-capture-today))
+
+  (let* ((task-data `((week-points . ,(get-total-story-points-done-last-week))
+											 (todays-points . ,(get-total-story-points-done-today))
+											 (median-points . ,(get-median-total-story-points-done-last-week))
+											 ))
+
+         )
+
+    ;; Encode the final data and print it to stdout for eww
+    (json-encode task-data)))
