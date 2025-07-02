@@ -113,14 +113,17 @@ that only consists of '(TYPE PROPS)'."
     (split-string (buffer-string) "\n" t)))
 
 (defun my-get-unfinished-tasks-under-heading-current-buffer (heading limit)
-	"Find the first LIMIT unfinished tasks under a specific HEADING in today's daily file."
-	(flatten-list (org-element-map (cl-subseq (org-find-headlines-under-noparse heading ; use the helper function
-    (lambda (head)
-			(member (org-element-property :checkbox head) '(off trans)))) 0 limit) 'item
-		(lambda (item)
-			(when (org-element-type-p (org-element-parent (org-element-parent item)) 'section)
-				(my/clean-todo-text (s-trim (my/org-element-contents item)) )
-				)))))
+  "Find the first LIMIT unfinished tasks under a specific HEADING in the current buffer."
+  (let* ((all-tasks (org-find-headlines-under-noparse heading
+                      (lambda (head)
+                        (member (org-element-property :checkbox head) '(off trans)))))
+         (safe-limit (min limit (length all-tasks)))
+         (limited-tasks (cl-subseq all-tasks 0 safe-limit)))
+    (flatten-list
+     (org-element-map limited-tasks 'item
+       (lambda (item)
+         (when (org-element-type-p (org-element-parent (org-element-parent item)) 'section)
+           (my/clean-todo-text (s-trim (my/org-element-contents item)))))))))
 
 (defun my-get-unfinished-tasks-under-heading (heading limit)
 	"Find the first LIMIT unfinished tasks under a specific HEADING in today's daily file."
@@ -136,8 +139,8 @@ that only consists of '(TYPE PROPS)'."
 Send a styled desktop notification using Pango markup with
 high-contrast colors for a black background."
   (interactive)
-	(when (not (file-exists-p (my-get-todays-daily-path)))
-		(org-roam-dailies-capture-today))
+	;; (when (not (file-exists-p (my-get-todays-daily-path)))
+	;; 	(org-roam-dailies-capture-today))
 	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Repeatable" 6))
 					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Speedruns" 3)))
 
