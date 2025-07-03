@@ -43,7 +43,7 @@ This function is data-driven, configured by `my-eww-task-categories`."
 																heading ))
                     ;; Fetch the tasks for the current category
                     (tasks (if (and (s-equals? "LONG TODOS" heading) (or (> hour 10) (and (= hour 10) (>= minute 30))))
-														 (my-get-unfinished-tasks-under-heading "Other progress / Distractions" 6)
+														 (my-get-unfinished-tasks-under-heading "Other progress / Distractions" 10)
 														 (my-get-unfinished-tasks-under-heading heading max-level) )))
                ;; Create the final alist pair for this category: ("key" . [tasks...])
                (cons json-key tasks)))

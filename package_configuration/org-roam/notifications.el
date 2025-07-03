@@ -139,12 +139,17 @@ that only consists of '(TYPE PROPS)'."
 Send a styled desktop notification using Pango markup with
 high-contrast colors for a black background."
   (interactive)
-	;; (when (not (file-exists-p (my-get-todays-daily-path)))
-	;; 	(org-roam-dailies-capture-today))
-	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Repeatable" 6))
-					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Speedruns" 3)))
+	(when (not (file-exists-p (my-get-todays-daily-path)))
+		(org-roam-dailies-capture-today))
+	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Other progress / Distractions" 10))
+					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Speedruns" 1))
+					(current-time (decode-time))
+					(hour (nth 2 current-time))
+					(minute (nth 1 current-time))
+					)
 
-    (if (or repeatable-tasks speedrun-tasks)
+    (if (and (or (> hour 10) (and (= hour 10) (>= minute 30)))
+					(or repeatable-tasks speedrun-tasks) )
       ;; If tasks were found in either category, format and send the notification
       (let* ((format-task-list
                ;; Helper lambda to format a list of tasks into a numbered string
@@ -157,7 +162,7 @@ high-contrast colors for a black background."
                      "\n"))))
               (repeatable-section
                 (when repeatable-tasks
-                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Repeatable:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
+                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Distractions:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
                     (funcall format-task-list repeatable-tasks))))
               (speedrun-section
                 (when speedrun-tasks
