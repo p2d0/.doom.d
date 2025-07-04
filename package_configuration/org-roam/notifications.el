@@ -148,7 +148,7 @@ high-contrast colors for a black background."
 					(minute (nth 1 current-time))
 					)
 
-    (if (and (or (> hour 10) (and (= hour 10) (>= minute 30)))
+    (when (and (or (> hour 10) (and (= hour 10) (>= minute 30)))
 					(or repeatable-tasks speedrun-tasks) )
       ;; If tasks were found in either category, format and send the notification
       (let* ((format-task-list
@@ -177,13 +177,7 @@ high-contrast colors for a black background."
           :body message-body
           :app-name "Emacs"
           :urgency 'normal))
-
-      ;; If no tasks were found in either category
-      (notifications-notify
-				:title "Org Daily Reminder"
-				:body "<span font='12' foreground='#e0e0e0'>No unfinished 'Repeatable' or 'Speedruns' tasks found.</span>"
-				:app-name "Emacs"
-				:urgency 'normal))))
+			)))
 
 ;; --- 4. Timer Management ---
 ;; We store the timer in a variable so we can cancel it later.
