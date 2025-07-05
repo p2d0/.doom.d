@@ -166,7 +166,7 @@ high-contrast colors for a black background."
                     (funcall format-task-list repeatable-tasks))))
               (speedrun-section
                 (when speedrun-tasks
-                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Speedruns:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
+                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Doable:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
                     (funcall format-task-list speedrun-tasks))))
               ;; Join the sections that are not nil with a double newline
               (task-sections (string-join (delq nil (list repeatable-section speedrun-section)) "\n\n"))

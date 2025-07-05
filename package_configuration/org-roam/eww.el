@@ -17,6 +17,19 @@
   "Alist of Org categories to display in the Eww todo widget.
 Each element is a cons cell of the form (HEADING . MAX-LEVEL).")
 
+(defconst my-eww-task-categories-after-10-30
+  '(("Repeatable" . 8)
+    ("Other progress / Distractions"  . 10)
+    ;; To add your new category, just add the line below:
+    ("Speedruns"  . 3)
+    ("Doable"       . 4)
+    ;; Add more categories here in the future!
+    ; ("AnotherCategory" . 5)
+    )
+
+  "Alist of Org categories to display in the Eww todo widget.
+Each element is a cons cell of the form (HEADING . MAX-LEVEL).")
+
 ;; 2. The Updated Function
 ;; This function now reads from the configuration list above.
 (defun my-eww-get-todos-json ()
@@ -34,20 +47,19 @@ This function is data-driven, configured by `my-eww-task-categories`."
            (lambda (category-config)
              (let* ((heading (car category-config))
                     (max-level (cdr category-config))
-										 (current-time (decode-time))
-										 (hour (nth 2 current-time))
-										 (minute (nth 1 current-time))
                     ;; The JSON key should be lowercase to match your original JSON
-                    (json-key (if (and (s-equals? "LONG TODOS" heading) (or (> hour 10) (and (= hour 10) (>= minute 30))))
-																"Other progress / Distractions"
-																heading ))
+                    (json-key heading)
                     ;; Fetch the tasks for the current category
-                    (tasks (if (and (s-equals? "LONG TODOS" heading) (or (> hour 10) (and (= hour 10) (>= minute 30))))
-														 (my-get-unfinished-tasks-under-heading "Other progress / Distractions" 10)
-														 (my-get-unfinished-tasks-under-heading heading max-level) )))
+                    (tasks (my-get-unfinished-tasks-under-heading heading max-level)))
                ;; Create the final alist pair for this category: ("key" . [tasks...])
                (cons json-key tasks)))
-           my-eww-task-categories))
+           (let* ((current-time (decode-time))
+										 (hour (nth 2 current-time))
+										 (minute (nth 1 current-time)))
+						 (if  (or (> hour 10) (and (= hour 10) (>= minute 30)))
+							 my-eww-task-categories-after-10-30
+							 my-eww-task-categories
+							 ))))
 
          ;; This setting ensures JSON keys are strings ("key") not keywords (:key)
          (json-key-type 'string))
