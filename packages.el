@@ -13,7 +13,7 @@
 ;;   :recipe (:host github :repo "rougier/nano-emacs"))
 ;; (package! lsp-nix)
 ;; (package! gptel)
-(package! elysium :recipe (:host github :repo "lanceberge/elysium" :branch "main"))
+;; (package! elysium :recipe (:host github :repo "lanceberge/elysium" :branch "main"))
 (package! doom-nano-modeline
   :recipe (:host github
   :repo "ronisbr/doom-nano-modeline"))
