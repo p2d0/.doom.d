@@ -142,7 +142,7 @@ high-contrast colors for a black background."
 	(when (not (file-exists-p (my-get-todays-daily-path)))
 		(org-roam-dailies-capture-today))
 	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Other progress / Distractions" 10))
-					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Speedruns" 1))
+					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Doable" 6))
 					(current-time (decode-time))
 					(hour (nth 2 current-time))
 					(minute (nth 1 current-time))

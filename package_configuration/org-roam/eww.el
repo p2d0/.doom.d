@@ -18,11 +18,11 @@
 Each element is a cons cell of the form (HEADING . MAX-LEVEL).")
 
 (defconst my-eww-task-categories-after-10-30
-  '(("Repeatable" . 8)
+  '(("Repeatable" . 2)
     ("Other progress / Distractions"  . 10)
     ;; To add your new category, just add the line below:
     ("Speedruns"  . 3)
-    ("Doable"       . 4)
+    ("Doable"       . 6)
     ;; Add more categories here in the future!
     ; ("AnotherCategory" . 5)
     )
