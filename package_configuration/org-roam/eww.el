@@ -37,9 +37,10 @@ Each element is a cons cell of the form (HEADING . MAX-LEVEL).")
 This function is data-driven, configured by `my-eww-task-categories`."
   (interactive) ; For easier testing with M-x my-eww-get-todos-json
   ;; Ensure the daily file exists, if that's part of your workflow
-  (when (and (fboundp 'my-get-todays-daily-path)
-             (not (file-exists-p (my-get-todays-daily-path))))
-    (org-roam-dailies-capture-today))
+
+  ;; (when (and (fboundp 'my-get-todays-daily-path)
+  ;;            (not (file-exists-p (my-get-todays-daily-path))))
+  ;;   (org-roam-dailies-capture-today))
 
   (let* (;; This `mapcar` iterates through our config list and builds the data
          (task-data
@@ -72,9 +73,10 @@ This function is data-driven, configured by `my-eww-task-categories`."
 This function is data-driven, configured by `my-eww-task-categories`."
   (interactive) ; For easier testing with M-x my-eww-get-todos-json
   ;; Ensure the daily file exists, if that's part of your workflow
-  (when (and (fboundp 'my-get-todays-daily-path)
-             (not (file-exists-p (my-get-todays-daily-path))))
-    (org-roam-dailies-capture-today))
+
+  ;; (when (and (fboundp 'my-get-todays-daily-path)
+  ;;            (not (file-exists-p (my-get-todays-daily-path))))
+  ;;   (org-roam-dailies-capture-today))
 
   (let* ((task-data `((week-points . ,(get-total-story-points-done-last-week))
 											 (todays-points . ,(get-total-story-points-done-today))

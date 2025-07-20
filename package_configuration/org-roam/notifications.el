@@ -139,8 +139,8 @@ that only consists of '(TYPE PROPS)'."
 Send a styled desktop notification using Pango markup with
 high-contrast colors for a black background."
   (interactive)
-	(when (not (file-exists-p (my-get-todays-daily-path)))
-		(org-roam-dailies-capture-today))
+	;; (when (not (file-exists-p (my-get-todays-daily-path)))
+	;; 	(org-roam-dailies-capture-today))
 	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Other progress / Distractions" 10))
 					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Doable" 6))
 					(current-time (decode-time))
