@@ -51,7 +51,7 @@
 
 (defun emacs-todo ()
 	(interactive)
-	(org-roam-dailies-goto-today)
-	(save-buffer)
+	;; (org-roam-dailies-goto-today)
+	;; (save-buffer)
 	(doom/window-maximize-buffer)
 	)
