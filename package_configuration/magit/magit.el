@@ -13,18 +13,18 @@
 	(remove-hook 'server-switch-hook 'magit-commit-diff)
 	(remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff))
 
-(after! magit-section
-	(defun magit-section-show (section)
-		"Show the body of the current section."
-		(interactive (list (magit-current-section)))
-		(oset section hidden nil)
-		(magit-section--maybe-wash section)
-		(when-let ((beg (oref section content)))
-			(when (< (- (oref section end) beg) 15000)
-				(remove-overlays beg (oref section end) 'invisible t)))
-		(magit-section-maybe-update-visibility-indicator section)
-		(magit-section-maybe-cache-visibility section)
-		(dolist (child (oref section children))
-			(if (oref child hidden)
-				(magit-section-hide child)
-				(magit-section-show child)))))
+;; (after! magit-section
+;; 	(defun magit-section-show (section)
+;; 		"Show the body of the current section."
+;; 		(interactive (list (magit-current-section)))
+;; 		(oset section hidden nil)
+;; 		(magit-section--maybe-wash section)
+;; 		(when-let ((beg (oref section content)))
+;; 			(when (< (- (oref section end) beg) 15000)
+;; 				(remove-overlays beg (oref section end) 'invisible t)))
+;; 		(magit-section-maybe-update-visibility-indicator section)
+;; 		(magit-section-maybe-cache-visibility section)
+;; 		(dolist (child (oref section children))
+;; 			(if (oref child hidden)
+;; 				(magit-section-hide child)
+;; 				(magit-section-show child)))))
