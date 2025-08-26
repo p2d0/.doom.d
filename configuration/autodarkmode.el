@@ -37,6 +37,7 @@
 	    (load-theme +dark-theme+ t)
 	    )
           (load-theme +dark-theme+ t)
+	  (custom-set-faces! '(internal-border   :foreground "#1E2029" :background "#1E2029"))
 
 	  ) ;; my custom function that sets a dark theme
         ((= 2 scheme)
@@ -66,6 +67,7 @@
 	    :config
 	    (setq doom-themes-enable-bold nil)
 	    (load-theme +light-theme+ t)
+	    (custom-set-faces! '(internal-border   :foreground "#c3d0e1" :background "#c3d0e1"))
 	    )
 	  ) ;; 1000 internet points to whoever guesses what this does
         (t (message "I don't know how to handle scheme: %s" scheme))))))
