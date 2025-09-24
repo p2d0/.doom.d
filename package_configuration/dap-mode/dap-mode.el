@@ -1,6 +1,6 @@
 ;;; package_configuration/dap-mode.el -*- lexical-binding: t; -*-
 
-;; (require 'dap-netcore)
+(require 'dap-netcore)
 ;; (require 'dap-firefox)
 
 ;; (defun dap-repl-eval-region (start end)
