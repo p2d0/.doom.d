@@ -1,6 +1,36 @@
 ;;; package_configuration/dap-mode.el -*- lexical-binding: t; -*-
 
 (require 'dap-netcore)
+(after! dap-netcore
+	(defun dap-netcore--populate-args (conf)
+		"Populate CONF with arguments to launch or attach netcoredbg."
+		(dap--put-if-absent conf :dap-server-path (list (dap-netcore--debugger-locate-or-install) "--interpreter=vscode"))
+		(when (s-equals? (plist-get conf :program) "dotnet")
+			(plist-put conf :program (seq-first (plist-get conf :args) ))
+			(dap--put-if-absent conf :mode "launch")
+			)
+		(pcase (plist-get conf :mode)
+			("launch"
+				(dap--put-if-absent
+					conf
+					:program
+					(let ((project-dir (f-full
+															 (or
+																 (dap-netcore--locate-dominating-file-wildcard
+																	 default-directory "*.*proj")
+																 (lsp-workspace-root)))))
+						(save-mark-and-excursion
+							(find-file (concat (f-slash project-dir) "*.*proj") t)
+							(let ((res (if (libxml-available-p)
+													 (libxml-parse-xml-region (point-min) (point-max))
+													 (xml-parse-region (point-min) (point-max)))))
+								(kill-buffer)
+								(f-join project-dir "bin" "Debug"
+									(dom-text (dom-by-tag res 'TargetFramework))
+									(dom-text (dom-by-tag res 'RuntimeIdentifier))
+									(concat (car (-take-last 1 (f-split project-dir))) ".dll")))))))
+			("attach"
+				(dap--put-if-absent conf :processId (string-to-number (read-string "Enter PID: " "2345")))))))
 ;; (require 'dap-firefox)
 
 ;; (defun dap-repl-eval-region (start end)
