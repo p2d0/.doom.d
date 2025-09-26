@@ -54,8 +54,8 @@
   :init
   (setq
     recentf-save-file "~/.cache/emacs/recentf"
-    recentf-max-saved-items 10000
-    recentf-max-menu-items 5000
+    recentf-max-saved-items 100000
+    recentf-max-menu-items 50000
     )
   (recentf-mode 1)
   (run-at-time nil (* 5 60) 'recentf-save-list)
