@@ -7,7 +7,7 @@
 ;; To add, remove, or change a category, you only need to edit this list.
 ;; The format is an alist: '((HEADING . MAX-LEVEL) (HEADING . MAX-LEVEL) ...).
 (defconst my-eww-task-categories
-  '(("Repeatable" . 8)
+  '(("Repeatable" . 12)
     ("Speedruns"  . 3)
     ;; To add your new category, just add the line below:
     ("LONG TODOS"       . 4)
@@ -18,7 +18,7 @@
 Each element is a cons cell of the form (HEADING . MAX-LEVEL).")
 
 (defconst my-eww-task-categories-after-10-30
-  '(("Repeatable" . 2)
+  '(("Repeatable" . 12)
     ("Other progress / Distractions"  . 10)
     ;; To add your new category, just add the line below:
     ("Speedruns"  . 3)
