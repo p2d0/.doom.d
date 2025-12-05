@@ -12,19 +12,19 @@
 		(add-hook 'fish-mode-hook 'company-mode)
 		(add-hook 'shell-mode-hook 'company-mode)
 		(add-hook 'eshell-mode-hook 'company-mode))
-	(eval
-		'(flycheck-define-checker fish
-			 "Fish -n linter"
-			 :command ("fish" "-n" source)
-			 :error-patterns ((error line-start (one-or-more anything) " (line " line "): " (message) line-end )
+	;; (eval
+	;; 	'(flycheck-define-checker fish
+	;; 		 "Fish -n linter"
+	;; 		 :command ("fish" "-n" source)
+	;; 		 :error-patterns ((error line-start (one-or-more anything) " (line " line "): " (message) line-end )
 
-												 )
-			 :error-filter (lambda (errors) (flycheck-sanitize-errors errors))
-			 :modes fish-mode
-			 ))
+	;; 											 )
+	;; 		 :error-filter (lambda (errors) (flycheck-sanitize-errors errors))
+	;; 		 :modes fish-mode
+	;; 		 ))
 
 
-	(add-to-list 'flycheck-checkers 'fish)
+	;; (add-to-list 'flycheck-checkers 'fish)
 
 	)
 
