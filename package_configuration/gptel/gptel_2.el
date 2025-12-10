@@ -3,9 +3,9 @@
 
 (after! gptel
 
-  (map! "C-k" #'gptel-menu)
-  (map! :n "C-k" #'gptel-menu)
-  (map! :i "C-k" #'gptel-menu)
+  ;; (map! "C-k" #'gptel-menu)
+  ;; (map! :n "C-k" #'gptel-menu)
+  ;; (map! :i "C-k" #'gptel-menu)
   ;; (setq! gptel-api-key "your key")
 (set-popup-rule! "^\\*OpenRouter\\*" :side 'right :size 0.4 :select 1)
 
