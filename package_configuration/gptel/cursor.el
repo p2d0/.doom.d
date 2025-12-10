@@ -45,70 +45,95 @@ User Request: %s
      "Target: Insert code at the current cursor position.")))
 
 (defun cursor-ctrl-k ()
-  "Stream changes to the buffer using gptel, inserting text as it arrives."
+  "Stream code generation. 
+If selection: Rewrite/Replace it.
+If no selection: AUTOCOMPLETE from the exact cursor position."
   (interactive)
   (let* ((use-region (use-region-p))
          (beg (if use-region (region-beginning) (point)))
          (end (if use-region (region-end) (point)))
          (selection (if use-region (buffer-substring-no-properties beg end) ""))
-         (instruction (read-string (if use-region "Refactor: " "Generate: ")))
+         (instruction (read-string (if use-region "Edit selection: " "Generate/Complete: ")))
          
-         ;; Capture the buffer and position so insertion happens in the right place
-         ;; even if you switch windows while waiting.
+         ;; Setup Marker for insertion
          (proc-buffer (current-buffer))
          (start-marker (make-marker))
          
-         ;; 1. GATHER LOCAL CONTEXT (Surrounding lines)
-         (local-context 
+         ;; 1. GET PROJECT CONTEXT (from gptel-add-file)
+         (project-context 
+          (if (boundp 'gptel-context)
+              (or (gptel-context--string (gptel-context--collect)) "")
+            ""))
+
+         ;; 2. GET LOCAL CONTEXT (Split into Before and After cursor)
+         ;; We grab 30 lines before and 30 lines after to give the LLM the picture.
+         (context-before
           (save-excursion
-            (let ((c-beg (progn (goto-char beg) (forward-line -20) (point)))
-                  (c-end (progn (goto-char end) (forward-line 20) (point))))
-              (buffer-substring-no-properties c-beg c-end))))
+            (let ((limit (progn (goto-char beg) (forward-line -30) (point))))
+              (buffer-substring-no-properties limit beg))))
+         
+         (context-after
+          (save-excursion
+            (let ((limit (progn (goto-char end) (forward-line 30) (point))))
+              (buffer-substring-no-properties end limit))))
 
-         ;; 2. GATHER PROJECT CONTEXT
-         (project-context-raw 
-          (when (boundp 'gptel-context)
-            (gptel-context--string (gptel-context--collect))))
-         (project-context (or project-context-raw ""))
-
-         ;; 3. SYSTEM PROMPT
+         ;; 3. CONSTRUCT SYSTEM PROMPT
          (system-prompt 
-          (format "You are an expert coder using Emacs.
+          (format "You are an expert coder acting as an intelligent autocomplete engine.
 Current File: %s
 Language: %s
 
-RULES:
-1. Output ONLY the code. No markdown backticks (```).
-2. No explanations.
-3. If editing, output the replaced code only."
+CRITICAL RULES:
+1. Output ONLY the code to be inserted.
+2. Do NOT output markdown backticks (```).
+3. Do NOT repeat code that is already in the 'Code Before Cursor' block.
+4. Just write the code that comes next."
                   (file-name-nondirectory (or (buffer-file-name) "scratch"))
                   major-mode))
          
-         ;; 4. FINAL PROMPT
+         ;; 4. CONSTRUCT USER PROMPT
          (final-prompt 
-          (format "
+          (if use-region
+              ;; --- REWRITE MODE (Selection Active) ---
+              (format "
 === PROJECT CONTEXT ===
 %s
 
-=== LOCAL CONTEXT ===
+=== CODE CONTEXT ===
+%s<SELECTION>%s</SELECTION>%s
+
+=== INSTRUCTION ===
+Refactor the code marked in <SELECTION> based on this instruction: %s
+Output only the new code to replace the selection.
+" 
+               project-context context-before selection context-after instruction)
+
+            ;; --- AUTOCOMPLETE MODE (No Selection) ---
+            (format "
+=== PROJECT CONTEXT ===
+%s
+
+=== CODE BEFORE CURSOR ===
+%s
+
+=== CODE AFTER CURSOR ===
 %s
 
 === INSTRUCTION ===
-%s
-%s
+The cursor is exactly at the end of 'CODE BEFORE CURSOR'.
+Complete the code or generate new code based on this instruction: %s
+DO NOT REPEAT the last line of 'CODE BEFORE CURSOR'. Start exactly where it ends.
 " 
-           project-context
-           local-context
-           (if use-region (format "Replace the code below:\n%s\nWith code that does:" selection) 
-             "At the cursor position, generate code that does:")
-           instruction)))
+             project-context context-before context-after instruction))))
 
-    ;; Set marker to where we want the code to appear
+    ;; Set marker to insertion point
     (set-marker start-marker beg)
 
-    ;; Delete selection if replacing
+    ;; If region active, delete it so we can stream the replacement
     (if use-region (delete-region beg end))
 
+    (message "Cursor: generating...")
+    
     ;; Send Request
     (gptel-request
      final-prompt
@@ -120,10 +145,10 @@ RULES:
                      (save-excursion
                        (goto-char start-marker)
                        (insert response)
-                       ;; Advance marker so next chunk appends correctly
-                       (set-marker start-marker (point)))))))
-    
-    (message "Cursor: Thinking...")))
+                       ;; Move marker forward so next chunk appends
+                       (set-marker start-marker (point)))))))))
+
+;; (global-set-key (kbd "C-c k") 'cursor-ctrl-k)
 
 ;; Bind it
 ;; (global-set-key (kbd "C-c k") 'cursor-ctrl-k)
