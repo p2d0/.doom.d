@@ -7,7 +7,9 @@
 (after! lsp-java
 	(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx4G" "-Xms100m")))
 (setq lsp-enable-file-watchers nil)
-(setq lsp-disabled-clients '((csharp-mode . csharp-roslyn) (csharp-mode . omnisharp) ))
+(after! lsp
+	(setq lsp-disabled-clients '((csharp-mode . csharp-roslyn) (csharp-mode . omnisharp) ))
+	)
 ;; (setq lsp-disabled-clients '((python-mode . pylsp)))
 (setq read-process-output-max (* 1024 1024))
 ;; (setq lsp-completion-provider :capf)
