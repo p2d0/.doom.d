@@ -187,6 +187,7 @@
 (load! "~/Dropbox/emacs/ssh.el" nil t)
 (load! "util.el")
 (mapc 'load (file-expand-wildcards "~/.doom.d/package_configuration/*/*.el"))
+(mapc 'load (file-expand-wildcards "~/.doom.d/snippet-helper-functions/*/*.el"))
 (setq +evil-want-o/O-to-continue-comments nil)
 
 ;; patch to emacs@28.0.50

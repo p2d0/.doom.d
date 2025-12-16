@@ -10,6 +10,9 @@
 (after! lsp
 	(setq lsp-disabled-clients '((csharp-mode . csharp-roslyn) (csharp-mode . omnisharp) ))
 	)
+(after! csharp-mode
+	(setq lsp-disabled-clients '((csharp-mode . csharp-roslyn) (csharp-mode . omnisharp) ))
+	)
 ;; (setq lsp-disabled-clients '((python-mode . pylsp)))
 (setq read-process-output-max (* 1024 1024))
 ;; (setq lsp-completion-provider :capf)
