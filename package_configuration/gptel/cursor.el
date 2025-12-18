@@ -165,56 +165,130 @@ DO NOT REPEAT the last line of 'CODE BEFORE CURSOR'. Start exactly where it ends
 
 (defun gptel-context-export-and-copy ()
   "Export the current gptel context to /tmp/context.txt and copy its URI.
-This copies the file URI (file:///tmp/context.txt) to the clipboard with
-MIME type 'text/uri-list', making it pasteable into file managers or
-chat apps that support file attachments."
+
+This version forces all file paths in the context to be relative to the
+current project root (if one exists).
+
+1. Generates the context string (with relative paths).
+2. Appends the Aider/Unified diff instruction block.
+3. Writes to /tmp/context.txt.
+4. Copies 'file:///tmp/context.txt' to system clipboard."
   (interactive)
   (require 'gptel-context)
-  (let ((output-file "/tmp/context.txt")
-        (context-string (gptel-context--string gptel-context)))
-    
-    ;; 1. Write context to /tmp/context.txt
-    (if (or (null context-string) (string-empty-p context-string))
-        (user-error "No active gptel context to export")
-      (with-temp-file output-file
-        (insert (s-concat context-string 
-"Output in Aider/Unified diff:
-```diff
---- mathweb/flask/app.py
-+++ mathweb/flask/app.py
-@@ ... @@
--class MathWeb:
-+import sympy
-+
-+class MathWeb:
-```
-"
-									)))
+  (require 'project)
+  (require 'cl-lib)
 
-      (message "Context written to %s" output-file))
+  (let* ((output-file "/tmp/context.txt")
+         ;; Determine project root (Doom or standard project.el)
+         (proj-root (or (and (fboundp 'doom-project-root) (doom-project-root))
+                        (and (fboundp 'project-current) 
+                             (when-let ((proj (project-current)))
+                               (project-root proj)))
+                        default-directory))
+         ;; Helper to make paths relative
+         (relativize (lambda (path)
+                       (if (and path proj-root (file-in-directory-p path proj-root))
+                           (file-relative-name path proj-root)
+                         (abbreviate-file-name path))))
+         (context-string
+          ;; We use cl-letf to dynamically override the string insertion functions
+          ;; inside gptel-context so they use our relative paths.
+          (cl-letf* (;; 1. Capture original buffer inserter so we can call it
+                     (orig-insert-buf (symbol-function 'gptel-context--insert-buffer-string))
+                     
+                     ;; 2. Override buffer inserter to use relative file path if buffer visits file
+                     ((symbol-function 'gptel-context--insert-buffer-string)
+                      (lambda (buffer context-data &optional header)
+                        (let* ((fname (buffer-file-name buffer))
+                               (display-name (if fname 
+                                                 (funcall relativize fname)
+                                               (buffer-name buffer)))
+                               ;; Force our custom header
+                               (new-header (or header (format "In buffer `%s`:\n\n```" display-name))))
+                          (funcall orig-insert-buf buffer context-data new-header))))
+
+                     ;; 3. Override file inserter to use relative path in header
+                     ((symbol-function 'gptel-context--insert-file-string)
+                      (lambda (path &optional spec)
+                        (let ((rel-path (funcall relativize path)))
+                          (if (not (and spec (or (plist-member spec :lines)
+                                                 (plist-member spec :bounds))))
+                              ;; Case A: Whole file. Manually insert to control header.
+                              (progn
+                                (insert (format "In file `%s`:\n\n```\n" rel-path))
+                                (insert-file-contents path)
+                                (insert "\n```\n"))
+                            ;; Case B: File regions. Delegate to buffer inserter with custom header.
+                            ;; (Copied logic from gptel-context.el)
+                            (let* ((visiting-buf (find-buffer-visiting path))
+                                   (file-buf (or visiting-buf (gptel--temp-buffer " *gptel-file-context*"))))
+                              (unless visiting-buf (with-current-buffer file-buf (insert-file-contents path)))
+                              (gptel-context--insert-buffer-string
+                               file-buf spec (format "In file `%s`:\n\n```\n" rel-path))
+                              (unless visiting-buf (kill-buffer file-buf))))))))
+            
+            ;; Generate the string with the overrides active
+            (if gptel-context
+                (gptel-context--string gptel-context)
+              ""))))
+
+    ;; 1. Write context to /tmp/context.txt
+    (if (string-empty-p context-string)
+        (message "Warning: No active gptel context found. Writing empty file.")
+      (message "Exporting context relative to: %s" proj-root))
+
+    (let* ((prompt-msg
+"\n\n
+Output code in this style Whole:
+```
+file/path/show_greeting.py
+import sys
+
+def greeting(name):
+    print("Hey", name)
+
+if __name__ == '__main__':
+    greeting(sys.argv[1])
+```
+
+"
+						 )) (with-temp-file output-file
+			(insert prompt-msg)
+      (insert context-string)
+			(insert prompt-msg)
+			) )
+    (message "Context written to %s" output-file)
 
     ;; 2. Copy URI to clipboard (Wayland/X11 detection)
     (let* ((uri (format "file://%s\n" output-file))
            (wayland-p (string-equal (getenv "XDG_SESSION_TYPE") "wayland"))
-           (process-connection-type nil)) ; Use pipe for process
+           (process-connection-type nil)
+           (proc-name "gptel-copy-uri"))
       
-      (if wayland-p
-          ;; Wayland: wl-copy
-          (let ((proc (start-process "gptel-copy-uri" nil "wl-copy" "-t" "text/uri-list")))
-            (process-send-string proc uri)
-            (process-send-eof proc))
-        
-        ;; X11: xclip
-        (let ((proc (start-process "gptel-copy-uri" nil "xclip" "-sel" "clip" "-t" "text/uri-list" "-i")))
-          (process-send-string proc uri)
-          (process-send-eof proc)))
-      
-      (message "Copied %s to clipboard (text/uri-list)" output-file))))
+      (condition-case err
+          (cond
+           (wayland-p
+            (let ((proc (start-process proc-name nil "wl-copy" "-t" "text/uri-list")))
+              (process-send-string proc uri)
+              (process-send-eof proc)
+              (message "Copied %s to clipboard (Wayland/text/uri-list)" output-file)))
+           
+           ((executable-find "xclip")
+            (let ((proc (start-process proc-name nil "xclip" "-sel" "clip" "-t" "text/uri-list" "-i")))
+              (process-send-string proc uri)
+              (process-send-eof proc)
+              (message "Copied %s to clipboard (X11/text/uri-list)" output-file)))
+
+           (t
+            (kill-new uri)
+            (message "No wl-copy/xclip found. Copied URI as plain text.")))
+        (error (message "Failed to copy URI: %s" err))))))
 
 (map! (:leader
 				"a" nil
 				(:n "ab" #'gptel-add)
 				(:n "ae" #'gptel-context-export-and-copy)
+				(:n "ar" #'gptel-context-remove-all)
 				(:n "ai" #'gptel--suffix-context-buffer)
 				))
 

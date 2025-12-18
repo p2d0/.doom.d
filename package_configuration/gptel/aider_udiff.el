@@ -285,5 +285,5 @@ It handles standard udiff headers (-, +) to construct the new content."
         (my-process-next-patch-in-queue)
       (user-error "No valid diffs found in clipboard."))))
 
-(map! (:leader "aa" #'my-ediff-multifile-sequential))
-(map! (:leader "ak" #'my-ediff-aider-udiff-from-clipboard))
+;; (map! (:leader "aa" #'my-ediff-multifile-sequential))
+;; (map! (:leader "ak" #'my-ediff-aider-udiff-from-clipboard))
