@@ -63,14 +63,26 @@ process in the echo area, and finally moves point to the winning item."
 	)
 
 (after! org-roam 
-(map! :map org-mode-map :localleader :v "d" #'my/org-roam-dice-visual)
+	(map! :map org-mode-map :localleader :v "d" #'my/org-roam-dice-visual))
+
+(map! :mode org-mode :localleader :v "d" #'my/org-roam-dice-visual)
+(map! :mode org :localleader :v "d" #'my/org-roam-dice-visual)
+(set-evil-initial-state! 'org-mode 'normal)
+;; (map! :mode org :map evil-motion-state-map "," nil)
+;; (map! :mode org :map evil-motion-state-map "," nil)
+(after! org
+
 	)
 
+
+(map! :mode org :map evil-motion-state-map ", d" #'my/org-roam-dice-visual)
+
 (defun my/org-roam-dice-visual (start end)
-  "Run a visual slot machine selection on lines in the region."
+  "Run a visual slot machine selection on lines in the region.
+   The winner is determined by where the wheel stops naturally."
   (interactive "r")
   (let* ((text (buffer-substring-no-properties start end))
-         ;; Calculate line positions relative to buffer
+         ;; 1. Map all valid lines in selection
          (line-positions 
           (save-excursion
             (goto-char start)
@@ -78,6 +90,7 @@ process in the echo area, and finally moves point to the winning item."
               (while (< (point) end)
                 (let ((line-start (line-beginning-position))
                       (line-end (line-end-position)))
+                  ;; Filter out empty lines to avoid rolling on nothing
                   (unless (string-blank-p (buffer-substring line-start line-end))
                     (push (cons line-start line-end) positions)))
                 (forward-line 1))
@@ -87,35 +100,39 @@ process in the echo area, and finally moves point to the winning item."
     (if (= count 0)
         (message "No items found!")
       
-      ;; Create the overlay we will move around
-      (let ((ov (make-overlay (point) (point)))
-            (cycles (+ 15 (random 10))) ;; 15 to 25 spins
-            (winner-idx (random count)))
+      ;; 2. Setup the physics
+      (let* ((ov (make-overlay (point) (point)))
+             ;; Ensure we spin at least 3 full times, then add a random offset
+             ;; This guarantees the stop point is random but the motion is continuous
+             (total-spins (+ (* 3 count) (random count))))
         
         ;; Set initial rolling appearance
         (overlay-put ov 'face 'my/dice-rolling-face)
         
-        ;; 2. The Animation Loop
-        (dotimes (i cycles)
+        ;; 3. The Animation Loop
+        (dotimes (i total-spins)
           (let* ((current-idx (mod i count))
                  (pos (nth current-idx line-positions))
-                 ;; Ease-out math: start fast (0.05s), end slow (0.35s)
-                 (progress (/ (float i) cycles))
-                 (delay (+ 0.05 (* 0.30 (expt progress 4)))))
+                 ;; Progress goes from 0.0 to 1.0
+                 (progress (/ (float i) total-spins))
+                 ;; Ease-out: starts fast (0.05s), drags to slow (0.45s) at the very end
+                 (delay (+ 0.05 (* 0.40 (expt progress 4)))))
             
-            ;; Move overlay to current line
+            ;; Move overlay to the next candidate
             (move-overlay ov (car pos) (cdr pos))
-            (sit-for delay))) ;; Force redisplay and wait
+            (sit-for delay)))
 
-        ;; 3. Handle the Winner
-        (let ((win-pos (nth winner-idx line-positions)))
-          ;; Move overlay to winner and change to WINNER face
-          (move-overlay ov (car win-pos) (cdr win-pos))
+        ;; 4. Handle the Winner (The overlay is already on the winning line!)
+        (let* ((winner-idx (mod (1- total-spins) count))
+               (win-pos (nth winner-idx line-positions)))
+          
+          ;; Just swap the face to indicate "locked in"
           (overlay-put ov 'face 'my/dice-winner-face)
+          (message "🎉 Winner selected!")
           
           ;; Move actual cursor to the line
           (goto-char (car win-pos))
           
-          ;; Keep the winner highlighted for 2 seconds, then delete overlay
+          ;; Hold the winner highlight for 2 seconds, then clear
           (sit-for 2.0)
           (delete-overlay ov))))))

@@ -162,3 +162,75 @@ DO NOT REPEAT the last line of 'CODE BEFORE CURSOR'. Start exactly where it ends
 (map! "C-k" #'cursor-ctrl-k)
 (map! :n "C-k" #'cursor-ctrl-k)
 (map! :i "C-k" #'cursor-ctrl-k)
+
+(defun gptel-context-export-and-copy ()
+  "Export the current gptel context to /tmp/context.txt and copy its URI.
+This copies the file URI (file:///tmp/context.txt) to the clipboard with
+MIME type 'text/uri-list', making it pasteable into file managers or
+chat apps that support file attachments."
+  (interactive)
+  (require 'gptel-context)
+  (let ((output-file "/tmp/context.txt")
+        (context-string (gptel-context--string gptel-context)))
+    
+    ;; 1. Write context to /tmp/context.txt
+    (if (or (null context-string) (string-empty-p context-string))
+        (user-error "No active gptel context to export")
+      (with-temp-file output-file
+        (insert (s-concat context-string 
+"Output in Aider/Unified diff:
+```diff
+--- mathweb/flask/app.py
++++ mathweb/flask/app.py
+@@ ... @@
+-class MathWeb:
++import sympy
++
++class MathWeb:
+```
+"
+									)))
+
+      (message "Context written to %s" output-file))
+
+    ;; 2. Copy URI to clipboard (Wayland/X11 detection)
+    (let* ((uri (format "file://%s\n" output-file))
+           (wayland-p (string-equal (getenv "XDG_SESSION_TYPE") "wayland"))
+           (process-connection-type nil)) ; Use pipe for process
+      
+      (if wayland-p
+          ;; Wayland: wl-copy
+          (let ((proc (start-process "gptel-copy-uri" nil "wl-copy" "-t" "text/uri-list")))
+            (process-send-string proc uri)
+            (process-send-eof proc))
+        
+        ;; X11: xclip
+        (let ((proc (start-process "gptel-copy-uri" nil "xclip" "-sel" "clip" "-t" "text/uri-list" "-i")))
+          (process-send-string proc uri)
+          (process-send-eof proc)))
+      
+      (message "Copied %s to clipboard (text/uri-list)" output-file))))
+
+(map! (:leader
+				"a" nil
+				(:n "ab" #'gptel-add)
+				(:n "ae" #'gptel-context-export-and-copy)
+				(:n "ai" #'gptel--suffix-context-buffer)
+				))
+
+(defun gptel-context-inspect ()
+	(interactive)
+	(gptel-context--buffer-setup))
+
+
+;; (define-key gptel-context-buffer-mode-map (kbd "q") #'quit-window)
+(map! :map gptel-context-buffer-mode-map
+	:n "q" #'quit-window
+	)
+
+(with-eval-after-load 'transient
+  (define-key transient-map "q" 'transient-quit-one))
+
+;; (map! (:leader "aa" #'my-ediff-multifile-sequential))
+
+;; (map! (:leader "aa" #'my-ediff-multifile-sequential))
