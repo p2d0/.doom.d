@@ -21,7 +21,7 @@ Each element is a cons cell of the form (HEADING . MAX-LEVEL).")
   '(("Repeatable" . 12)
     ("Other progress / Distractions"  . 10)
     ;; To add your new category, just add the line below:
-    ("Speedruns"  . 3)
+    ;; ("Speedruns"  . 3)
     ("Doable"       . 6)
     ;; Add more categories here in the future!
     ; ("AnotherCategory" . 5)
@@ -51,16 +51,17 @@ This function is data-driven, configured by `my-eww-task-categories`."
                     ;; The JSON key should be lowercase to match your original JSON
                     (json-key heading)
                     ;; Fetch the tasks for the current category
-                    (tasks (my-get-unfinished-tasks-under-heading heading max-level)))
+                    ;; FIX: Ensure we return an empty vector if nil, so JSON encodes it as [] instead of null
+                    (tasks (or (my-get-unfinished-tasks-under-heading heading max-level)
+                               (vector))))
                ;; Create the final alist pair for this category: ("key" . [tasks...])
                (cons json-key tasks)))
            (let* ((current-time (decode-time))
-										 (hour (nth 2 current-time))
-										 (minute (nth 1 current-time)))
-						 (if  (or (> hour 10) (and (= hour 10) (>= minute 30)))
-							 my-eww-task-categories-after-10-30
-							 my-eww-task-categories
-							 ))))
+                  (hour (nth 2 current-time))
+                  (minute (nth 1 current-time)))
+             (if (or (> hour 10) (and (= hour 10) (>= minute 30)))
+                 my-eww-task-categories-after-10-30
+               my-eww-task-categories))))
 
          ;; This setting ensures JSON keys are strings ("key") not keywords (:key)
          (json-key-type 'string))
@@ -79,11 +80,8 @@ This function is data-driven, configured by `my-eww-task-categories`."
   ;;   (org-roam-dailies-capture-today))
 
   (let* ((task-data `((week-points . ,(get-total-story-points-done-last-week))
-											 (todays-points . ,(get-total-story-points-done-today))
-											 (median-points . ,(get-median-total-story-points-done-last-week))
-											 ))
-
-         )
+                      (todays-points . ,(get-total-story-points-done-today))
+                      (median-points . ,(get-median-total-story-points-done-last-week)))))
 
     ;; Encode the final data and print it to stdout for eww
     (json-encode task-data)))

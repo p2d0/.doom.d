@@ -239,18 +239,20 @@ current project root (if one exists).
 
     (let* ((prompt-msg
 "\n\n
-Output code in this style Whole:
+Output code in this style Whole
 ```
-file/path/show_greeting.py
+path/to/file/config/show_greeting.py
 import sys
-
-def greeting(name):
-    print("Hey", name)
 
 if __name__ == '__main__':
     greeting(sys.argv[1])
-```
 
+path/to/secondfile/config/file2.py
+import os
+
+if __name__ == '__main__':
+    test()
+```
 "
 						 )) (with-temp-file output-file
 			(insert prompt-msg)
@@ -290,6 +292,8 @@ if __name__ == '__main__':
 				(:n "ae" #'gptel-context-export-and-copy)
 				(:n "ar" #'gptel-context-remove-all)
 				(:n "ai" #'gptel--suffix-context-buffer)
+				(:n "aa" #'my-ediff-multifile-sequential-whole)
+				(:n "ak" #'my-ediff-aider-whole-from-clipboard)
 				))
 
 (defun gptel-context-inspect ()

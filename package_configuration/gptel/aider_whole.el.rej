@@ -1,0 +1,82 @@
+diff a/package_configuration/gptel/aider_whole.el b/package_configuration/gptel/aider_whole.el	(rejected hunks)
+@@ -5,31 +5,66 @@
+ 
+ (require 'subr-x)
+ 
++(require 'subr-x)
++
++(defun my-aider--looks-like-path-p (s)
++  "Heuristic: does S look like a repo-relative file path?"
++  (let ((s (string-trim s)))
++    (and (string-match-p "\\`[[:graph:]]+\\'" s)
++         ;; avoid obvious non-path lines
++         (not (string-match-p "\\`\\(;\\|#\\|//\\)" s))
++         ;; require either a slash path or an extension-ish dot segment
++         (or (string-match-p "/" s)
++             (string-match-p "\\.[[:alnum:]]\\{1,8\\}\\'" s)))))
++
+ (defun my-aider--parse-whole-blocks (text)
+-  "Parse Aider 'whole' edit format from TEXT.
++  "Parse Aider whole-file listings from TEXT.
+ 
+ Returns a list of (FILENAME CONTENT) pairs.
+-Expected structure repeats:
+-  filename/path
+-  ```
+-  ...full file content...
+-  ```"
++
++Supports:
++  A) Old:  filename\\n``````
++  B) New:  ``````
++  C) Unfenced (clipboard lost fences): filename\\n...EOF"
+   (let (blocks)
+     (with-temp-buffer
+       (insert text)
+       (goto-char (point-min))
+-      (let ((block-re
+-             ;; filename line, optional blank lines, then opening fence
+-             "^\\([[:graph:]][^\n]*\\)\n\\(?:\\s-*\n\\)*```"))
+-        (while (re-search-forward block-re nil t)
+-          (let* ((filename (string-trim (match-string 1)))
++
++      ;; 1) Fenced variants (A & B)
++      (let ((prefix-re
++             (concat
++              "^\\(?:"
++              ;; A) filename line then opening fence
++              "\\([[:graph:]][^\n]*\\)\n\\(?:\\s-*\n\\)*```"
++              "\\|"
++              ;; B) opening fence then filename line
++              "```[^`\n]*\\s-*\n\\([[:graph:]][^\n]*\\)\n"
++              "\\)")))
++        (while (re-search-forward prefix-re nil t)
++          (let* ((filename (string-trim (or (match-string 1) (match-string 2))))
+                  (content-start (point))
+-                 (content-end (if (re-search-forward "^```\\s-*$" nil t)
++                 (content-end (if (re-search-forward "^```")
+                                   (match-beginning 0)
+                                 (point-max)))
+                  (content (buffer-substring-no-properties content-start content-end)))
+-            (push (list filename content) blocks)))))
+-    (nreverse blocks)))
++            (push (list filename content) blocks))))
++
++      (setq blocks (nreverse blocks))
++
++      ;; 2) Fallback: unfenced single/multi (best-effort)
++      (when (null blocks)
++        (goto-char (point-min))
++        (skip-chars-forward "\n\t\s")
++        (let ((filename (string-trim (buffer-substring-no-properties
++                                      (line-beginning-position)
++                                      (line-end-position)))))
++          (when (my-aider--looks-like-path-p filename)
++            (forward-line 1)
++            (let ((content (buffer-substring-no-properties (point) (point-max))))
++              (setq blocks (list (list filename content))))))))
++
++    blocks))
+ 
+ (defun my-ediff-aider-whole-from-clipboard ()
+   "Ediff current file (or chosen file) against Aider 'whole' content in clipboard."
