@@ -36,19 +36,29 @@ Supports:
              (concat
               "^\\(?:"
               ;; A) filename line then opening fence
+              ;; We stop the match exactly at the backticks.
+              ;; We skip the language identifier (e.g. python) in the loop body.
               "\\([[:graph:]][^\n]*\\)\n\\(?:\\s-*\n\\)*```"
               "\\|"
               ;; B) opening fence then filename line
-              "```[^`\n]*\\s-*\n\\([[:graph:]][^\n]*\\)\n"
+              ;; This case handles the language tag naturally via [^`\n]*
+              "```"
               "\\)")))
         (while (re-search-forward prefix-re nil t)
-          (let* ((filename (string-trim (or (match-string 1) (match-string 2))))
-                 (content-start (point))
-                 (content-end (if (re-search-forward "^```")
-                                  (match-beginning 0)
-                                (point-max)))
-                 (content (buffer-substring-no-properties content-start content-end)))
-            (push (list filename content) blocks))))
+          (let ((filename (string-trim (or (match-string 1) (match-string 2)))))
+            
+            ;; FIX: If we matched Case A (filename first), the regex match ends at ```.
+            ;; We are now sitting on the same line as "python".
+            ;; We force the cursor to the start of the NEXT line to skip the language tag.
+            (when (match-string 1)
+              (forward-line 1))
+
+            (let* ((content-start (point))
+                   (content-end (if (re-search-forward "^```")
+                                    (match-beginning 0)
+                                  (point-max)))
+                   (content (buffer-substring-no-properties content-start content-end)))
+              (push (list filename content) blocks)))))
 
       (setq blocks (nreverse blocks))
 

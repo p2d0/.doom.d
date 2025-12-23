@@ -240,14 +240,16 @@ current project root (if one exists).
     (let* ((prompt-msg
 "\n\n
 Output code in this style Whole
-```
 path/to/file/config/show_greeting.py
+```
 import sys
 
 if __name__ == '__main__':
     greeting(sys.argv[1])
 
+```
 path/to/secondfile/config/file2.py
+```
 import os
 
 if __name__ == '__main__':
