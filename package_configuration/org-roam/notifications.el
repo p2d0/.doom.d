@@ -141,8 +141,10 @@ high-contrast colors for a black background."
   (interactive)
 	;; (when (not (file-exists-p (my-get-todays-daily-path)))
 	;; 	(org-roam-dailies-capture-today))
-	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Other progress / Distractions" 10))
-					(speedrun-tasks (my-get-unfinished-tasks-under-heading "Doable" 6))
+	(let* ((repeatable-tasks (my-get-unfinished-tasks-under-heading "Repeatable" 10))
+					(speedrun-tasks nil
+						;; (my-get-unfinished-tasks-under-heading "Doable" 6)
+						)
 					(current-time (decode-time))
 					(hour (nth 2 current-time))
 					(minute (nth 1 current-time))
@@ -162,7 +164,7 @@ high-contrast colors for a black background."
                      "\n"))))
               (repeatable-section
                 (when repeatable-tasks
-                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Distractions:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
+                  (format "<span font='12' weight='bold' foreground='#c0c0c0'>Repeatable:</span>\n<span font='11' foreground='#e0e0e0'>%s</span>"
                     (funcall format-task-list repeatable-tasks))))
               (speedrun-section
                 (when speedrun-tasks
