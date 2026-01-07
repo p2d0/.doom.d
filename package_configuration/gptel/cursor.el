@@ -208,7 +208,7 @@ current project root (if one exists).
                           (funcall orig-insert-buf buffer context-data new-header))))
 
                      ;; 3. Override file inserter to use relative path in header
-                     ((symbol-function 'gptel-context--insert-file-string)
+                     ((symbol-function 'gptel--insert-file-string)
                       (lambda (path &optional spec)
                         (let ((rel-path (funcall relativize path)))
                           (if (not (and spec (or (plist-member spec :lines)
@@ -256,11 +256,12 @@ if __name__ == '__main__':
     test()
 ```
 "
-						 )) (with-temp-file output-file
-			(insert prompt-msg)
-      (insert context-string)
-			(insert prompt-msg)
-			) )
+						 ))
+      (let ((coding-system-for-write 'utf-8-unix))
+	(with-temp-file output-file
+	  (insert prompt-msg)
+	  (insert context-string)
+	  (insert prompt-msg))) )
     (message "Context written to %s" output-file)
 
     ;; 2. Copy URI to clipboard (Wayland/X11 detection)
