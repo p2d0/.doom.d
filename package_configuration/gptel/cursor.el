@@ -160,6 +160,7 @@ DO NOT REPEAT the last line of 'CODE BEFORE CURSOR'. Start exactly where it ends
 ;; (global-set-key (kbd "C-c k") 'cursor-ctrl-k)
 
 (map! "C-k" #'cursor-ctrl-k)
+;; Autocomplete/Edit binding
 (map! :n "C-k" #'cursor-ctrl-k)
 (map! :i "C-k" #'cursor-ctrl-k)
 
@@ -238,25 +239,34 @@ current project root (if one exists).
       (message "Exporting context relative to: %s" proj-root))
 
     (let* ((prompt-msg
-"\n\n
-Output code in this style Whole
-path/to/file/config/show_greeting.py
-```
-import sys
-
-if __name__ == '__main__':
-    greeting(sys.argv[1])
-
-```
-path/to/secondfile/config/file2.py
-```
-import os
-
-if __name__ == '__main__':
-    test()
-```
-"
-						 ))
+	     (concat
+           "=== SYSTEM INSTRUCTIONS ===\n"
+           "Act as an automated code-patching tool. Apply changes using Aider Search/Replace.\n"
+           "IMPORTANT: Provide ALL file changes inside ONE SINGLE markdown code block.\n\n"
+           
+           "=== OUTPUT FORMAT EXAMPLE ===\n"
+           "```\n"
+           "path/to/file1.el\n"
+           "<<<<<<< SEARCH\n"
+           "[exact code]\n"
+           "=======\n"
+           "[new code]\n"
+           ">>>>>>> REPLACE\n"
+           "path/to/file2.py\n"
+           "<<<<<<< SEARCH\n"
+           "...\n"
+           "=======\n"
+           "...\n"
+           ">>>>>>> REPLACE\n"
+           "```\n\n"
+           
+           "=== CRITICAL RULES ===\n"
+           "1. The filename must be on the line immediately above its <<<<<<< SEARCH marker.\n"
+           "2. Use '...' to skip unchanged code inside SEARCH blocks.\n"
+           "3. NO conversation, NO explanations, NO backticks inside the block.\n"
+           "4. Just one block containing all files.\n\n"
+           
+           "=== PROJECT CONTEXT ===\n")))
       (let ((coding-system-for-write 'utf-8-unix))
 	(with-temp-file output-file
 	  (insert prompt-msg)
@@ -295,7 +305,7 @@ if __name__ == '__main__':
 				(:n "ae" #'gptel-context-export-and-copy)
 				(:n "ar" #'gptel-context-remove-all)
 				(:n "ai" #'gptel--suffix-context-buffer)
-				(:n "aa" #'my-ediff-multifile-sequential-whole)
+				(:n "aa" #'my-aider-ediff-sr-from-clipboard)
 				(:n "ak" #'my-ediff-aider-whole-from-clipboard)
 				))
 
@@ -315,3 +325,4 @@ if __name__ == '__main__':
 ;; (map! (:leader "aa" #'my-ediff-multifile-sequential))
 
 ;; (map! (:leader "aa" #'my-ediff-multifile-sequential))
+
