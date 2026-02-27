@@ -56,8 +56,19 @@ Works whether or not backticks were included in the copy."
     (setq my-aider-sr-temp-buffers nil))
   (run-at-time 0.1 nil #'my-aider-sr-process-next))
 
+(defun my-aider--make-fuzzy-regex (text)
+  "Convert Search block TEXT into a flexible regex.
+Handles '...' as a wildcard and makes whitespace/newlines flexible."
+  (let ((re (regexp-quote (string-trim text))))
+    ;; 1. Convert the quoted "..." (which is "\\.\\.\\.") into a multi-line wildcard
+    (setq re (replace-regexp-in-string (regexp-quote "\\.\\.\\.") "[[:ascii:][:nonascii:]]*?" re t t))
+    ;; 2. Make all whitespace (including newlines) flexible.
+    ;; This handles differences in indentation or empty lines.
+    (setq re (replace-regexp-in-string "[ \t\n\r]+" "[ \t\n\r]+" re t t))
+    re))
+
 (defun my-aider-sr-process-next ()
-  "Process the next hunk in the queue."
+  "Pop the next hunk from the queue, apply patch to the WHOLE file, and Ediff."
   (if (null my-aider-sr-queue)
       (message "All Search/Replace hunks processed!")
     (let* ((hunk (pop my-aider-sr-queue))
@@ -68,17 +79,26 @@ Works whether or not backticks were included in the copy."
            (target-path (expand-file-name filename project-root))
            (target-buf (find-file-noselect target-path))
            (patch-buf (get-buffer-create (format "*aider-patch-%s*" filename)))
-           (orig-content (with-current-buffer target-buf (buffer-string))))
+           (fuzzy-re (my-aider--make-fuzzy-regex search-text)))
 
+      ;; Copy original file to patch buffer
       (with-current-buffer patch-buf
         (erase-buffer)
-        (insert (my-aider--apply-sr-to-string orig-content search-text replace-text))
+        (insert-buffer-substring target-buf)
+        (goto-char (point-min))
+        
+        ;; Apply the fuzzy patch
+        (if (re-search-forward fuzzy-re nil t)
+            (replace-match replace-text t t)
+          (message "Error: Could not find match for %s. Check SEARCH block." filename))
+        
         (funcall (buffer-local-value 'major-mode target-buf)))
 
       (setq my-aider-sr-temp-buffers (list patch-buf))
       (add-hook 'ediff-quit-hook #'my-aider-sr-chain-handler)
       
-      (message "Ediffing %s (Search/Replace)..." filename)
+      (message "Ediffing %s..." filename)
+      ;; Ensure we start at the top so Ediff can find the diff
       (ediff-buffers target-buf patch-buf))))
 
 (defun my-aider-ediff-sr-from-clipboard ()
