@@ -310,8 +310,9 @@ current project root (if one exists).
 				))
 
 (defun gptel-context-inspect ()
-	(interactive)
-	(gptel-context--buffer-setup))
+  "Inspect the current gptel context."
+  (interactive)
+  (gptel-context--buffer-setup))
 
 
 ;; (define-key gptel-context-buffer-mode-map (kbd "q") #'quit-window)
