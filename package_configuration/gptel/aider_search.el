@@ -3,36 +3,43 @@
 ;;; Aider Search/Replace clipboard parsing + Ediff -*- lexical-binding: t; -*-
 
 (defun my-aider--parse-sr-blocks (text)
-  "Parse Search/Replace blocks with strict newline handling."
-  (let (blocks)
+  "Parse Search/Replace blocks, grouping multiple hunks by filename."
+  (let (files-alist current-file)
     (with-temp-buffer
       (insert text)
       (goto-char (point-min))
-      ;; Look for the marker at the start of a line
-      (while (re-search-forward "^<<<<<<< SEARCH\n" nil t)
-        (let ((search-start (point))
-              filename search-content replace-content)
-          ;; Filename is exactly one line above the SEARCH marker
-          (save-excursion
-            (goto-char (match-beginning 0))
-            (forward-line -1)
-            (setq filename (string-trim (buffer-substring-no-properties 
-                                         (line-beginning-position) 
-                                         (line-end-position)))))
-          
-          (when (re-search-forward "^=======\n" nil t)
-            ;; Extract search content (includes the newline before =======)
-            (setq search-content (buffer-substring-no-properties search-start (match-beginning 0)))
-            (let ((replace-start (point)))
-              (when (re-search-forward "^>>>>>>> REPLACE\n?" nil t)
-                ;; Extract replace content
-                (setq replace-content (buffer-substring-no-properties replace-start (match-beginning 0)))
-                (when (and filename (not (string-empty-p filename)))
-                  (push (list filename search-content replace-content) blocks))))))))
-    (nreverse blocks)))
+      (while (not (eobp))
+        (let ((line (string-trim (buffer-substring-no-properties (line-beginning-position) (line-end-position)))))
+          (cond
+           ;; 1. Detect Search Marker
+           ((string-prefix-p "<<<<<<< SEARCH" line)
+            (let ((search-start (progn (forward-line 1) (point))))
+              (if (re-search-forward "^=======\n" nil t)
+                  (let ((search-content (buffer-substring-no-properties search-start (match-beginning 0)))
+                        (replace-start (point)))
+                    (if (re-search-forward "^>>>>>>> REPLACE\n?" nil t)
+                        (let ((replace-content (buffer-substring-no-properties replace-start (match-beginning 0))))
+                          (if (not current-file)
+                              (message "Warning: Found hunk without filename context.")
+                            (let ((existing (assoc current-file files-alist)))
+                              (if existing
+                                  (setcdr existing (append (cdr existing) (list (list search-content replace-content))))
+                                (push (list current-file (list search-content replace-content)) files-alist))))))))))
+           
+           ;; 2. Detect Filename (not a marker, not empty, looks like a path/file)
+           ((and (not (string-empty-p line))
+                 (not (string-prefix-p ">" line))
+                 (not (string-prefix-p "=" line))
+                 (not (string-prefix-p "<" line))
+                 (or (string-match-p "/" line) (string-match-p "\\." line)))
+            (setq current-file line)
+            (forward-line 1))
+           
+           (t (forward-line 1))))))
+    (nreverse files-alist)))
 
-(defvar my-aider-sr-queue nil "Queue for Search/Replace Ediff.")
-(defvar my-aider-sr-temp-buffers nil "Buffers to clean up after Ediff.")
+(defvar my-aider-sr-queue nil "Queue of files to process.")
+(defvar my-aider-sr-temp-buffers nil)
 
 (defun my-aider--apply-sr-to-string (original-text search-text replace-text)
   "Replace SEARCH-TEXT with REPLACE-TEXT in ORIGINAL-TEXT, handling '...' fuzzy matching."
@@ -62,43 +69,41 @@
     re))
 
 (defun my-aider-sr-process-next ()
-  "Apply the patch to a temporary buffer and Ediff against the real file."
+  "Process the next file in the queue, applying all its hunks at once."
   (if (null my-aider-sr-queue)
-      (message "All Search/Replace hunks processed!")
-    (let* ((hunk (pop my-aider-sr-queue))
-           (filename (nth 0 hunk))
-           (search-text (nth 1 hunk))
-           (replace-text (nth 2 hunk))
+      (message "All files processed!")
+    (let* ((file-entry (pop my-aider-sr-queue))
+           (filename (car file-entry))
+           (hunks (cdr file-entry))
            (project-root (or (and (fboundp 'doom-project-root) (doom-project-root)) default-directory))
            (target-path (expand-file-name filename project-root))
            (target-buf (find-file-noselect target-path))
            (patch-buf (get-buffer-create (format "*aider-patch-%s*" filename)))
-           (fuzzy-re (my-aider--make-fuzzy-regex search-text))
-           ;; Disable case-folding for strict code matching
            (case-fold-search nil))
 
       (with-current-buffer patch-buf
         (erase-buffer)
         (insert-buffer-substring target-buf)
-        (goto-char (point-min))
-        
-        (if (re-search-forward fuzzy-re nil t)
-            (replace-match replace-text t t)
-          (message "No match found for hunk in %s" filename))
-        
+        ;; Apply EVERY hunk for this file to the temp buffer
+        (dolist (hunk hunks)
+          (let ((search-text (nth 0 hunk))
+                (replace-text (nth 1 hunk)))
+            (goto-char (point-min))
+            (if (re-search-forward (my-aider--make-fuzzy-regex search-text) nil t)
+                (replace-match replace-text t t)
+              (message "Could not match a hunk in %s" filename))))
         (funcall (buffer-local-value 'major-mode target-buf)))
 
       (setq my-aider-sr-temp-buffers (list patch-buf))
       (add-hook 'ediff-quit-hook #'my-aider-sr-chain-handler)
-      (message "Ediffing %s..." filename)
       (ediff-buffers target-buf patch-buf))))
 
 (defun my-aider-ediff-sr-from-clipboard ()
-  "Parse clipboard and start sequential Ediff for Search/Replace blocks."
+  "Group hunks by file and start Ediff."
   (interactive)
   (let* ((text (current-kill 0))
-         (blocks (my-aider--parse-sr-blocks text))) ; Using the parser we built earlier
-    (if (null blocks)
-        (user-error "No Aider SEARCH/REPLACE blocks found in clipboard.")
-      (setq my-aider-sr-queue blocks)
+         (files-alist (my-aider--parse-sr-blocks text)))
+    (if (null files-alist)
+        (user-error "No Search/Replace blocks found.")
+      (setq my-aider-sr-queue files-alist)
       (my-aider-sr-process-next))))
