@@ -208,4 +208,5 @@ high-contrast colors for a black background."
 
 
 (after! org-roam
-	(my-start-daily-reminder-timer))
+	;; (my-start-daily-reminder-timer)
+	)
