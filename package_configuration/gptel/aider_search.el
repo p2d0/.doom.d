@@ -59,13 +59,13 @@
   (run-at-time 0.1 nil #'my-aider-sr-process-next))
 
 (defun my-aider--make-fuzzy-regex (text)
-  "Convert SEARCH block into a regex that is fuzzy about indentation but strict about newlines."
   (let ((re (regexp-quote text)))
-    ;; 1. Handle "..." as a multi-line wildcard
+    ;; 1. Handle "..." wildcard
     (setq re (replace-regexp-in-string (regexp-quote "\\.\\.\\.") "[[:ascii:][:nonascii:]]*?" re t t))
-    ;; 2. Make horizontal whitespace (spaces/tabs) fuzzy
-    ;; This allows matching even if the AI uses different indentation levels.
+    ;; 2. Make existing horizontal whitespace fuzzy
     (setq re (replace-regexp-in-string "[ \t]+" "[ \t]*" re t t))
+    ;; 3. ALLOW optional spaces after common Python punctuation (added safety)
+    (setq re (replace-regexp-in-string "\\([,:=]\\)" "\\1[ \t]*" re t t))
     re))
 
 (defun my-aider-sr-process-next ()
