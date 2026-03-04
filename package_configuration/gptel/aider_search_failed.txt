@@ -1,0 +1,62 @@
+extract_and_infer.py
+<<<<<<< SEARCH
+            # Step 1: Separation
+            is_hp3 = "HP3" in args.uvr_model
+            logger.info(f"Step 1: Starting UVR5 Vocal Separation ({args.uvr_model})...")
+            uvr_gen = uvr(args.uvr_model, "", vocal_root,[FileObj(file_path)], ins_root, {args.uvr_agg}, "wav")
+            for _ in uvr_gen: pass
+=======
+            # Step 1: Separation
+            is_hp3 = "HP3" in args.uvr_model
+            logger.info(f"Step 1: Starting UVR5 Vocal Separation ({args.uvr_model})...")
+            uvr_gen = uvr(args.uvr_model, "", vocal_root,[FileObj(file_path)], ins_root, args.uvr_agg, "wav")
+            for _ in uvr_gen: pass
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+            if not vocal_raw or not temp_ins:
+                logger.error(f"Separation failed for {file_path}.")
+                shutil.rmtree(tmp_dir, ignore_errors=True)
+                continue
+
+            # Step 2: De-Echo / De-Reverb
+            logger.info(f"Step 2: Cleaning vocals with {args.uvr_clean_model}...")
+            deecho_gen = uvr(args.uvr_clean_model, "", vocal_clean_root, [FileObj(vocal_raw)], tmp_dir, 10, "wav")
+            for _ in deecho_gen: pass
+
+            temp_vocal = None
+            vocal_raw_base = os.path.splitext(os.path.basename(vocal_raw))[0]
+            for f in os.listdir(vocal_clean_root):
+                if vocal_raw_base in f: temp_vocal = os.path.join(vocal_clean_root, f)
+=======
+            if not vocal_raw or not temp_ins:
+                logger.error(f"Separation failed for {file_path}.")
+                shutil.rmtree(tmp_dir, ignore_errors=True)
+                continue
+
+            # Step 1.5: Karaoke Cleaning
+            logger.info("Step 1.5: Applying 5_HP-Karaoke-UVR cleaning...")
+            karaoke_root = os.path.join(tmp_dir, "karaoke")
+            os.makedirs(karaoke_root, exist_ok=True)
+            karaoke_gen = uvr("5_HP-Karaoke-UVR", "", karaoke_root, [FileObj(vocal_raw)], tmp_dir, 10, "wav")
+            for _ in karaoke_gen: pass
+            
+            vocal_raw_karaoke = None
+            vocal_raw_base_1_5 = os.path.splitext(os.path.basename(vocal_raw))[0]
+            for f in os.listdir(karaoke_root):
+                if vocal_raw_base_1_5 in f: vocal_raw_karaoke = os.path.join(karaoke_root, f)
+            
+            if vocal_raw_karaoke:
+                vocal_raw = vocal_raw_karaoke
+            else:
+                logger.warning("Karaoke pass failed, using original vocals.")
+
+            # Step 2: De-Echo / De-Reverb
+            logger.info(f"Step 2: Cleaning vocals with {args.uvr_clean_model}...")
+            deecho_gen = uvr(args.uvr_clean_model, "", vocal_clean_root, [FileObj(vocal_raw)], tmp_dir, 10, "wav")
+            for _ in deecho_gen: pass
+
+            temp_vocal = None
+            vocal_raw_base = os.path.splitext(os.path.basename(vocal_raw))[0]
+            for f in os.listdir(vocal_clean_root):
+                if vocal_raw_base in f: temp_vocal = os.path.join(vocal_clean_root, f)
+>>>>>>> REPLACE

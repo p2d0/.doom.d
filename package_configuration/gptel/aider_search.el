@@ -60,12 +60,20 @@
 
 (defun my-aider--make-fuzzy-regex (text)
   (let ((re (regexp-quote text)))
-    ;; 1. Handle "..." wildcard
-    (setq re (replace-regexp-in-string (regexp-quote "\\.\\.\\.") "[[:ascii:][:nonascii:]]*?" re t t))
-    ;; 2. Make existing horizontal whitespace fuzzy
+    
+    ;; 1. Make existing horizontal whitespace fuzzy
+    ;; This must run FIRST so it doesn't match the spaces inside the
+    ;; "[ \t]*" blocks we are about to insert in step 2.
     (setq re (replace-regexp-in-string "[ \t]+" "[ \t]*" re t t))
-    ;; 3. ALLOW optional spaces after common Python punctuation (added safety)
-    (setq re (replace-regexp-in-string "\\([,:=]\\)" "\\1[ \t]*" re t t))
+    
+    ;; 2. ALLOW optional spaces after common Python punctuation
+    ;; MUST be done BEFORE adding [:ascii:] so we don't mangle its colons.
+    ;; LITERAL argument MUST be 'nil' so \1 is actually substituted.
+    (setq re (replace-regexp-in-string "\\([,:=]\\)" "\\1[ \t]*" re t nil))
+    
+    ;; 3. Handle "..." wildcard
+    (setq re (replace-regexp-in-string (regexp-quote "\\.\\.\\.") "[[:ascii:][:nonascii:]]*?" re t t))
+    
     re))
 
 (defun my-aider-sr-process-next ()
