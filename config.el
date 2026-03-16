@@ -178,7 +178,7 @@
 
 ;; TODO fix in nixos
 (setq browse-url-browser-function 'browse-url-generic
-  browse-url-generic-program "zen-beta")
+  browse-url-generic-program "firefox")
 
 (setq indent-tabs-mode t)
 
