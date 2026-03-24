@@ -17,7 +17,8 @@
            (with-temp-buffer
              (insert-file-contents (expand-file-name "~/Dropbox/zai.txt"))
              (string-trim (buffer-string))))
-    :models '(glm-4.7))
+    :models '(glm-4.7)
+    :request-params '(:enable_thinking :json-false))
   "gptel backend for z.ai (glm-4.7).")
 
 (defvar my-zai-model 'glm-4.7)
@@ -61,6 +62,24 @@ Returns TEXT unchanged when no fence is detected."
     text))
 
 ;; ---------------------------------------------------------------------------
+;; In-flight request state (for abort)
+
+(defvar my-zai--active-buffer nil "Source buffer of the in-flight z.ai request.")
+(defvar my-zai--spinner-timer nil "Timer animating the minibuffer spinner.")
+
+(defun my-zai-abort ()
+  "Cancel the in-flight z.ai request and stop the spinner."
+  (interactive)
+  (when (timerp my-zai--spinner-timer)
+    (cancel-timer my-zai--spinner-timer)
+    (setq my-zai--spinner-timer nil))
+  (if (buffer-live-p my-zai--active-buffer)
+      (progn
+        (gptel-abort my-zai--active-buffer)
+        (setq my-zai--active-buffer nil))
+    (message "No active z.ai request.")))
+
+;; ---------------------------------------------------------------------------
 ;; Interactive command
 
 (defun my-zai-edit-buffer ()
@@ -81,25 +100,43 @@ to z.ai, then feeds the response into the aider_search.el ediff pipeline
          (buffer-content (with-current-buffer source-buf
                            (buffer-substring-no-properties (point-min) (point-max))))
          (instruction (read-string "z.ai instruction: "))
+         (project-root (or (and (fboundp 'doom-project-root) (doom-project-root)) default-directory))
          (prompt (my-zai--build-edit-prompt buffer-content filename instruction))
          (gptel-backend my-zai-backend)
          (gptel-model my-zai-model))
-    (message "Sending to z.ai...")
-    (gptel-request
-     prompt
-     :system my-zai-system-prompt
-     :stream nil
-     :callback (lambda (response info)
-                 (if (not (and response (stringp response)))
-                     (message "z.ai: no response (status: %s)" (plist-get info :status))
-                   (let* ((cleaned (my-zai--strip-outer-fence response))
-                          (blocks  (my-aider--parse-sr-blocks cleaned)))
-                     (if (null blocks)
-                         (message "z.ai: no Search/Replace blocks found in response")
-                       (setq my-aider-sr-queue blocks)
-                       (my-aider-sr-process-next))))))))
+    (setq my-zai--active-buffer source-buf)
+    (let* ((spinner-frames ["⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏"])
+           (spinner-idx 0))
+      (setq my-zai--spinner-timer
+            (run-at-time
+             0 0.1
+             (lambda ()
+               (message "z.ai: thinking %s"
+                        (aref spinner-frames
+                              (% spinner-idx (length spinner-frames))))
+               (cl-incf spinner-idx))))
+      (gptel-request
+       prompt
+       :system my-zai-system-prompt
+       :stream nil
+       :callback (lambda (response info)
+                   (when (timerp my-zai--spinner-timer)
+                     (cancel-timer my-zai--spinner-timer)
+                     (setq my-zai--spinner-timer nil))
+                   (setq my-zai--active-buffer nil)
+                   (if (not (and response (stringp response)))
+                       (message "z.ai: no response (status: %s)" (plist-get info :status))
+                     (let* ((cleaned (my-zai--strip-outer-fence response))
+                            (blocks  (my-aider--parse-sr-blocks cleaned)))
+                       (if (null blocks)
+                           (message "z.ai: no Search/Replace blocks found in response")
+                         (message "z.ai: applying %d block(s)..." (length blocks))
+                         (setq my-aider-sr-project-root project-root)
+                         (setq my-aider-sr-queue blocks)
+                         (my-aider-sr-process-next)))))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Keybinding
 
-(map! (:leader (:n "az" #'my-zai-edit-buffer)))
+(map! (:leader (:n "az" #'my-zai-edit-buffer)
+               (:n "aZ" #'my-zai-abort)))

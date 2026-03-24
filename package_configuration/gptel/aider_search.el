@@ -40,6 +40,7 @@
 
 (defvar my-aider-sr-queue nil "Queue of files to process.")
 (defvar my-aider-sr-temp-buffers nil)
+(defvar my-aider-sr-project-root nil "Project root captured at queue start; overrides `default-directory' in `my-aider-sr-process-next'.")
 
 (defun my-aider--apply-sr-to-string (original-text search-text replace-text)
   "Replace SEARCH-TEXT with REPLACE-TEXT in ORIGINAL-TEXT, handling '...' fuzzy matching."
@@ -83,7 +84,9 @@
     (let* ((file-entry (pop my-aider-sr-queue))
            (filename (car file-entry))
            (hunks (cdr file-entry))
-           (project-root (or (and (fboundp 'doom-project-root) (doom-project-root)) default-directory))
+           (project-root (or my-aider-sr-project-root
+                            (and (fboundp 'doom-project-root) (doom-project-root))
+                            default-directory))
            (target-path (expand-file-name filename project-root))
            (target-buf (find-file-noselect target-path))
            (patch-buf (get-buffer-create (format "*aider-patch-%s*" filename)))
