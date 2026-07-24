@@ -13,6 +13,42 @@
 	(remove-hook 'server-switch-hook 'magit-commit-diff)
 	(remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff))
 
+(defun my/magit-auto-add-and-push-date-tag (&optional target)
+  "Create a Git tag in YYYY.MDD.N format (e.g. 2026.724.0) and push to remote."
+  (interactive)
+  ;; %-m = unpadded month (7), %d = 2-digit day (24) -> 2026.724.
+  (let* ((date-prefix (format-time-string "%Y.%-m%d."))
+         (pattern (concat date-prefix "*"))
+         (existing-tags (magit-git-lines "tag" "-l" pattern))
+         (max-suffix -1))
+    ;; Parse existing tags matching today's prefix to find highest suffix N
+    (dolist (tag existing-tags)
+      (when (string-match (concat "^" (regexp-quote date-prefix) "\\([0-9]+\\)$") tag)
+        (let ((num (string-to-number (match-string 1 tag))))
+          (when (> num max-suffix)
+            (setq max-suffix num)))))
+    
+    (let* ((new-tag (format "%s%d" date-prefix (1+ max-suffix)))
+           (remote (magit-read-remote "Push tag to remote" nil t)))
+      (if (y-or-n-p (format "Create and push tag '%s' to '%s'%s? " 
+                            new-tag 
+                            remote
+                            (if target (format " at %s" target) "")))
+          (progn
+            ;; 1. Create local tag
+            (if target
+                (magit-run-git "tag" new-tag target)
+              (magit-run-git "tag" new-tag))
+            ;; 2. Push tag to remote
+            (run-hooks 'magit-credential-hook)
+            (magit-run-git-async "push" "-v" remote new-tag)
+            (message "Created and pushed tag: %s" new-tag))
+        (message "Tag creation canceled.")))))
+
+(after! magit
+  (transient-append-suffix 'magit-tag "t"
+    '("a" "Auto Date Tag" my/magit-auto-add-and-push-date-tag)))
+
 ;; (after! magit-section
 ;; 	(defun magit-section-show (section)
 ;; 		"Show the body of the current section."
