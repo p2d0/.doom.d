@@ -133,7 +133,7 @@
       (if (null review-queue--comments)
           (insert "Review queue is empty.\n")
         (insert (format "Review queue (%d comments)\n\n" (length review-queue--comments)))
-        (insert "Keybindings: d=delete, e=edit, q=quit\n\n")
+        (insert "Keybindings: RET=open, d=delete, e=edit, q=quit\n\n")
         (let ((idx 1))
           (dolist (c review-queue--comments)
             (let ((file (nth 0 c))
@@ -153,13 +153,45 @@
   "Mode for the review queue buffer."
   (setq buffer-read-only t))
 
-;; Keybindings — Evil and normal
-(when (fboundp 'map!)
-  (map! :map review-queue--queue-mode-map
-        :n "d" #'review-queue--delete-comment
-        :n "e" #'review-queue--edit-comment
-        :n "q" #'quit-window
-        :i "C-g" #'keyboard-quit))
+;; Keybindings — defined unconditionally for batch mode and Doom
+(define-key review-queue--queue-mode-map (kbd "d") #'review-queue--delete-comment)
+(define-key review-queue--queue-mode-map (kbd "e") #'review-queue--edit-comment)
+(define-key review-queue--queue-mode-map (kbd "RET") #'review-queue--open-at-point)
+(define-key review-queue--queue-mode-map (kbd "<return>") #'review-queue--open-at-point)
+(define-key review-queue--queue-mode-map (kbd "q") #'quit-window)
+(define-key review-queue--queue-mode-map (kbd "C-g") #'keyboard-quit)
+
+;; Evil mode: RET intercepted by Evil, override with evil-define-key
+(when (fboundp 'evil-define-key)
+  (evil-define-key 'normal review-queue--queue-mode-map
+    (kbd "RET") #'review-queue--open-at-point
+    (kbd "<return>") #'review-queue--open-at-point
+    (kbd "d") #'review-queue--delete-comment
+    (kbd "e") #'review-queue--edit-comment
+    (kbd "q") #'quit-window)
+  (evil-set-initial-state 'review-queue--queue-mode 'normal))
+
+(defun review-queue--open-at-point ()
+  "Open the file at the comment on this line and jump to it."
+  (interactive)
+  (save-excursion
+    ;; Move up to find entry header (may be on comment text line)
+    (while (and (not (bobp))
+                (not (looking-at (rx (one-or-more digit) ". "
+                                     (one-or-more (not ":")) ":"
+                                     (one-or-more digit)))))
+      (forward-line -1))
+    (if (looking-at (rx (one-or-more digit) ". "
+                        (group (one-or-more (not ":"))) ":"
+                        (group (one-or-more digit))
+                        (? "-" (one-or-more digit))))
+        (let ((file (match-string-no-properties 1))
+              (line (string-to-number (match-string-no-properties 2)))
+              (repo-root (review-queue--get-repo-root)))
+          (find-file (expand-file-name file repo-root))
+          (goto-line line)
+          (message "Opened %s at line %d" file line)))
+      (user-error "Not on a review queue entry")))
 
 (defun review-queue--delete-comment ()
   "Delete the comment at point from the queue."
@@ -186,8 +218,11 @@
 (defun review-queue--get-index-at-point ()
   "Return the comment index at point, or nil."
   (save-excursion
-    (beginning-of-line)
-    (when (looking-at "\\([0-9]+\\)\\.")
+    ;; Move up to find entry header
+    (while (and (not (bobp))
+                (not (looking-at (rx (one-or-more digit) "\."))))
+      (forward-line -1))
+    (when (looking-at (rx (group (one-or-more digit)) "\."))
       (string-to-number (match-string 1)))))
 
 ;; Leader keybindings: SPC a c, SPC a q, SPC a s
@@ -196,4 +231,5 @@
         (:prefix ("a" . "Review")
           :desc "Add review comment" "c" #'review-queue--add-comment
           :desc "Show review queue" "q" #'review-queue--show-queue
-          :desc "Send review queue to pi" "s" #'review-queue--send-to-pi)))
+))
+)

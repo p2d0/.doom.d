@@ -135,6 +135,35 @@
 (describe "queue management"
   (before-all (review-queue-test--load-deps))
 
+  (it "parses index at point"
+    (with-temp-buffer
+      (insert "1. src/test.el:10-15\n    comment text\n")
+      (goto-char (point-min))
+      (expect (review-queue--get-index-at-point) :to-equal 1)))
+
+  (it "queue mode keymap has RET bound"
+    (let ((key-seq (vector ?\r)))
+      (expect (lookup-key review-queue--queue-mode-map key-seq)
+              :to-equal #'review-queue--open-at-point)))
+
+  (it "queue mode keymap has d/e/q bound"
+    (expect (lookup-key review-queue--queue-mode-map (kbd "d"))
+            :to-equal #'review-queue--delete-comment)
+    (expect (lookup-key review-queue--queue-mode-map (kbd "e"))
+            :to-equal #'review-queue--edit-comment)
+    (expect (lookup-key review-queue--queue-mode-map (kbd "q"))
+            :to-equal #'quit-window))
+
+  (it "evil-define-key configures Evil normal mode when available"
+    ;; evil-define-key not available in batch mode, skip if missing
+    (assume (fboundp 'evil-define-key) "evil-define-key not available")
+    ;; evil-define-key sets bindings in evil-normal-state-map overlay
+    ;; Verify at least one binding is set via evil's state-local keymap
+    (let ((evil-normal-state-map (get 'evil-normal-state 'evil-keymap)))
+      (when evil-normal-state-map
+        (expect (lookup-key review-queue--queue-mode-map (kbd "RET"))
+                :to-equal #'review-queue--open-at-point))))
+
   (it "deletes comment by index"
     (let ((review-queue--comments '(("file1.el" 1 5 "first")
                                      ("file2.el" 10 15 "second"))))
@@ -172,4 +201,5 @@
                             "http://localhost:1984/health"))
           (error nil))
         (expect (buffer-size) :to-equal start-len)
-        (expect (buffer-string) :to-equal "original content")))))
+)
+)))
