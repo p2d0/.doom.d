@@ -24,20 +24,36 @@
          (file-path)
          (start-line)
          (end-line))
-    ;; Magit diff: extract file and line range from hunk header
+    ;; Magit diff: use magit's section API, fall back to string parsing
     (when (derived-mode-p 'magit-diff-mode)
-      (save-excursion
-        ;; Search backward for hunk header: @@ -old_start,old_count +new_start,new_count @@
-        (when (re-search-backward "^@@ -[0-9,]+ +\\(+[0-9,]+\\)" (point-min) t)
-          (let* ((plus-part (match-string 1))
-                 (new-start (string-to-number (replace-regexp-in-string "^+" "" (car (split-string plus-part ",")))))
-                 ;; Find the file path from the diff header (+++ b/file)
-                 (file-header (save-excursion
-                                (when (re-search-backward "^\\+\\+\\+ b/\\(.*\\)" (point-min) t)
-                                  (match-string-no-properties 1)))))
-            (when file-header
-              (setq file-path file-header)
-              (setq start-line new-start))))))
+      (if (and (fboundp 'magit-diff--file)
+               (fboundp 'magit-diff--hunk-section)
+               (fboundp 'magit-diff-hunk-line))
+          ;; Use magit's section API
+          (let ((magit-file (ignore-errors (magit-diff--file))))
+            (when magit-file
+              (let ((root (review-queue--get-repo-root)))
+                (setq file-path (if root
+                                    (file-relative-name magit-file root)
+                                  magit-file)))
+              (when-let ((hunk (ignore-errors (magit-diff--hunk-section))))
+                (setq start-line (ignore-errors (magit-diff-hunk-line hunk nil))))))
+        ;; Fall back to string parsing for batch tests / fake buffers
+        (save-excursion
+          (when (re-search-backward
+                 (rx line-start "@@ -" (one-or-more digit) "," (one-or-more digit)
+                     (char ? ) (char ?+) (one-or-more digit) "," (one-or-more digit))
+                 (point-min) t)
+            (let* ((plus-part (match-string 0))
+                   (new-start (string-to-number (replace-regexp-in-string "^+" "" (car (split-string plus-part ",")))))
+                   (file-header (save-excursion
+                                  (when (re-search-backward
+                                         (rx line-start "+++ b/" (group (zero-or-more any)))
+                                         (point-min) t)
+                                    (match-string-no-properties 1)))))
+              (when file-header
+                (setq file-path file-header
+                      start-line new-start)))))))
     ;; If we got file from magit, determine line range
     (when file-path
       (if (and (use-region-p) (mark) (region-beginning) (region-end))
@@ -96,6 +112,7 @@
                                     (cons "text" (nth 3 c))))
                             review-queue--comments))))
     (json-encode (list (cons "comments" comments)))))
+
 
 (defun review-queue--send-to-pi ()
   "Send queued comments to pi via HTTP POST."
@@ -176,11 +193,12 @@
   (interactive)
   (save-excursion
     ;; Move up to find entry header (may be on comment text line)
-    (while (and (not (bobp))
-                (not (looking-at (rx (one-or-more digit) ". "
-                                     (one-or-more (not ":")) ":"
-                                     (one-or-more digit)))))
-      (forward-line -1))
+    (let ((limit (point-min)))
+      (while (and (> (point) limit)
+                  (not (looking-at (rx (one-or-more digit) ". "
+                                       (one-or-more (not ":")) ":"
+                                       (one-or-more digit)))))
+        (forward-line -1)))
     (if (looking-at (rx (one-or-more digit) ". "
                         (group (one-or-more (not ":"))) ":"
                         (group (one-or-more digit))
@@ -219,9 +237,10 @@
   "Return the comment index at point, or nil."
   (save-excursion
     ;; Move up to find entry header
-    (while (and (not (bobp))
-                (not (looking-at (rx (one-or-more digit) "\."))))
-      (forward-line -1))
+    (let ((limit (point-min)))
+      (while (and (> (point) limit)
+                  (not (looking-at (rx (one-or-more digit) "\."))))
+        (forward-line -1)))
     (when (looking-at (rx (group (one-or-more digit)) "\."))
       (string-to-number (match-string 1)))))
 
