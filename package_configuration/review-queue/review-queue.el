@@ -18,42 +18,33 @@
   "Return line number at POS (or point if POS omitted), or nil if both nil."
   (line-number-at-pos pos))
 
+(defun review-queue--get-repo-root ()
+  "Return git repo root directory, or nil."
+  (with-temp-buffer
+    (when (zerop (call-process "git" nil t nil "rev-parse" "--show-toplevel"))
+      (string-trim (buffer-string)))))
+
 (defun review-queue--get-file-and-lines ()
-  "Return (file-path start-line end-line) from region or magit context. Signal error if none."
+  "Return (file-path start-line end-line) from region or magit context.
+Signal error if none."
   (let* ((buffer-file (buffer-file-name))
-         (file-path)
-         (start-line)
-         (end-line))
-    ;; Magit diff: use magit's section API, fall back to string parsing
+         (file-path nil)
+         (start-line nil)
+         (end-line nil))
+    ;; Magit diff: use magit's section API
     (when (derived-mode-p 'magit-diff-mode)
-      (if (and (fboundp 'magit-diff--file)
-               (fboundp 'magit-diff--hunk-section)
-               (fboundp 'magit-diff-hunk-line))
-          ;; Use magit's section API
-          (let ((magit-file (ignore-errors (magit-diff--file))))
-            (when magit-file
-              (let ((root (review-queue--get-repo-root)))
-                (setq file-path (if root
-                                    (file-relative-name magit-file root)
-                                  magit-file)))
-              (when-let ((hunk (ignore-errors (magit-diff--hunk-section))))
-                (setq start-line (ignore-errors (magit-diff-hunk-line hunk nil))))))
-        ;; Fall back to string parsing for batch tests / fake buffers
-        (save-excursion
-          (when (re-search-backward
-                 (rx line-start "@@ -" (one-or-more digit) "," (one-or-more digit)
-                     (char ? ) (char ?+) (one-or-more digit) "," (one-or-more digit))
-                 (point-min) t)
-            (let* ((plus-part (match-string 0))
-                   (new-start (string-to-number (replace-regexp-in-string "^+" "" (car (split-string plus-part ",")))))
-                   (file-header (save-excursion
-                                  (when (re-search-backward
-                                         (rx line-start "+++ b/" (group (zero-or-more any)))
-                                         (point-min) t)
-                                    (match-string-no-properties 1)))))
-              (when file-header
-                (setq file-path file-header
-                      start-line new-start)))))))
+      (unless (and (fboundp 'magit-diff--file)
+                   (fboundp 'magit-diff--hunk-section)
+                   (fboundp 'magit-diff-hunk-line))
+        (user-error "Magit API not available"))
+      (let ((magit-file (ignore-errors (magit-diff--file))))
+        (when magit-file
+          (let ((root (review-queue--get-repo-root)))
+            (setq file-path (if root
+                                (file-relative-name magit-file root)
+                              magit-file)))
+          (when-let ((hunk (ignore-errors (magit-diff--hunk-section))))
+            (setq start-line (ignore-errors (magit-diff-hunk-line hunk nil)))))))
     ;; If we got file from magit, determine line range
     (when file-path
       (if (and (use-region-p) (mark) (region-beginning) (region-end))
@@ -78,12 +69,6 @@
     (unless (and start-line end-line)
       (user-error "Cannot determine line numbers"))
     (list file-path start-line end-line)))
-
-(defun review-queue--get-repo-root ()
-  "Return git repo root directory, or nil."
-  (with-temp-buffer
-    (when (zerop (call-process "git" nil t nil "rev-parse" "--show-toplevel"))
-      (string-trim (buffer-string)))))
 
 (defun review-queue--add-comment ()
   "Prompt for a review comment and add it to the queue."
@@ -112,7 +97,6 @@
                                     (cons "text" (nth 3 c))))
                             review-queue--comments))))
     (json-encode (list (cons "comments" comments)))))
-
 
 (defun review-queue--send-to-pi ()
   "Send queued comments to pi via HTTP POST."
@@ -161,9 +145,9 @@
                                    (number-to-string start)
                                  (format "%d-%d" start end))))
                 (insert (format "%d. %s:%s\n    %s\n\n" idx file range-str text)))
-              (setq idx (1+ idx)))))
+              (setq idx (1+ idx))))))
       (review-queue--queue-mode)
-      (display-buffer buf)))
+      (display-buffer buf))
     (message "Review queue: %d comment(s)" (length review-queue--comments))))
 
 (define-derived-mode review-queue--queue-mode special-mode "Review-Queue"
@@ -208,8 +192,8 @@
               (repo-root (review-queue--get-repo-root)))
           (find-file (expand-file-name file repo-root))
           (goto-line line)
-          (message "Opened %s at line %d" file line)))
-      (user-error "Not on a review queue entry")))
+          (message "Opened %s at line %d" file line))
+      (user-error "Not on a review queue entry"))))
 
 (defun review-queue--delete-comment ()
   "Delete the comment at point from the queue."
@@ -250,5 +234,4 @@
         (:prefix ("a" . "Review")
           :desc "Add review comment" "c" #'review-queue--add-comment
           :desc "Show review queue" "q" #'review-queue--show-queue
-))
-)
+          :desc "Send review queue" "s" #'review-queue--send-to-pi)))
